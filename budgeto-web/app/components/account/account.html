@@ -1,0 +1,11 @@
+<h1>account</h1>
+<select data-ng-model="account" data-ng-options="account as account.name for account in accounts">
+</select>
+<h2>{{account.name}}</h2>
+<p>{{account.note}}</p>
+<table data-ng-model="operations">
+    <tr data-ng-repeat="operation in operations">
+        <td>{{operation.label}}</td>
+        <td>{{operation.date[0]}}/{{operation.date.monthOfYear}}/{{operation.date.dayOfMonth}}</td>
+    </tr>
+</table>
