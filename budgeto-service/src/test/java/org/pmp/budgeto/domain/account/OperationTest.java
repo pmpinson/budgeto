@@ -3,6 +3,8 @@ package org.pmp.budgeto.domain.account;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.groups.Tuple;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.junit.Test;
 import org.pmp.budgeto.common.tools.DateTools;
 import org.pmp.budgeto.test.extractor.ConstraintViolationExtractor;
@@ -66,7 +68,9 @@ public class OperationTest {
     @Test
     public void toStringDefault() throws Exception {
 
-        Operation object = new Operation().setLabel("theName").setDate(DateTime.now());
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy/MM/dd HH:mm:ss ZZZ");
+
+        Operation object = new Operation().setLabel("theName").setDate(formatter.parseDateTime("2015/01/18 18:52:26 America/Los_Angeles"));
 
         Assertions.assertThat(object.toString()).isEqualTo("Operation[date=2015-01-18T00:00:00.000Z,label=theName]");
     }
