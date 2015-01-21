@@ -1,0 +1,1 @@
+mvn clean package cargo:run -Dmaven.test.skip=true
