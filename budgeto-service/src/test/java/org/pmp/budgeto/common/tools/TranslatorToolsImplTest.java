@@ -1,6 +1,7 @@
 package org.pmp.budgeto.common.tools;
 
 import org.assertj.core.api.Assertions;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -22,8 +23,16 @@ public class TranslatorToolsImplTest {
     @Mock
     private MessageSource messageSource;
 
+    @Mock
+    private LocaleTools localeTools;
+
     @InjectMocks
     private TranslatorToolsImpl translatorTools;
+
+    @Before
+    public void setup() {
+        Mockito.when(localeTools.getLocale()).thenReturn(Locale.ENGLISH);
+    }
 
     @Test
     public void springConf() throws Exception {
@@ -32,14 +41,9 @@ public class TranslatorToolsImplTest {
 
         Assertions.assertThat(TranslatorToolsImpl.class.getConstructors()).hasSize(1);
         Assertions.assertThat(TranslatorToolsImpl.class.getConstructors()[0].isAnnotationPresent(Autowired.class)).isTrue();
-        Assertions.assertThat(TranslatorToolsImpl.class.getConstructors()[0].getParameterAnnotations()).hasSize(1);
+        Assertions.assertThat(TranslatorToolsImpl.class.getConstructors()[0].getParameterAnnotations()).hasSize(2);
         Assertions.assertThat(TranslatorToolsImpl.class.getConstructors()[0].getParameterAnnotations()[0][0].annotationType()).isEqualTo(Qualifier.class);
         Assertions.assertThat(((Qualifier) TranslatorToolsImpl.class.getConstructors()[0].getParameterAnnotations()[0][0]).value()).isEqualTo("i18n");
-    }
-
-    @Test
-    public void getLocale() {
-        Assertions.assertThat(translatorTools.getLocale()).isEqualTo(Locale.FRANCE);
     }
 
     @Test

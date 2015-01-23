@@ -12,30 +12,27 @@ import java.util.Locale;
  * implementations of the translator common
  * need MessageSource dependence from Qualifier i18n
  */
-// TODO manage multiple language from user preferences
 @Component
 public class TranslatorToolsImpl implements TranslatorTools {
 
     private final MessageSource messageSource;
 
-    @Autowired
-    public TranslatorToolsImpl(@Qualifier("i18n") MessageSource messageSource) {
-        this.messageSource = Validate.notNull(messageSource);
-    }
+    private final LocaleTools localeTools;
 
-    @Override
-    public Locale getLocale() {
-        return Locale.FRANCE;
+    @Autowired
+    public TranslatorToolsImpl(@Qualifier("i18n") MessageSource messageSource, LocaleTools localeTools) {
+        this.messageSource = Validate.notNull(messageSource);
+        this.localeTools = Validate.notNull(localeTools);
     }
 
     @Override
     public String get(String id) {
-        return messageSource.getMessage(id, new Object[]{}, getLocale());
+        return messageSource.getMessage(id, new Object[]{}, localeTools.getLocale());
     }
 
     @Override
     public String get(String id, Object... params) {
-        return messageSource.getMessage(id, params, getLocale());
+        return messageSource.getMessage(id, params, localeTools.getLocale());
     }
 
 }

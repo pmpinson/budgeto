@@ -8,12 +8,6 @@ import java.util.Locale;
 public interface TranslatorTools {
 
     /**
-     * get current locale
-     * @return the locale
-     */
-    Locale getLocale();
-
-    /**
      * get message from current locale
      * @param id the id of message
      * @return the message
