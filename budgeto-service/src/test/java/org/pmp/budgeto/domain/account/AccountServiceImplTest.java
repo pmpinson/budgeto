@@ -13,10 +13,7 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.pmp.budgeto.common.domain.DomainConflictException;
 import org.pmp.budgeto.common.domain.DomainException;
-import org.pmp.budgeto.common.domain.DomainTools;
 import org.pmp.budgeto.test.config.TestConfig;
-import org.pmp.budgeto.common.tools.TranslatorTools;
-import org.pmp.budgeto.common.tools.ValidatorTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -33,17 +30,11 @@ public class AccountServiceImplTest {
     @Mock
     private AccountRepository accountRepository;
 
-    private TranslatorTools translatorTools = TestConfig.translatorTools();
-
-    private ValidatorTools validatorTools = TestConfig.validatorTools();
-
-    private DomainTools domainTools = TestConfig.serviceExceptionTools();
-
     private AccountService accountService;
 
     @Before
     public void setup() {
-        accountService = new AccountServiceImpl(accountRepository, TestConfig.translatorTools(), TestConfig.validatorTools(), TestConfig.serviceExceptionTools());
+        accountService = new AccountServiceImpl(accountRepository, TestConfig.translatorTools, TestConfig.validatorTools, TestConfig.domainTools);
     }
 
     @Test

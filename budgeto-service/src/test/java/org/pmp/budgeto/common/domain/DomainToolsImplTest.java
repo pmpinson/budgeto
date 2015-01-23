@@ -5,6 +5,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.assertj.core.api.Assertions;
 import org.hibernate.validator.constraints.NotBlank;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -13,6 +14,7 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.pmp.budgeto.common.tools.TranslatorTools;
 import org.pmp.budgeto.common.tools.ValidatorToolsImpl;
+import org.pmp.budgeto.test.config.TestConfig;
 import org.pmp.budgeto.test.extractor.DomainValidationErrorExtractor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
@@ -36,6 +38,11 @@ public class DomainToolsImplTest {
 
     @InjectMocks
     private DomainToolsImpl serviceTools;
+
+    @Before
+    public void setup() {
+        TestConfig.init();
+    }
 
     @Test
     public void springConf() throws Exception {
@@ -89,8 +96,8 @@ public class DomainToolsImplTest {
             Assertions.assertThat(e.getConstraintViolations()).isNotNull();
             Assertions.assertThat(e.getConstraintViolations()).hasSize(3);
 
-            Assertions.assertThat(e.getConstraintViolations()).extracting(new DomainValidationErrorExtractor()).containsOnly(
-                    Assertions.tuple("test", Arrays.toString(ArrayUtils.toArray("doit être faux"))), Assertions.tuple("name", Arrays.toString(ArrayUtils.toArray("ne peut pas être nul", "ne peut pas être vide")))
+            Assertions.assertThat(e.getConstraintViolations()).extracting(new DomainValidationErrorExtractor()).contains(
+                    Assertions.tuple("test", Arrays.toString(ArrayUtils.toArray("must be false"))), Assertions.tuple("name", Arrays.toString(ArrayUtils.toArray("may not be empty", "may not be null")))
                     , Assertions.tuple("_all", Arrays.toString(ArrayUtils.toArray("object name must be not null and equals to 'the value for name'")))
             );
         }

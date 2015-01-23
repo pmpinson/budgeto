@@ -48,27 +48,27 @@ public class TranslatorToolsImplTest {
 
     @Test
     public void get() throws Exception {
-        Mockito.when(messageSource.getMessage("message.key", new Object[]{}, Locale.FRANCE)).thenReturn("the value of message in bundle");
+        Mockito.when(messageSource.getMessage("message.key", new Object[]{}, Locale.ENGLISH)).thenReturn("the value of message in bundle");
 
         String message = translatorTools.get("message.key");
 
         Assertions.assertThat(message).isNotNull();
         Assertions.assertThat(message).isEqualTo("the value of message in bundle");
 
-        Mockito.verify(messageSource).getMessage("message.key", new Object[]{}, Locale.FRANCE);
+        Mockito.verify(messageSource).getMessage("message.key", new Object[]{}, Locale.ENGLISH);
         Mockito.verifyNoMoreInteractions(messageSource);
     }
 
     @Test
     public void getWithParams() throws Exception {
-        Mockito.when(messageSource.getMessage("message.key", new Object[]{12, "toto"}, Locale.FRANCE)).thenReturn("the value of message with params in bundle");
+        Mockito.when(messageSource.getMessage("message.key", new Object[]{12, "toto"}, Locale.ENGLISH)).thenReturn("the value of message with params in bundle");
 
         String message = translatorTools.get("message.key", new Object[]{12, "toto"});
 
         Assertions.assertThat(message).isNotNull();
         Assertions.assertThat(message).isEqualTo("the value of message with params in bundle");
 
-        Mockito.verify(messageSource).getMessage("message.key", new Object[]{12, "toto"}, Locale.FRANCE);
+        Mockito.verify(messageSource).getMessage("message.key", new Object[]{12, "toto"}, Locale.ENGLISH);
         Mockito.verifyNoMoreInteractions(messageSource);
     }
 

@@ -1,11 +1,13 @@
 package org.pmp.budgeto.common.tools;
 
 import org.assertj.core.api.Assertions;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.pmp.budgeto.common.domain.validator.TrimNotEmpty;
+import org.pmp.budgeto.test.config.TestConfig;
 import org.pmp.budgeto.test.extractor.ConstraintViolationExtractor;
 import org.springframework.stereotype.Component;
 
@@ -19,8 +21,10 @@ import java.util.Set;
 @RunWith(MockitoJUnitRunner.class)
 public class ValidatorToolsImplTest {
 
-    @InjectMocks
-    private ValidatorToolsImpl validatorTools;
+    @Before
+    public void setup() {
+        TestConfig.init();
+    }
 
     @Test
     public void springConf() throws Exception {
@@ -32,7 +36,7 @@ public class ValidatorToolsImplTest {
     public void validateNoError() throws Exception {
         MyObjectToValidate object = new MyObjectToValidate("the value for name");
 
-        Set<ConstraintViolation<MyObjectToValidate>> violations = validatorTools.validate(object);
+        Set<ConstraintViolation<MyObjectToValidate>> violations = TestConfig.validatorTools.validate(object);
 
         Assertions.assertThat(violations).isNotNull();
         Assertions.assertThat(violations).hasSize(0);
@@ -43,13 +47,13 @@ public class ValidatorToolsImplTest {
         MyObjectToValidate object = new MyObjectToValidate(null);
         object.test = true;
 
-        Set<ConstraintViolation<MyObjectToValidate>> violations = validatorTools.validate(object);
+        Set<ConstraintViolation<MyObjectToValidate>> violations = TestConfig.validatorTools.validate(object);
 
         Assertions.assertThat(violations).isNotNull();
         Assertions.assertThat(violations).hasSize(4);
         Assertions.assertThat(violations).extracting(new ConstraintViolationExtractor()).containsOnly(
-                Assertions.tuple("name", "must not empty string (trim too)"), Assertions.tuple("name", "ne peut pas être nul")
-                , Assertions.tuple("test", "doit être faux"), Assertions.tuple("", "object name must be not null and equals to 'the value for name'"));
+                Assertions.tuple("name", "must not empty string (trim too)"), Assertions.tuple("name", "may not be null")
+                , Assertions.tuple("test", "must be false"), Assertions.tuple("", "object name must be not null and equals to 'the value for name'"));
     }
 
     @Target(ElementType.TYPE)
