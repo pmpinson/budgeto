@@ -11,7 +11,6 @@
 
     <modules>
         <module>budgeto-service</module>
-        <module>sbt-service</module>
     </modules>
 
     <!-- Define some java properties -->
