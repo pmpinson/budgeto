@@ -2,8 +2,10 @@ package org.pmp.budgeto.domain.budget;
 
 import org.assertj.core.api.Assertions;
 import org.assertj.core.groups.Tuple;
+import org.junit.Before;
 import org.junit.Test;
 import org.pmp.budgeto.domain.budget.Budget;
+import org.pmp.budgeto.test.config.TestConfig;
 import org.pmp.budgeto.test.extractor.ConstraintViolationExtractor;
 
 import javax.validation.ConstraintViolation;
@@ -14,6 +16,11 @@ import java.util.Set;
 
 
 public class BudgetTest {
+
+    @Before
+    public void setup() {
+        TestConfig.init();
+    }
 
     @Test
     public void getterSetter() throws Exception {
@@ -115,7 +122,7 @@ public class BudgetTest {
         Assertions.assertThat(violations).hasSize(2);
         Assertions.assertThat(violations).extracting(new ConstraintViolationExtractor()).contains(
                 Tuple.tuple("name", "must not empty string (trim too)")
-                , Tuple.tuple("name", "ne peut pas être nul"));
+                , Tuple.tuple("name", "may not be null"));
     }
 
 }

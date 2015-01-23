@@ -5,8 +5,10 @@ import org.assertj.core.groups.Tuple;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.junit.Before;
 import org.junit.Test;
 import org.pmp.budgeto.common.tools.DateTools;
+import org.pmp.budgeto.test.config.TestConfig;
 import org.pmp.budgeto.test.extractor.ConstraintViolationExtractor;
 
 import javax.validation.ConstraintViolation;
@@ -17,6 +19,11 @@ import java.util.Set;
 
 
 public class OperationTest {
+
+    @Before
+    public void setup() {
+        TestConfig.init();
+    }
 
     @Test
     public void getterSetter() throws Exception {
@@ -99,7 +106,7 @@ public class OperationTest {
         Assertions.assertThat(violations).hasSize(2);
         Assertions.assertThat(violations).extracting(new ConstraintViolationExtractor()).contains(
                 Tuple.tuple("label", "must not empty string (trim too)")
-                , Tuple.tuple("label", "ne peut pas être nul"));
+                , Tuple.tuple("label", "may not be null"));
     }
 
     @Test

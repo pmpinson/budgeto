@@ -17,31 +17,14 @@ public class TestConfig {
 
     public static final LocaleTools localeTools = new LocaleToolsImpl();
 
-    /**
-     * get a translator common
-     * @return the common
-     */
-    public static TranslatorTools translatorTools() {
-        final TranslatorTools translatorTools = new TranslatorToolsImpl(new ToolsConfig().messageSource(), localeTools);
-        return translatorTools;
-    }
+    public static final ValidatorTools validatorTools = new ValidatorToolsImpl();
 
-    /**
-     * get a org common
-     * @return the common
-     */
-    public static ValidatorTools validatorTools() {
-        ValidatorTools validatorTools = new ValidatorToolsImpl();
-        return validatorTools;
-    }
+    public static final TranslatorTools translatorTools = new TranslatorToolsImpl(new ToolsConfig().messageSource(), localeTools);
 
-    /**
-     * get a domain exception common
-     * @return the common
-     */
-    public static DomainTools serviceExceptionTools() {
-        DomainTools domainTools = new DomainToolsImpl(translatorTools(), validatorTools());
-        return domainTools;
+    public static final DomainTools domainTools = new DomainToolsImpl(translatorTools, validatorTools);
+
+    public static void init() {
+        ((LocaleToolsImpl) localeTools).init();
     }
 
 }

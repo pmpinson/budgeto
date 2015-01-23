@@ -34,7 +34,7 @@ public class BudgetServiceImplTest {
 
     @Before
     public void setup() {
-        budgetService = new BudgetServiceImpl(budgetRepository, TestConfig.translatorTools(), TestConfig.validatorTools(), TestConfig.serviceExceptionTools());
+        budgetService = new BudgetServiceImpl(budgetRepository, TestConfig.translatorTools, TestConfig.validatorTools, TestConfig.domainTools);
     }
 
     @Test
