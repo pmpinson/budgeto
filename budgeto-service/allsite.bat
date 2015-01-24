@@ -1,1 +1,0 @@
-mvn clean package verify site -Pdeploy
