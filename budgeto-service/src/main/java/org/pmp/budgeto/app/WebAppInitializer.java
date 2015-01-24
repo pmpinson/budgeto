@@ -1,7 +1,7 @@
 package org.pmp.budgeto.app;
 
-import org.pmp.budgeto.common.controller.CorsFilter;
 import org.pmp.budgeto.common.controller.ControllerDispatcherConfig;
+import org.pmp.budgeto.common.controller.CorsFilter;
 import org.pmp.budgeto.domain.account.AccountConfig;
 import org.pmp.budgeto.domain.budget.BudgetConfig;
 import org.springframework.web.context.request.RequestContextListener;
@@ -26,6 +26,7 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
 
     /**
      * get webapp context config class
+     *
      * @return
      */
     @Override

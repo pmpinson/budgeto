@@ -8,7 +8,6 @@ import org.pmp.budgeto.common.domain.DomainConflictException;
 import org.pmp.budgeto.common.domain.DomainException;
 import org.pmp.budgeto.common.domain.DomainValidationError;
 import org.pmp.budgeto.common.domain.DomainValidationException;
-import org.pmp.budgeto.common.controller.ControllerError;
 
 
 public class ControllerErrorTest {

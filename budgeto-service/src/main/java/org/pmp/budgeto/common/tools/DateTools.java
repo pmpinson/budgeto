@@ -17,6 +17,7 @@ public class DateTools {
 
     /**
      * convert date to UTC keeping data same as the original timezone
+     *
      * @param date the date to modify
      * @return the new date
      */
@@ -29,6 +30,7 @@ public class DateTools {
 
     /**
      * truncate hour of a date
+     *
      * @param date the date to truncate
      * @return the date truncated
      */

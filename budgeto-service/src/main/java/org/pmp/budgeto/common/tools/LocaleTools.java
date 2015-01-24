@@ -9,6 +9,7 @@ public interface LocaleTools {
 
     /**
      * get current locale
+     *
      * @return the locale
      */
     Locale getLocale();

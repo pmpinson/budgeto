@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 
-import java.util.Locale;
-
 /**
  * implementations of the translator common
  * need MessageSource dependence from Qualifier i18n

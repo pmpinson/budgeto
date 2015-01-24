@@ -46,7 +46,7 @@ public class ServiceExceptionValidationErrorContentMatcher extends TypeSafeMatch
                 }
             }
             return res;
-        } else  if (exception instanceof DomainConflictException) {
+        } else if (exception instanceof DomainConflictException) {
             DomainConflictException ex = (DomainConflictException) exception;
             if (ex.getConstraintViolations() != null) {
                 if (ex.getConstraintViolations().getField().equals(field)) {

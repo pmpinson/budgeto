@@ -2,15 +2,15 @@ package org.pmp.budgeto.tools;
 
 import org.joda.time.DateTime;
 import org.pmp.budgeto.common.PropertiesConfig;
-import org.pmp.budgeto.common.repository.RepositoryConfig;
 import org.pmp.budgeto.common.domain.ServiceConfig;
+import org.pmp.budgeto.common.repository.RepositoryConfig;
 import org.pmp.budgeto.common.tools.ToolsConfig;
-import org.pmp.budgeto.domain.account.AccountConfig;
-import org.pmp.budgeto.domain.account.Operation;
-import org.pmp.budgeto.domain.budget.BudgetConfig;
 import org.pmp.budgeto.domain.account.Account;
+import org.pmp.budgeto.domain.account.AccountConfig;
 import org.pmp.budgeto.domain.account.AccountRepository;
+import org.pmp.budgeto.domain.account.Operation;
 import org.pmp.budgeto.domain.budget.Budget;
+import org.pmp.budgeto.domain.budget.BudgetConfig;
 import org.pmp.budgeto.domain.budget.BudgetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -59,7 +59,7 @@ public class DbInit {
         accountRepository.save(object);
 
         object = new Account().setName("livret A").setNote("livret d'épargne")
-            .addOperations(new Operation().setLabel("loyer").setDate(DateTime.now().minusDays(3)));
+                .addOperations(new Operation().setLabel("loyer").setDate(DateTime.now().minusDays(3)));
         accountRepository.save(object);
     }
 

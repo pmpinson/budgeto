@@ -20,7 +20,6 @@ public interface AccountService {
      * find an account by name
      *
      * @param name the name of account to find
-     *
      * @return a list of accounts
      */
     Account find(String name);
