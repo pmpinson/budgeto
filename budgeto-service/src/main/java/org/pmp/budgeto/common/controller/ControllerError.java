@@ -16,41 +16,42 @@ import org.pmp.budgeto.common.domain.DomainValidationException;
 public class ControllerError {
 
     @ApiModelProperty(value = "message", notes = "description of the error", required = true)
-    private String message;
+    private final String message;
 
     @ApiModelProperty(value = "type", notes = "type of the error", required = true)
-    private String type;
+    private final String type;
 
     @ApiModelProperty(value = "exception", notes = "server exception message", required = true)
-    private String exception;
+    private final String exception;
 
     @ApiModelProperty(value = "exceptionType", notes = "server exception type", required = true)
-    private String exceptionType;
+    private final String exceptionType;
 
     @ApiModelProperty(value = "validationErros", notes = "list of validation errors")
-    private DomainValidationError[] validationErros = new DomainValidationError[]{};
+    private final DomainValidationError[] validationErros;
 
     public ControllerError(String message, Exception exception) {
         this.message = Validate.notNull(message);
-        this.type = "unknown";
         this.exception = Validate.notNull(exception).getMessage();
         this.exceptionType = Validate.notNull(exception).getClass().getSimpleName();
 
         // manage the type by the class of exception
         if (exception instanceof DomainException) {
-            this.type = "server";
-
             if (exception instanceof DomainValidationException) {
                 this.type = "validation";
                 DomainValidationException s = (DomainValidationException) exception;
                 validationErros = s.getConstraintViolations();
-            }
-
-            if (exception instanceof DomainConflictException) {
+            } else if (exception instanceof DomainConflictException) {
                 this.type = "conflict";
                 DomainConflictException s = (DomainConflictException) exception;
                 validationErros = ArrayUtils.toArray(s.getConstraintViolations());
+            } else {
+                this.type = "server";
+                validationErros = new DomainValidationError[]{};
             }
+        } else {
+            this.type = "unknown";
+            validationErros = new DomainValidationError[]{};
         }
     }
 
@@ -71,7 +72,7 @@ public class ControllerError {
     }
 
     public DomainValidationError[] getValidationErros() {
-        return validationErros;
+        return ArrayUtils.clone(validationErros);
     }
 
 }

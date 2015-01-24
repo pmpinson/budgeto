@@ -1,14 +1,9 @@
 package org.pmp.budgeto.common.domain.validator;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import javax.validation.constraints.NotNull;
+import java.lang.annotation.*;
 
 /**
  * Define new annotation for trim not empty String validation.
@@ -33,7 +28,6 @@ public @interface TrimNotEmpty {
     /**
      * payload.
      */
-    @NotNull
-    Class<? extends Payload>[] payload() default {};
+    @NotNull Class<? extends Payload>[] payload() default {};
 
 }

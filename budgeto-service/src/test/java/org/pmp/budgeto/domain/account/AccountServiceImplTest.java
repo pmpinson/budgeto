@@ -34,7 +34,7 @@ public class AccountServiceImplTest {
 
     @Before
     public void setup() {
-        accountService = new AccountServiceImpl(accountRepository, TestConfig.translatorTools, TestConfig.validatorTools, TestConfig.domainTools);
+        accountService = new AccountServiceImpl(accountRepository, TestConfig.translatorTools, TestConfig.domainTools);
     }
 
     @Test

@@ -13,10 +13,11 @@ public class TestTools {
 
     /**
      * get content of a field by reflection
+     *
      * @param target the target object
-     * @param name the name of filed to retrieve value
-     * @param clazz the class of value expected
-     * @param <T> the class of value
+     * @param name   the name of filed to retrieve value
+     * @param clazz  the class of value expected
+     * @param <T>    the class of value
      * @return the value of field
      */
     public static <T> T getField(Object target, String name, Class<T> clazz) {
@@ -25,9 +26,10 @@ public class TestTools {
 
     /**
      * set the content of a field by reflection
+     *
      * @param target the target object
-     * @param name the name of filed to set value
-     * @param value the new value
+     * @param name   the name of filed to set value
+     * @param value  the new value
      */
     public static void setField(Object target, String name, Object value) {
         ReflectionTestUtils.setField(target, name, value);

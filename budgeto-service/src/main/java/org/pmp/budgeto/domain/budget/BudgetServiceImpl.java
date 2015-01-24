@@ -1,12 +1,11 @@
 package org.pmp.budgeto.domain.budget;
 
 import org.apache.commons.lang3.Validate;
-import org.pmp.budgeto.common.domain.DomainTools;
 import org.pmp.budgeto.common.domain.DomainConflictException;
 import org.pmp.budgeto.common.domain.DomainException;
+import org.pmp.budgeto.common.domain.DomainTools;
 import org.pmp.budgeto.common.domain.DomainValidationError;
 import org.pmp.budgeto.common.tools.TranslatorTools;
-import org.pmp.budgeto.common.tools.ValidatorTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,15 +23,12 @@ public class BudgetServiceImpl implements BudgetService {
 
     private final TranslatorTools translatorTools;
 
-    private final ValidatorTools validatorTools;
-
     private final DomainTools domainTools;
 
     @Autowired
-    public BudgetServiceImpl(BudgetRepository budgetRepository, TranslatorTools translatorTools, ValidatorTools validatorTools, DomainTools domainTools) {
+    public BudgetServiceImpl(BudgetRepository budgetRepository, TranslatorTools translatorTools, DomainTools domainTools) {
         this.budgetRepository = Validate.notNull(budgetRepository);
         this.translatorTools = Validate.notNull(translatorTools);
-        this.validatorTools = Validate.notNull(validatorTools);
         this.domainTools = Validate.notNull(domainTools);
     }
 

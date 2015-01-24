@@ -1,7 +1,5 @@
 package org.pmp.budgeto.domain.budget;
 
-import org.pmp.budgeto.domain.budget.Budget;
-import org.pmp.budgeto.domain.budget.BudgetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

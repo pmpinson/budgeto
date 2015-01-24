@@ -7,7 +7,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.pmp.budgeto.common.repository.DefaultWriteConcernResolver;
 import org.springframework.data.mongodb.core.MongoAction;
 import org.springframework.stereotype.Component;
 

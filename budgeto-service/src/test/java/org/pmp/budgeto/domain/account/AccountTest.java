@@ -4,7 +4,6 @@ import org.assertj.core.api.Assertions;
 import org.assertj.core.groups.Tuple;
 import org.joda.time.DateTime;
 import org.junit.Test;
-import org.pmp.budgeto.domain.account.Account;
 import org.pmp.budgeto.test.extractor.ConstraintViolationExtractor;
 
 import javax.validation.ConstraintViolation;

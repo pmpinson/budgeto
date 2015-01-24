@@ -33,6 +33,7 @@ public class SwaggerDispatcherConfig extends WebMvcConfigurerAdapter {
 
     /**
      * configure specific api info, disabled default message
+     *
      * @return the config of swagger plugin
      */
     @Bean
@@ -52,6 +53,7 @@ public class SwaggerDispatcherConfig extends WebMvcConfigurerAdapter {
 
     /**
      * configure SwaggerSpringMvcUi.WEB_JAR_RESOURCE_PATTERNS to be in resource jar to be response by http
+     *
      * @param registry to register information
      */
     @Override
@@ -62,6 +64,7 @@ public class SwaggerDispatcherConfig extends WebMvcConfigurerAdapter {
 
     /**
      * configure spring view resolver on classpath resource for *.jsp files
+     *
      * @return
      */
     @Bean

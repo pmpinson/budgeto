@@ -10,6 +10,7 @@ public interface MongoTools {
 
     /**
      * create a MongoFactoryBean
+     *
      * @param host the adresse of host to search for mongo serveur
      * @param port the port of host to search for mongo serveur (not mandatory)
      * @return factory
@@ -19,9 +20,10 @@ public interface MongoTools {
 
     /**
      * create the mongo db factory
-     * @param user the user name
-     * @param pass the password
-     * @param dbName the name of bdd
+     *
+     * @param user             the user name
+     * @param pass             the password
+     * @param dbName           the name of bdd
      * @param mongoFactoryBean the mongo factory server
      * @return the db factory
      * @throws Exception

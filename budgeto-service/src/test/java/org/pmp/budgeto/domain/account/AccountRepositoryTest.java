@@ -2,8 +2,6 @@ package org.pmp.budgeto.domain.account;
 
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
-import org.pmp.budgeto.domain.account.Account;
-import org.pmp.budgeto.domain.account.AccountRepository;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

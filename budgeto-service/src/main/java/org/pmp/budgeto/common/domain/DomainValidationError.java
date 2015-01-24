@@ -2,6 +2,7 @@ package org.pmp.budgeto.common.domain;
 
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ObjectUtils;
 
 /**
@@ -28,7 +29,7 @@ public class DomainValidationError {
     }
 
     public String[] getErrors() {
-        return errors;
+        return ArrayUtils.clone(errors);
     }
 
 }

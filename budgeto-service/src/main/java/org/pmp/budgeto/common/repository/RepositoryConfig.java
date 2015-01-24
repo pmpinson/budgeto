@@ -1,7 +1,6 @@
 package org.pmp.budgeto.common.repository;
 
 import org.apache.commons.lang3.Validate;
-import org.pmp.budgeto.common.repository.MongoTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -11,7 +10,6 @@ import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoFactoryBean;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteConcernResolver;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 /**
  * config the repository components for inject

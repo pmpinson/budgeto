@@ -1,5 +1,7 @@
 package org.pmp.budgeto.common.domain;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 /**
  * excpetion to be throw when validation of bean is bad
  */
@@ -18,7 +20,7 @@ public class DomainValidationException extends DomainException {
     }
 
     public DomainValidationError[] getConstraintViolations() {
-        return validationErros;
+        return ArrayUtils.clone(validationErros);
     }
 
 }

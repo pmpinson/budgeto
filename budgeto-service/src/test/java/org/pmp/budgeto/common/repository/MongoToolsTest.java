@@ -9,7 +9,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.pmp.budgeto.common.repository.MongoToolsImpl;
 import org.pmp.budgeto.test.TestTools;
 import org.springframework.data.authentication.UserCredentials;
 import org.springframework.data.mongodb.MongoDbFactory;
@@ -42,7 +41,8 @@ public class MongoToolsTest {
 
         Assertions.assertThat(mongoFactoryBean).isNotNull();
         Assertions.assertThat(TestTools.getField(mongoFactoryBean, "host", String.class)).isEqualTo("192.168.1.127");
-        Assertions.assertThat(TestTools.getField(mongoFactoryBean, "port", String.class)).isNull();;
+        Assertions.assertThat(TestTools.getField(mongoFactoryBean, "port", String.class)).isNull();
+        ;
     }
 
     @Test
@@ -52,7 +52,8 @@ public class MongoToolsTest {
 
         Assertions.assertThat(mongoFactoryBean).isNotNull();
         Assertions.assertThat(TestTools.getField(mongoFactoryBean, "host", String.class)).isEqualTo("192.168.1.127");
-        Assertions.assertThat(TestTools.getField(mongoFactoryBean, "port", String.class)).isNull();;
+        Assertions.assertThat(TestTools.getField(mongoFactoryBean, "port", String.class)).isNull();
+        ;
     }
 
     @Test
