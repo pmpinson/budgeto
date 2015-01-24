@@ -1,1 +1,0 @@
-mvn clean package cargo:run -Pcargo-dev -Dmaven.test.skip=true
