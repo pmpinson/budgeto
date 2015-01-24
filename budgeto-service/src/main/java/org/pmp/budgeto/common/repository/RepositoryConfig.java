@@ -49,7 +49,8 @@ public class RepositoryConfig {
     @Bean
     public MongoFactoryBean mongoFactoryBean() throws Exception {
         String srvHost = Validate.notNull(environment.getProperty(PROP_SRV_HOST));
-        Integer srvPort = environment.getProperty(PROP_SRV_PORT) == null ? null : Integer.valueOf(environment.getProperty(PROP_SRV_PORT));
+        String portValue = environment.getProperty(PROP_SRV_PORT);
+        Integer srvPort = portValue == null ? null : Integer.valueOf(portValue);
 
         return mongoTools.mongoFactoryBean(srvHost, srvPort);
     }
