@@ -22,7 +22,7 @@ public class AssertTools {
      */
     public static void onePrivateConstructorForUtilityClass(Class<?> clazz) throws Exception {
         // test 1 constructor
-        Assertions.assertThat(clazz.getConstructors()).hasSize(1);
+        Assertions.assertThat(clazz.getDeclaredConstructors()).hasSize(1);
 
         // controle if constructor private
         Constructor<?> constructor = clazz.getDeclaredConstructor();
