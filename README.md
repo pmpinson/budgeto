@@ -17,7 +17,8 @@ the project is divided in 2 parts :
 for now it's embedded in code but a new external config file will be provided
 
 #### mongo section
-* mongo.srv.host : ip or name of hoste
+* mongo.srv.host : ip or name of host
+* mongo.srv.port : port of host
 * mongo.db.name : name of db to use
 * mongo.db.user : user
 * mongo.db.password : login

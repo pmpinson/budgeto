@@ -87,7 +87,25 @@ public class RepositoryConfigTest {
         Assertions.assertThat(factory).isNotNull();
         Assertions.assertThat(factory).isEqualTo(mongoFactoryBean);
 
-        Mockito.verify(mongoTools, Mockito.times(1)).mongoFactoryBean("192.168.1.127", null);
+        Mockito.verify(mongoTools).mongoFactoryBean("192.168.1.127", null);
+        Mockito.verify(environment, Mockito.times(2)).getProperty(Matchers.anyString());
+        Mockito.verifyNoMoreInteractions(environment, mongoTools);
+    }
+
+    @Test
+    public void mongoFactoryBeanWithPort() throws Exception {
+
+        Mockito.when(environment.getProperty("mongo.srv.host")).thenReturn("192.168.1.127");
+        Mockito.when(environment.getProperty("mongo.srv.port")).thenReturn("59878");
+        MongoFactoryBean mongoFactoryBean = Mockito.mock(MongoFactoryBean.class);
+        Mockito.when(mongoTools.mongoFactoryBean("192.168.1.127", 59878)).thenReturn(mongoFactoryBean);
+
+        MongoFactoryBean factory = repositoryConfig.mongoFactoryBean();
+
+        Assertions.assertThat(factory).isNotNull();
+        Assertions.assertThat(factory).isEqualTo(mongoFactoryBean);
+
+        Mockito.verify(mongoTools).mongoFactoryBean("192.168.1.127", 59878);
         Mockito.verify(environment, Mockito.times(2)).getProperty(Matchers.anyString());
         Mockito.verifyNoMoreInteractions(environment, mongoTools);
     }
