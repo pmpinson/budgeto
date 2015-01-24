@@ -5,9 +5,20 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.junit.Test;
+import org.pmp.budgeto.test.AssertTools;
 
 
 public class DateToolsTest {
+
+    @Test
+    public void privateConstructor() throws Exception {
+        AssertTools.onePrivateConstructorForUtilityClass(DateTools.class);
+    }
+
+    @Test
+    public void toUTCWithDateNull() {
+        Assertions.assertThat(DateTools.toUTC(null)).isNull();
+    }
 
     @Test
     public void toUTCWithOtherTimeZone() {
@@ -25,6 +36,11 @@ public class DateToolsTest {
 
         DateTime dateOneWithGMT = formatter.parseDateTime("2014/02/26 18:52:26.626 UTC");
         Assertions.assertThat(DateTools.toUTC(dateOneWithTimeZone)).isEqualTo(dateOneWithGMT);
+    }
+
+    @Test
+    public void truncateTimeWithDateNull() {
+        Assertions.assertThat(DateTools.truncateTime(null)).isNull();
     }
 
     @Test
