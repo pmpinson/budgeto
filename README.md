@@ -12,6 +12,7 @@ the project is divided in 2 parts :
 * java 8
 * maven 3.2.X
 * mongo serveur
+`docker run --name budgeto-mongo-serveur-test -p 27017:27017 -d mongo`
 
 ## project configuration
 for now it's embedded in code but a new external config file will be provided
