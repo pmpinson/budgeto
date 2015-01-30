@@ -137,6 +137,34 @@
 
 		<!-- define plugins configuration -->
 		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.3.2</version>
+				<executions>
+					<execution>
+						<id>pre-integration-tests-execution</id>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<phase>pre-integration-test</phase>
+						<configuration>
+							<executable>${project.basedir}/src/build/pre-integration-tests.sh</executable>
+						</configuration>
+					</execution>
+					<execution>
+						<id>post-integration-tests-execution</id>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<phase>post-integration-test</phase>
+						<configuration><doc>
+						</doc>
+							<executable>${project.basedir}/src/build/post-integration-tests.sh</executable>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
