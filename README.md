@@ -13,7 +13,8 @@ the project is divided in 2 parts :
 * maven 3.2.X
 * mongo serveur
 
-`docker run --name budgeto-mongo-serveur-test -p 27017:27017 -d mongo`
+`docker run --name budgeto-mongo-serveur-test -p 27018:27017 -d mongo`
+
 `docker run -it --link budgeto-mongo-serveur-test:mongo --rm mongo sh -c 'exec mongo "$MONGO_PORT_27017_TCP_ADDR:$MONGO_PORT_27017_TCP_PORT/budgeto-test"'`
 
 ## project configuration
