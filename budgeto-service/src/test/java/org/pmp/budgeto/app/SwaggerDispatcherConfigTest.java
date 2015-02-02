@@ -45,7 +45,7 @@ public class SwaggerDispatcherConfigTest {
     @Test
     public void springConf() throws Exception {
 
-        Assertions.assertThat(SwaggerDispatcherConfig.class.getAnnotations()).hasSize(4);
+        Assertions.assertThat(SwaggerDispatcherConfig.class.getAnnotations()).hasSize(5);
         Assertions.assertThat(SwaggerDispatcherConfig.class.isAnnotationPresent(Configuration.class)).isTrue();
         Assertions.assertThat(SwaggerDispatcherConfig.class.isAnnotationPresent(EnableWebMvc.class)).isTrue();
         Assertions.assertThat(SwaggerDispatcherConfig.class.isAnnotationPresent(EnableSwagger.class)).isTrue();
