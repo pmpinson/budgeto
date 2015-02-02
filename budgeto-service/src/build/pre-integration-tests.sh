@@ -5,4 +5,4 @@
 # ---------------------------------------------------------------------
 #
 
-docker run -d --name budgeto-mongo-serveur-autotest -p 27018:27017 mongo
+# docker run -d --name budgeto-mongo-serveur-autotest -p 27018:27017 mongo
