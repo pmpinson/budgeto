@@ -5,4 +5,4 @@
 # ---------------------------------------------------------------------
 #
 
-docker stop budgeto-mongo-serveur-autotest && docker rm budgeto-mongo-serveur-autotest
+docker stop budgeto-mongo-serveur-autotest && docker rm -v budgeto-mongo-serveur-autotest
