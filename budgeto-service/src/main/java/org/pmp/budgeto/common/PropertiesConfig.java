@@ -22,15 +22,17 @@ import java.lang.annotation.Target;
 @Import({PropertiesConfig.ProdPropertiesConfig.class, PropertiesConfig.TestPropertiesConfig.class})
 public class PropertiesConfig {
 
-    public static final String CONFIG_FILE = "classpath:environnement.properties";
+    public static final String CONFIG_FILE = "classpath:config.properties";
+
+    public static final String EXTERNAL_FILE = "file:etc/config.properties";
 
     public static final String PROD_PROFILE = "prod";
 
-    public static final String PROD_CONFIG_FILE = "classpath:environnement-" + PROD_PROFILE + ".properties";
+    public static final String PROD_CONFIG_FILE = "classpath:config-" + PROD_PROFILE + ".properties";
 
     public static final String TEST_PROFILE = "test";
 
-    public static final String TEST_CONFIG_FILE = "classpath:environnement-" + TEST_PROFILE + ".properties";
+    public static final String TEST_CONFIG_FILE = "classpath:config-" + TEST_PROFILE + ".properties";
 
     @Target(ElementType.TYPE)
     @Retention(RetentionPolicy.RUNTIME)
@@ -46,13 +48,13 @@ public class PropertiesConfig {
 
     @Configuration
     @EnvironnementProduction
-    @PropertySource(PROD_CONFIG_FILE)
+    @PropertySource({PROD_CONFIG_FILE, EXTERNAL_FILE})
     public static class ProdPropertiesConfig {
     }
 
     @Configuration
     @EnvironnementTest
-    @PropertySource(TEST_CONFIG_FILE)
+    @PropertySource({TEST_CONFIG_FILE, EXTERNAL_FILE})
     public static class TestPropertiesConfig {
     }
 
