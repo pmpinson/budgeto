@@ -11,14 +11,17 @@ the project is divided in 2 parts :
 ## needs
 * java 8
 * maven 3.2.X
-* mongo serveur
-
-`docker run --name budgeto-mongo-serveur-test -p 27018:27017 -d mongo`
-
-`docker run -it --link budgeto-mongo-serveur-test:mongo --rm mongo sh -c 'exec mongo "$MONGO_PORT_27017_TCP_ADDR:$MONGO_PORT_27017_TCP_PORT/budgeto-test"'`
+* unix computer
+* mongo serveur see [docker](https://github.com/pmpinson/dockerfile), [pre-integration-tests.sh](budgeto-service/src/build/pre-integration-tests.sh) and [post-integration-tests.sh](budgeto-service/src/build/post-integration-tests.sh)
 
 ## project configuration
+default configuration is in classpath.
+
+there is an extra configuration file available : [etc/config.properties](budgeto-service/etc/config.properties)
 for now it's embedded in code but a new external config file will be provided
+
+#### spring section
+* spring.profiles.default : *prod* use of [config-prod.properties file](budgeto-service/src/main/resources/config-prod.properties) (default) or *test* usage of [config-test.properties file](budgeto-service/src/main/resources/config-test.properties) (auto use in unit and it tests)
 
 #### mongo section
 * mongo.srv.host : ip or name of host
@@ -29,14 +32,17 @@ for now it's embedded in code but a new external config file will be provided
 
 ## build info
 #### maven command
-use default maven lifecycle
-integration test map to verify
+use default maven lifecycle :
+* test
+* verify
+* use sonar : sonar after a mvn clean verify to load quality analysis
+
 
 #### sh utils
-* run simply the api on a tomcat : use start-server.sh
-* run in debug mode available : use start-server-dev.sh
-* launch simple site generation with coverage : use coverage.sh
-* launch all site with packaging : allsite.sh 
+* *[start-server.sh]()* : run simply the api on a tomcat
+* *start-server-dev.sh* : run in debug mode available
+* *coverage.sh* : launch simple site generation with coverage
+* *allsite.sh* : launch all site with packaging 
 
 # budgeto-web
 
