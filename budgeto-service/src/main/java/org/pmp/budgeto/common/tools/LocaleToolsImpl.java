@@ -8,7 +8,6 @@ import java.util.Locale;
 /**
  * implementations of the local tool
  */
-// TODO manage multiple language from user preferences
 @Component
 public class LocaleToolsImpl implements LocaleTools {
 
