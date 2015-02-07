@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 public class AccountServiceImpl implements AccountService {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(AccountServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AccountServiceImpl.class);
 
     private final AccountRepository accountRepository;
 
