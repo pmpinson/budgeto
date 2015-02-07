@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintViolation;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -41,7 +42,7 @@ public class DomainToolsImpl implements DomainTools {
     }
 
     private <T> DomainValidationError[] toValidationErrorArray(Set<ConstraintViolation<T>> constraintViolations) {
-        HashMap<String, DomainValidationError> result = new HashMap<>();
+        Map<String, DomainValidationError> result = new HashMap<>();
         for (ConstraintViolation<?> constraintViolation : constraintViolations) {
             String key = DomainValidationError.FIELD_ALL;
             if (StringUtils.isNotBlank(constraintViolation.getPropertyPath().toString())) {
