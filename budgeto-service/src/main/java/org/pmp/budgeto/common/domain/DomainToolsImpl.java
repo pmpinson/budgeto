@@ -63,7 +63,7 @@ public class DomainToolsImpl implements DomainTools {
         boolean res = true;
         if (parentException == null || parentException.getCause() == null || constraintName == null) {
             res = false;
-        } else if (!(parentException.getCause() instanceof DuplicateKeyException) && !parentException.getMessage().contains(constraintName)) {
+        } else if (!(parentException.getCause() instanceof DuplicateKeyException) || !parentException.getMessage().contains(constraintName)) {
             res = false;
         }
         return res;
