@@ -21,7 +21,7 @@ import java.util.Set;
 @Api(value = "Account", description = "Work with accounts")
 public class AccountController {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(AccountController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AccountController.class);
 
     private AccountService accountService;
 
