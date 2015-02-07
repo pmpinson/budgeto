@@ -21,16 +21,9 @@
 		<sonar.jdbc.url>jdbc:mysql://172.31.55.54:9001/sonarqube</sonar.jdbc.url>
 		<sonar.jdbc.username>root</sonar.jdbc.username>
 		<sonar.jdbc.password>mypass</sonar.jdbc.password>
-		
-
-		<!-- test reports -->
-		<!--<unit.tests.result.dir>${project.build.directory}/surefire-reports</unit.tests.result.dir>
-		<integration.tests.result.dir>${project.build.directory}/failsafe-reports</integration.tests.result.dir>
-		<merge.tests.result.dir>${project.build.directory}/tests</merge.tests.result.dir>-->
 
 		<!-- sonar configuration -->
 		<sonar.java.source>${maven.compiler.source}</sonar.java.source>
-		<!--<sonar.junit.reportsPath>${merge.tests.result.dir}</sonar.junit.reportsPath>-->
 		<sonar.jacoco.reportPath>${project.build.directory}/jacoco.exec</sonar.jacoco.reportPath>
 		<sonar.jacoco.itReportPath>${project.build.directory}/jacoco-it.exec</sonar.jacoco.itReportPath>
 	</properties>
@@ -185,31 +178,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
-			<!-- to merge surfire and failsage reports result for sonar -->
-			<!--<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>merge-ut-reports-and-it-reports-for-sonar</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>run</goal>
-						</goals>
-						<configuration>
-							<target>
-								<copy todir="${merge.tests.result.dir}" failonerror="false">
-									<fileset dir="${unit.tests.result.dir}" />
-								</copy>
-								<copy todir="${merge.tests.result.dir}" failonerror="false">
-									<fileset dir="${integration.tests.result.dir}" />
-								</copy>
-							</target>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>-->
 		</plugins>
 	</build>
 
