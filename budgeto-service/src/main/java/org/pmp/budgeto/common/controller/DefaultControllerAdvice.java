@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class DefaultControllerAdvice {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(DefaultControllerAdvice.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultControllerAdvice.class);
     public static final String OK_MSG = "Success";
     public static final int OK_CODE = 200;
     public static final String CREATED_MSG = "Creation success";
