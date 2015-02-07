@@ -54,8 +54,7 @@ public class DomainToolsImpl implements DomainTools {
             result.put(key, new DomainValidationError(key, ArrayUtils.add(errors, constraintViolation.getMessage())));
         }
 
-        final DomainValidationError[] errors = result.values().toArray(new DomainValidationError[]{});
-        return errors;
+        return result.values().toArray(new DomainValidationError[]{});
     }
 
     @Override
