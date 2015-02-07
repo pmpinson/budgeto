@@ -60,10 +60,13 @@ public class DomainToolsImpl implements DomainTools {
 
     @Override
     public boolean isConstraintViolationExceptionFor(DataAccessException parentException, String constraintName) {
-        if (parentException != null && parentException.getCause() != null && parentException.getCause() instanceof DuplicateKeyException && constraintName != null && parentException.getMessage().contains(constraintName)) {
-            return true;
+        boolean res = true;
+        if (parentException == null || parentException.getCause() == null || constraintName == null) {
+            res = false;
+        } else if (!(parentException.getCause() instanceof DuplicateKeyException) && !parentException.getMessage().contains(constraintName)) {
+            res = false;
         }
-        return false;
+        return res;
     }
 
 }
