@@ -13,7 +13,6 @@ public class ValidatorToolsImpl implements ValidatorTools {
 
     @Override
     public <T> Set<ConstraintViolation<T>> validate(final T object) {
-//        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Configuration<?> configuration = Validation.byDefaultProvider().configure();
         ValidatorFactory factory = configuration
                 .messageInterpolator(configuration.getDefaultMessageInterpolator())
