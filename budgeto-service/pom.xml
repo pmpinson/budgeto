@@ -24,13 +24,13 @@
 		
 
 		<!-- test reports -->
-		<unit.tests.result.dir>${project.build.directory}/surefire-reports</unit.tests.result.dir>
+		<!--<unit.tests.result.dir>${project.build.directory}/surefire-reports</unit.tests.result.dir>
 		<integration.tests.result.dir>${project.build.directory}/failsafe-reports</integration.tests.result.dir>
-		<merge.tests.result.dir>${project.build.directory}/tests</merge.tests.result.dir>
+		<merge.tests.result.dir>${project.build.directory}/tests</merge.tests.result.dir>-->
 
 		<!-- sonar configuration -->
 		<sonar.java.source>${maven.compiler.source}</sonar.java.source>
-		<sonar.junit.reportsPath>${merge.tests.result.dir}</sonar.junit.reportsPath>
+		<!--<sonar.junit.reportsPath>${merge.tests.result.dir}</sonar.junit.reportsPath>-->
 		<sonar.jacoco.reportPath>${project.build.directory}/jacoco.exec</sonar.jacoco.reportPath>
 		<sonar.jacoco.itReportPath>${project.build.directory}/jacoco-it.exec</sonar.jacoco.itReportPath>
 	</properties>
@@ -187,7 +187,7 @@
 			</plugin>
 
 			<!-- to merge surfire and failsage reports result for sonar -->
-			<plugin>
+			<!--<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
@@ -209,7 +209,7 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin>-->
 		</plugins>
 	</build>
 
