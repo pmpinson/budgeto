@@ -23,7 +23,7 @@ import java.util.List;
 @Api(value = "Budget", description = "Work with budgets")
 public class BudgetController {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(BudgetController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BudgetController.class);
 
     private BudgetService budgetService;
 
