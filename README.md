@@ -34,15 +34,17 @@ for now it's embedded in code but a new external config file will be provided
 #### maven command
 use default maven lifecycle :
 * test
-* verify
+* verify (launch and stop a mongo db container)
 * use sonar : sonar after a mvn clean verify to load quality analysis
 
 
 #### sh utils
-* *[start-server.sh]()* : run simply the api on a tomcat
-* *start-server-dev.sh* : run in debug mode available
-* *coverage.sh* : launch simple site generation with coverage
-* *allsite.sh* : launch all site with packaging 
+* *[start-server.sh](budgeto-service/src/build/start-server.sh)* : run simply the api on a tomcat
+* *[start-server-dev.sh](budgeto-service/src/build/start-server-dev.sh)* : run in debug mode available
+* *[coverage.sh](budgeto-service/src/build/coverage.sh)* : launch simple site generation with coverage
+* *[allsite.sh](budgeto-service/src/build/allsite.sh)* : launch all site with packaging
+* *[pre-integration-tests.sh](budgeto-service/src/build/pre-integration-tests.sh)* : do stuff for launch it (mongo container start)
+* *[post-integration-tests.sh](budgeto-service/src/build/post-integration-tests.sh)* : launch all site with packaging (mongo container stop)
 
 # budgeto-web
 
