@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 public class BudgetServiceImpl implements BudgetService {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(BudgetServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BudgetServiceImpl.class);
 
     private final BudgetRepository budgetRepository;
 
