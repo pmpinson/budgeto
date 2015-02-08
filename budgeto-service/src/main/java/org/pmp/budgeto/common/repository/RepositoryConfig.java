@@ -1,6 +1,7 @@
 package org.pmp.budgeto.common.repository;
 
 import org.apache.commons.lang3.Validate;
+import org.pmp.budgeto.common.config.ConfigException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -38,14 +39,14 @@ public class RepositoryConfig {
     private MongoTools mongoTools;
 
     @Bean
-    public MongoTemplate mongoTemplate() throws Exception {
+    public MongoTemplate mongoTemplate() throws ConfigException {
         final MongoTemplate mongoTemplate = new MongoTemplate(mongoDbFactory());
         mongoTemplate.setWriteConcernResolver(writeConcernResolver);
         return mongoTemplate;
     }
 
     @Bean
-    public MongoFactoryBean mongoFactoryBean() throws Exception {
+    public MongoFactoryBean mongoFactoryBean() {
         String srvHost = Validate.notNull(environment.getProperty(PROP_SRV_HOST));
         String portValue = environment.getProperty(PROP_SRV_PORT);
         Integer srvPort = portValue == null ? null : Integer.valueOf(portValue);
@@ -54,7 +55,7 @@ public class RepositoryConfig {
     }
 
     @Bean
-    public MongoDbFactory mongoDbFactory() throws Exception {
+    public MongoDbFactory mongoDbFactory() throws ConfigException {
         String dbUser = Validate.notNull(environment.getProperty(PROP_DB_USER));
         String dbPass = Validate.notNull(environment.getProperty(PROP_DB_PASSWORD));
         String dbName = Validate.notNull(environment.getProperty(PROP_DB_NAME));

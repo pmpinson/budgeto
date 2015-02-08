@@ -1,5 +1,6 @@
 package org.pmp.budgeto.common.repository;
 
+import org.pmp.budgeto.common.config.ConfigException;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoFactoryBean;
 
@@ -14,9 +15,8 @@ public interface MongoTools {
      * @param host the adresse of host to search for mongo serveur
      * @param port the port of host to search for mongo serveur (not mandatory)
      * @return factory
-     * @throws Exception
      */
-    MongoFactoryBean mongoFactoryBean(String host, Integer port) throws Exception;
+    MongoFactoryBean mongoFactoryBean(String host, Integer port);
 
     /**
      * create the mongo db factory
@@ -26,8 +26,8 @@ public interface MongoTools {
      * @param dbName           the name of bdd
      * @param mongoFactoryBean the mongo factory server
      * @return the db factory
-     * @throws Exception
+     * @throws ConfigException erreur during config of mongo connection
      */
-    MongoDbFactory mongoDbFactory(String user, String pass, String dbName, MongoFactoryBean mongoFactoryBean) throws Exception;
+    MongoDbFactory mongoDbFactory(String user, String pass, String dbName, MongoFactoryBean mongoFactoryBean) throws ConfigException;
 
 }
