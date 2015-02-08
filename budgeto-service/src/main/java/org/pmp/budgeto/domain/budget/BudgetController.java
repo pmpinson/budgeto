@@ -7,6 +7,7 @@ import com.wordnik.swagger.annotations.ApiResponses;
 import org.apache.commons.lang3.Validate;
 import org.pmp.budgeto.common.controller.ControllerError;
 import org.pmp.budgeto.common.controller.DefaultControllerAdvice;
+import org.pmp.budgeto.common.domain.DomainException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +56,7 @@ public class BudgetController {
             @ApiResponse(code = DefaultControllerAdvice.NOT_FOUND_CODE, message = DefaultControllerAdvice.NOT_FOUND_MSG, response = ControllerError.class),
             @ApiResponse(code = DefaultControllerAdvice.INTER_ERR_CODE, message = DefaultControllerAdvice.INTER_ERR_MSG, response = ControllerError.class)
     })
-    public void add(@RequestBody Budget budget) throws Exception {
+    public void add(@RequestBody Budget budget) throws DomainException {
         LOGGER.info("post add for new budget");
 
         Budget newObject = new Budget().setName(budget.getName()).setNote(budget.getNote());
