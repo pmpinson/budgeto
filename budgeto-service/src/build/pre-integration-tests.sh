@@ -5,22 +5,33 @@
 # ---------------------------------------------------------------------
 #
 
-# start
-docker run -d --name budgeto-mongo-server-autotest -p 27018:27017 mongo
+echo 'see if budgeto-mongo-server-autotest container is started'
+docker inspect --format '{{ .NetworkSettings.IPAddress }}' budgeto-mongo-server-autotest
+
+if [ $? -ne 0 ]; then
+
+    echo 'container not started, start it'
+    docker run -d --name budgeto-mongo-server-autotest -p 27018:27017 mongo
+fi;
+
+# get configuration
 MONGO_ADDRESS=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' budgeto-mongo-server-autotest)
-MONGO_PORT=27018
+MONGO_PORT=27017
 
-# update confi ip / port
-sed -i 's|#mongo.srv.host=?.?.?.?|mongo.srv.host='$MONGO_ADDRESS'|g' etc/config.properties
-sed -i 's|#mongo.srv.port=27017|mongo.srv.port='$MONGO_PORT'|g' etc/config.properties
-
-# wait mongo ready
+echo 'test if mongo available'
 for i in `seq 1 20`;
 do
-        if wget http://$MONGO_ADDRESS:$MONGO_PORT/ ; then
+        wget --delete-after http://$MONGO_ADDRESS:$MONGO_PORT/
+        if [ $? -eq 0 ]; then
+                echo 'mongo available update config'
+                sed -i 's|#mongo.srv.host=?.?.?.?|mongo.srv.host='$MONGO_ADDRESS'|g' etc/config.properties
+                sed -i 's|#mongo.srv.port=27017|mongo.srv.port='$MONGO_PORT'|g' etc/config.properties
+
                 exit 0
         fi;
+        echo 'retry'
         sleep 3
 done
+
+echo 'mongo not available'
 exit 1
-echo "$(date) - end"
