@@ -176,6 +176,19 @@ public class DomainToolsImplTest {
         Assertions.assertThat(res).isEqualTo(true);
     }
 
+    @Test
+    public void isConstraintViolationExceptionFoundConstraintBadException() throws Exception {
+
+        DataAccessException ex = Mockito.mock(DataAccessException.class);
+        NullPointerException dupEx = Mockito.mock(NullPointerException.class);
+        Mockito.when(ex.getCause()).thenReturn(dupEx);
+        Mockito.when(ex.getMessage()).thenReturn("message with myConstraintName that is the error");
+
+        boolean res = serviceTools.isConstraintViolationExceptionFor(ex, "myConstraintName");
+
+        Assertions.assertThat(res).isEqualTo(false);
+    }
+
     @Target(ElementType.TYPE)
     @Retention(RetentionPolicy.RUNTIME)
     @Constraint(validatedBy = CustomValidator.class)

@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.pmp.budgeto.common.config.ConfigException;
 import org.pmp.budgeto.test.TestTools;
 import org.springframework.data.authentication.UserCredentials;
 import org.springframework.data.mongodb.MongoDbFactory;
@@ -33,7 +34,7 @@ public class MongoToolsTest {
     }
 
     @Test
-    public void createMongoFactoryWithNullParam() throws Exception {
+    public void mongoFactoryWithNullParam() throws Exception {
 
         expectedException.expect(NullPointerException.class);
 
@@ -46,7 +47,7 @@ public class MongoToolsTest {
     }
 
     @Test
-    public void createMongoFactoryBeanNullPort() throws Exception {
+    public void mongoFactoryBeanNullPort() throws Exception {
 
         MongoFactoryBean mongoFactoryBean = mongoTools.mongoFactoryBean("192.168.1.127", null);
 
@@ -57,7 +58,7 @@ public class MongoToolsTest {
     }
 
     @Test
-    public void createMongoFactoryBeanWithPort() throws Exception {
+    public void mongoFactoryBeanWithPort() throws Exception {
 
         MongoFactoryBean mongoFactoryBean = mongoTools.mongoFactoryBean("192.168.1.127", 150);
 
@@ -67,7 +68,7 @@ public class MongoToolsTest {
     }
 
     @Test
-    public void createMongoDbFactoryWithNullUser() throws Exception {
+    public void mongoDbFactoryWithNullUser() throws Exception {
 
         MongoFactoryBean mongoFactoryBean = Mockito.mock(MongoFactoryBean.class);
 
@@ -77,7 +78,7 @@ public class MongoToolsTest {
     }
 
     @Test
-    public void createMongoDbFactoryWithNullPassword() throws Exception {
+    public void mongoDbFactoryWithNullPassword() throws Exception {
 
         MongoFactoryBean mongoFactoryBean = Mockito.mock(MongoFactoryBean.class);
 
@@ -87,7 +88,7 @@ public class MongoToolsTest {
     }
 
     @Test
-    public void createMongoDbFactoryWithNullDbName() throws Exception {
+    public void mongoDbFactoryWithNullDbName() throws Exception {
 
         MongoFactoryBean mongoFactoryBean = Mockito.mock(MongoFactoryBean.class);
 
@@ -97,7 +98,7 @@ public class MongoToolsTest {
     }
 
     @Test
-    public void createMongoDbFactoryWithNullFactory() throws Exception {
+    public void mongoDbFactoryWithNullFactory() throws Exception {
 
         MongoFactoryBean mongoFactoryBean = Mockito.mock(MongoFactoryBean.class);
 
@@ -107,7 +108,18 @@ public class MongoToolsTest {
     }
 
     @Test
-    public void createMongoDbFactory() throws Exception {
+    public void mongoDbFactoryException() throws Exception {
+        expectedException.expect(ConfigException.class);
+
+        Mongo mongo = Mockito.mock(Mongo.class);
+        MongoFactoryBean mongoFactoryBean = Mockito.mock(MongoFactoryBean.class);
+        Mockito.when(mongoFactoryBean.getObject()).thenThrow(NullPointerException.class);
+
+        MongoDbFactory mongoDbFactory = mongoTools.mongoDbFactory("user", "pass", "mydb", mongoFactoryBean);
+    }
+
+    @Test
+    public void mongoDbFactory() throws Exception {
 
         Mongo mongo = Mockito.mock(Mongo.class);
         MongoFactoryBean mongoFactoryBean = Mockito.mock(MongoFactoryBean.class);
