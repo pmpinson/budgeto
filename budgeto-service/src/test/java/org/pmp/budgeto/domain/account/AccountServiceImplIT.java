@@ -47,7 +47,7 @@ public class AccountServiceImplIT {
 
         List<Account> objects = accountService.findAll();
 
-        Assertions.assertThat(objects).hasSize(2);
+        Assertions.assertThat(objects).hasSize(3);
         accountHelper.controlAccount1(accountHelper.findByName(objects, "account1"));
         accountHelper.controlAccount2(accountHelper.findByName(objects, "account2"));
     }
@@ -76,7 +76,7 @@ public class AccountServiceImplIT {
 
         Account newObject = accountService.add(object);
 
-        Assertions.assertThat(accountHelper.nbAccounts()).isEqualTo(3);
+        Assertions.assertThat(accountHelper.nbAccounts()).isEqualTo(4);
         Assertions.assertThat(newObject.getName()).isEqualTo("my account to add");
     }
 

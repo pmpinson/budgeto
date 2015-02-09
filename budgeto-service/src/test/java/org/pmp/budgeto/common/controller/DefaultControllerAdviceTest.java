@@ -9,6 +9,7 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.pmp.budgeto.common.domain.DomainConflictException;
 import org.pmp.budgeto.common.domain.DomainException;
+import org.pmp.budgeto.common.domain.DomainNotFoundException;
 import org.pmp.budgeto.common.domain.DomainValidationError;
 import org.pmp.budgeto.common.domain.DomainValidationException;
 import org.pmp.budgeto.common.tools.TranslatorTools;
@@ -59,6 +60,13 @@ public class DefaultControllerAdviceTest {
         Assertions.assertThat(DefaultControllerAdvice.class.getDeclaredMethod("handleException", new Class[]{DomainValidationException.class}).getAnnotation(ResponseBody.class)).isNotNull();
         Assertions.assertThat(DefaultControllerAdvice.class.getDeclaredMethod("handleException", new Class[]{DomainValidationException.class}).getAnnotation(ResponseStatus.class)).isNotNull();
         Assertions.assertThat(DefaultControllerAdvice.class.getDeclaredMethod("handleException", new Class[]{DomainValidationException.class}).getAnnotation(ResponseStatus.class).value()).isEqualTo(HttpStatus.BAD_REQUEST);
+
+        Assertions.assertThat(DefaultControllerAdvice.class.getDeclaredMethod("handleException", new Class[]{DomainNotFoundException.class}).getAnnotations()).hasSize(3);
+        Assertions.assertThat(DefaultControllerAdvice.class.getDeclaredMethod("handleException", new Class[]{DomainNotFoundException.class}).getAnnotation(ExceptionHandler.class)).isNotNull();
+        Assertions.assertThat(DefaultControllerAdvice.class.getDeclaredMethod("handleException", new Class[]{DomainNotFoundException.class}).getAnnotation(ExceptionHandler.class).value()).containsOnly(DomainNotFoundException.class);
+        Assertions.assertThat(DefaultControllerAdvice.class.getDeclaredMethod("handleException", new Class[]{DomainNotFoundException.class}).getAnnotation(ResponseBody.class)).isNotNull();
+        Assertions.assertThat(DefaultControllerAdvice.class.getDeclaredMethod("handleException", new Class[]{DomainNotFoundException.class}).getAnnotation(ResponseStatus.class)).isNotNull();
+        Assertions.assertThat(DefaultControllerAdvice.class.getDeclaredMethod("handleException", new Class[]{DomainNotFoundException.class}).getAnnotation(ResponseStatus.class).value()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @Test
@@ -122,6 +130,22 @@ public class DefaultControllerAdviceTest {
         Assertions.assertThat(error.getException()).isEqualTo("exception message");
         Assertions.assertThat(error.getExceptionType()).isEqualTo(DomainConflictException.class.getSimpleName());
         Assertions.assertThat(error.getValidationErros()).hasSize(1);
+    }
+
+    @Test
+    public void handleDomainNotFoundException() throws Exception {
+
+        DomainNotFoundException e = new DomainNotFoundException("object simple not found");
+        Mockito.when(translatorTools.get("advice.error.notfound")).thenReturn("object not found");
+
+        ControllerError error = defaultControllerAdvice.handleException(e);
+
+        Assertions.assertThat(error).isNotNull();
+        Assertions.assertThat(error.getMessage()).isEqualTo("object not found");
+        Assertions.assertThat(error.getType()).isEqualTo("notfound");
+        Assertions.assertThat(error.getException()).isEqualTo("object simple not found");
+        Assertions.assertThat(error.getExceptionType()).isEqualTo(DomainNotFoundException.class.getSimpleName());
+        Assertions.assertThat(error.getValidationErros()).hasSize(0);
     }
 
 }

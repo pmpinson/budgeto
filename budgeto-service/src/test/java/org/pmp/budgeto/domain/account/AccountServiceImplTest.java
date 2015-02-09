@@ -57,6 +57,7 @@ public class AccountServiceImplTest {
         List<Account> objects = accountService.findAll();
 
         Assertions.assertThat(objects).hasSize(2);
+
         Mockito.verify(accountRepository).findAll();
         Mockito.verifyNoMoreInteractions(accountRepository);
     }
@@ -70,6 +71,9 @@ public class AccountServiceImplTest {
         Account account = accountService.find("accountXXX");
 
         Assertions.assertThat(account).isNull();
+
+        Mockito.verify(accountRepository).findByName("accountXXX");
+        Mockito.verifyNoMoreInteractions(accountRepository);
     }
 
     @Test
@@ -82,6 +86,9 @@ public class AccountServiceImplTest {
 
         Assertions.assertThat(account).isNotNull();
         Assertions.assertThat(account.getName()).isEqualTo("accountYYYY");
+
+        Mockito.verify(accountRepository).findByName("accountYYYY");
+        Mockito.verifyNoMoreInteractions(accountRepository);
     }
 
     @Test

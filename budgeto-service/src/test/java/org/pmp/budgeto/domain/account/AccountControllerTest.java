@@ -5,21 +5,28 @@ import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiResponses;
 import org.assertj.core.api.Assertions;
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
+import org.pmp.budgeto.common.domain.DomainNotFoundException;
+import org.pmp.budgeto.test.TestTools;
+import org.pmp.budgeto.test.config.ITConfig;
+import org.pmp.budgeto.test.config.TestConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -37,7 +44,7 @@ public class AccountControllerTest {
 
     @Before
     public void setup() {
-        accountController = new AccountController(accountService);
+        accountController = new AccountController(accountService, TestConfig.translatorTools);
     }
 
     @Test
@@ -82,7 +89,35 @@ public class AccountControllerTest {
         List<Account> objects = accountController.findAll();
 
         Assertions.assertThat(objects).hasSize(2);
+
         Mockito.verify(accountService).findAll();
+        Mockito.verifyNoMoreInteractions(accountService);
+    }
+
+    @Test
+    public void findNull() throws Exception {
+        expectedException.expect(DomainNotFoundException.class);
+        expectedException.expectMessage("account with name accountXXX not found");
+
+        Account object = new Account().setName("accountYYYY");
+        Mockito.when(accountService.find(Matchers.anyString())).thenReturn(null);
+        Mockito.when(accountService.find("accountYYYY")).thenReturn(object);
+
+        Account account = accountController.find("accountXXX");
+    }
+
+    @Test
+    public void find() throws Exception {
+        Account object = new Account().setName("accountYYYY");
+        Mockito.when(accountService.find(Matchers.anyString())).thenReturn(null);
+        Mockito.when(accountService.find("accountYYYY")).thenReturn(object);
+
+        Account account = accountController.find("accountYYYY");
+
+        Assertions.assertThat(account).isNotNull();
+        Assertions.assertThat(account.getName()).isEqualTo("accountYYYY");
+
+        Mockito.verify(accountService).find("accountYYYY");
         Mockito.verifyNoMoreInteractions(accountService);
     }
 
@@ -101,6 +136,22 @@ public class AccountControllerTest {
         Assertions.assertThat(result).isEqualTo(object);
 
         Mockito.verify(accountService).add(Mockito.any(Account.class));
+        Mockito.verifyNoMoreInteractions(accountService);
+    }
+
+    @Test
+    public void operations() throws Exception {
+        Account object = new Account().setName("accountYYYY").addOperations(new Operation().setLabel("ope1")).addOperations(new Operation().setLabel("op2"));
+        Mockito.when(accountService.find(Matchers.anyString())).thenReturn(null);
+        Mockito.when(accountService.find("accountYYYY")).thenReturn(object);
+
+        Set<Operation> operations = accountController.operations("accountYYYY");
+
+        Assertions.assertThat(operations).isNotNull();
+        Assertions.assertThat(operations).hasSize(2);
+        Assertions.assertThat(operations).extracting("label").contains("ope1", "op2");
+
+        Mockito.verify(accountService).find("accountYYYY");
         Mockito.verifyNoMoreInteractions(accountService);
     }
 

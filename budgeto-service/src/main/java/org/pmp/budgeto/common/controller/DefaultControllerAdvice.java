@@ -3,6 +3,7 @@ package org.pmp.budgeto.common.controller;
 import org.apache.commons.lang3.Validate;
 import org.pmp.budgeto.common.domain.DomainConflictException;
 import org.pmp.budgeto.common.domain.DomainException;
+import org.pmp.budgeto.common.domain.DomainNotFoundException;
 import org.pmp.budgeto.common.domain.DomainValidationException;
 import org.pmp.budgeto.common.tools.TranslatorTools;
 import org.slf4j.Logger;
@@ -67,7 +68,7 @@ public class DefaultControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ControllerError handleException(DomainValidationException e) {
         String msg = translatorTools.get("advice.error.validation");
-        LOGGER.error(msg, e);
+        LOGGER.warn(msg, e);
         return new ControllerError(msg, e);
     }
 
@@ -76,7 +77,16 @@ public class DefaultControllerAdvice {
     @ResponseStatus(HttpStatus.CONFLICT)
     public ControllerError handleException(DomainConflictException e) {
         String msg = translatorTools.get("advice.error.conflict");
-        LOGGER.error(msg, e);
+        LOGGER.warn(msg, e);
+        return new ControllerError(msg, e);
+    }
+
+    @ExceptionHandler(DomainNotFoundException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ControllerError handleException(DomainNotFoundException e) {
+        String msg = translatorTools.get("advice.error.notfound");
+        LOGGER.warn(msg, e);
         return new ControllerError(msg, e);
     }
 

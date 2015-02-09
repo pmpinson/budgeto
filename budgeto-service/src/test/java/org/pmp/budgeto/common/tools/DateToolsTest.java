@@ -20,17 +20,17 @@ public class DateToolsTest {
 
     @Test
     public void toUTCWithOtherTimeZone() {
-        DateTime dateOneWithTimeZone = DateTools.FORMATTER_DATETIME_WITHZONE.parseDateTime("2014/02/26 18:52:26.626 America/Toronto");
+        DateTime dateOneWithTimeZone = DateTools.FORMATTER_DATETIMEMS_WITHZONE.parseDateTime("2014/02/26 18:52:26.626 America/Toronto");
 
-        DateTime dateOneWithGMT = DateTools.FORMATTER_DATETIME_WITHZONE.parseDateTime("2014/02/26 18:52:26.626 UTC");
+        DateTime dateOneWithGMT = DateTools.FORMATTER_DATETIMEMS_WITHZONE.parseDateTime("2014/02/26 18:52:26.626 UTC");
         Assertions.assertThat(DateTools.toUTC(dateOneWithTimeZone)).isEqualTo(dateOneWithGMT);
     }
 
     @Test
     public void toUTCWithGMTTimeZone() {
-        DateTime dateOneWithTimeZone = DateTools.FORMATTER_DATETIME_WITHZONE.parseDateTime("2014/02/26 18:52:26.626 UTC");
+        DateTime dateOneWithTimeZone = DateTools.FORMATTER_DATETIMEMS_WITHZONE.parseDateTime("2014/02/26 18:52:26.626 UTC");
 
-        DateTime dateOneWithGMT = DateTools.FORMATTER_DATETIME_WITHZONE.parseDateTime("2014/02/26 18:52:26.626 UTC");
+        DateTime dateOneWithGMT = DateTools.FORMATTER_DATETIMEMS_WITHZONE.parseDateTime("2014/02/26 18:52:26.626 UTC");
         Assertions.assertThat(DateTools.toUTC(dateOneWithTimeZone)).isEqualTo(dateOneWithGMT);
     }
 
@@ -41,17 +41,17 @@ public class DateToolsTest {
 
     @Test
     public void truncateTimeWithOtherTimeZone() {
-        DateTime dateOneWithTimeZone = DateTools.FORMATTER_DATETIME_WITHZONE.parseDateTime("2014/02/26 18:52:26.626 America/Toronto");
+        DateTime dateOneWithTimeZone = DateTools.FORMATTER_DATETIMEMS_WITHZONE.parseDateTime("2014/02/26 18:52:26.626 America/Toronto");
 
-        DateTime dateOneWithGMT = DateTools.FORMATTER_DATETIME_WITHZONE.parseDateTime("2014/02/26 00:00:00.000 America/Toronto");
+        DateTime dateOneWithGMT = DateTools.FORMATTER_DATETIMEMS_WITHZONE.parseDateTime("2014/02/26 00:00:00.000 America/Toronto");
         Assertions.assertThat(DateTools.truncateTime(dateOneWithTimeZone)).isEqualTo(dateOneWithGMT);
     }
 
     @Test
     public void truncateTimeWithGMTTimeZone() {
-        DateTime dateOneWithTimeZone = DateTools.FORMATTER_DATETIME_WITHZONE.parseDateTime("2014/02/26 18:52:26.626 UTC");
+        DateTime dateOneWithTimeZone = DateTools.FORMATTER_DATETIMEMS_WITHZONE.parseDateTime("2014/02/26 18:52:26.626 UTC");
 
-        DateTime dateOneWithGMT = DateTools.FORMATTER_DATETIME_WITHZONE.parseDateTime("2014/02/26 00:00:00.000 UTC");
+        DateTime dateOneWithGMT = DateTools.FORMATTER_DATETIMEMS_WITHZONE.parseDateTime("2014/02/26 00:00:00.000 UTC");
         Assertions.assertThat(DateTools.truncateTime(dateOneWithTimeZone)).isEqualTo(dateOneWithGMT);
     }
 
