@@ -15,9 +15,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class BudgetServiceImpl implements BudgetService {
+public class BudgetDomainImpl implements BudgetDomain {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BudgetServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BudgetDomainImpl.class);
 
     private final BudgetRepository budgetRepository;
 
@@ -26,7 +26,7 @@ public class BudgetServiceImpl implements BudgetService {
     private final DomainTools domainTools;
 
     @Autowired
-    public BudgetServiceImpl(BudgetRepository budgetRepository, TranslatorTools translatorTools, DomainTools domainTools) {
+    public BudgetDomainImpl(BudgetRepository budgetRepository, TranslatorTools translatorTools, DomainTools domainTools) {
         this.budgetRepository = Validate.notNull(budgetRepository);
         this.translatorTools = Validate.notNull(translatorTools);
         this.domainTools = Validate.notNull(domainTools);

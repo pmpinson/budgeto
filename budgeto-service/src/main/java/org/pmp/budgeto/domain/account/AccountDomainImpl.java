@@ -16,9 +16,9 @@ import java.util.List;
 
 
 @Service
-public class AccountServiceImpl implements AccountService {
+public class AccountDomainImpl implements AccountDomain {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AccountServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AccountDomainImpl.class);
 
     private final AccountRepository accountRepository;
 
@@ -27,7 +27,7 @@ public class AccountServiceImpl implements AccountService {
     private final DomainTools domainTools;
 
     @Autowired
-    public AccountServiceImpl(AccountRepository accountRepository, TranslatorTools translatorTools, DomainTools domainTools) {
+    public AccountDomainImpl(AccountRepository accountRepository, TranslatorTools translatorTools, DomainTools domainTools) {
         this.accountRepository = Validate.notNull(accountRepository);
         this.translatorTools = Validate.notNull(translatorTools);
         this.domainTools = Validate.notNull(domainTools);

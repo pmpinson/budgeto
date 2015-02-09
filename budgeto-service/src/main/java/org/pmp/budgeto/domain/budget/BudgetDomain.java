@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * manager of budget
  */
-public interface BudgetService {
+public interface BudgetDomain {
 
     /**
      * find all budgets

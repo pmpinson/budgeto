@@ -9,6 +9,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ComponentScan(basePackages = "org.pmp.budgeto.common.domain")
-public class ServiceConfig {
+public class DomainConfig {
 
 }

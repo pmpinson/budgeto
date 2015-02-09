@@ -75,8 +75,8 @@ public class SwaggerDispatcherConfigTest {
 
         Assertions.assertThat(swaggerSpringMvcPlugin).isNotNull();
         Assertions.assertThat(TestTools.getField(swaggerSpringMvcPlugin, "springSwaggerConfig", SpringSwaggerConfig.class)).isEqualTo(springSwaggerConfig);
-        Assertions.assertThat(TestTools.getField(swaggerSpringMvcPlugin, "apiInfo", ApiInfo.class).getTitle()).isEqualTo("Budgeto service");
-        Assertions.assertThat(TestTools.getField(swaggerSpringMvcPlugin, "apiInfo", ApiInfo.class).getDescription()).isEqualTo("Rest service for budgeto");
+        Assertions.assertThat(TestTools.getField(swaggerSpringMvcPlugin, "apiInfo", ApiInfo.class).getTitle()).isEqualTo("Budgeto api");
+        Assertions.assertThat(TestTools.getField(swaggerSpringMvcPlugin, "apiInfo", ApiInfo.class).getDescription()).isEqualTo("Rest services for budgeto");
         Assertions.assertThat(TestTools.getField(swaggerSpringMvcPlugin, "apiInfo", ApiInfo.class).getTermsOfServiceUrl()).isEqualTo("");
         Assertions.assertThat(TestTools.getField(swaggerSpringMvcPlugin, "apiInfo", ApiInfo.class).getContact()).isEqualTo("pmpinson@gmail.com");
         Assertions.assertThat(TestTools.getField(swaggerSpringMvcPlugin, "apiInfo", ApiInfo.class).getLicense()).isEqualTo("no");

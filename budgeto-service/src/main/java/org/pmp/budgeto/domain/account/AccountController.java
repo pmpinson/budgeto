@@ -35,13 +35,13 @@ public class AccountController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AccountController.class);
 
-    private AccountService accountService;
+    private AccountDomain accountDomain;
 
     private TranslatorTools translatorTools;
 
     @Autowired
-    public AccountController(AccountService accountService, TranslatorTools translatorTools) {
-        this.accountService = Validate.notNull(accountService);
+    public AccountController(AccountDomain accountDomain, TranslatorTools translatorTools) {
+        this.accountDomain = Validate.notNull(accountDomain);
         this.translatorTools = Validate.notNull(translatorTools);
     }
 
@@ -56,7 +56,7 @@ public class AccountController {
     public List<Account> findAll() {
         LOGGER.info("get all account");
 
-        return accountService.findAll();
+        return accountDomain.findAll();
     }
 
     @RequestMapping(value = "{name}", method = RequestMethod.GET)
@@ -70,7 +70,7 @@ public class AccountController {
     public Account find(@ApiParam(name = "name", required = true, value = "name of account to get operations") @PathVariable String name) throws DomainException {
         LOGGER.info("get account {}", name);
 
-        Account account = accountService.find(name);
+        Account account = accountDomain.find(name);
         if (account == null) {
             throw new DomainNotFoundException(translatorTools.get("account.notexit", name));
         }
@@ -93,7 +93,7 @@ public class AccountController {
 
         Account newObject = new Account().setName(account.getName()).setNote(account.getNote());
 
-        accountService.add(newObject);
+        accountDomain.add(newObject);
     }
 
     @RequestMapping(value = "{name}/operations", method = RequestMethod.GET)

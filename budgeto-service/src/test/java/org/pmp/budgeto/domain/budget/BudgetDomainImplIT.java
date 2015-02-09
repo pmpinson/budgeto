@@ -9,8 +9,8 @@ import org.junit.runner.RunWith;
 import org.pmp.budgeto.common.domain.DomainConflictException;
 import org.pmp.budgeto.common.domain.DomainException;
 import org.pmp.budgeto.test.config.ITConfig;
-import org.pmp.budgeto.test.matcher.ServiceExceptionValidationErrorContentMatcher;
-import org.pmp.budgeto.test.matcher.ServiceExceptionValidationErrorsSizeMatcher;
+import org.pmp.budgeto.test.matcher.DomainExceptionValidationErrorContentMatcher;
+import org.pmp.budgeto.test.matcher.DomainExceptionValidationErrorsSizeMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -22,7 +22,7 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {ITConfig.class, BudgetConfig.class})
 @ActiveProfiles("test")
-public class BudgetServiceImplIT {
+public class BudgetDomainImplIT {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -31,7 +31,7 @@ public class BudgetServiceImplIT {
     private BudgetHelper budgetHelper;
 
     @Autowired
-    private BudgetService budgetService;
+    private BudgetDomain budgetDomain;
 
     @Before
     public void setup() throws Exception {
@@ -42,7 +42,7 @@ public class BudgetServiceImplIT {
     @Test
     public void findAll() throws Exception {
 
-        List<Budget> objects = budgetService.findAll();
+        List<Budget> objects = budgetDomain.findAll();
 
         Assertions.assertThat(objects).hasSize(2);
         budgetHelper.controlBudget1(budgetHelper.findByName(objects, "budget1"));
@@ -54,7 +54,7 @@ public class BudgetServiceImplIT {
 
         Budget object = new Budget().setName("my budget to add");
 
-        Budget newObject = budgetService.add(object);
+        Budget newObject = budgetDomain.add(object);
 
         Assertions.assertThat(budgetHelper.nbBudgets()).isEqualTo(3);
         Assertions.assertThat(newObject.getName()).isEqualTo("my budget to add");
@@ -68,7 +68,7 @@ public class BudgetServiceImplIT {
         expectedException.expect(DomainException.class);
         expectedException.expectMessage("object budget not valid");
 
-        budgetService.add(object);
+        budgetDomain.add(object);
     }
 
     @Test
@@ -78,10 +78,10 @@ public class BudgetServiceImplIT {
 
         expectedException.expect(DomainConflictException.class);
         expectedException.expectMessage("error on a constraint during add of budget");
-        expectedException.expect(new ServiceExceptionValidationErrorsSizeMatcher(1));
-        expectedException.expect(new ServiceExceptionValidationErrorContentMatcher("name", new String[]{"a budget (budget2) already exist with same name"}));
+        expectedException.expect(new DomainExceptionValidationErrorsSizeMatcher(1));
+        expectedException.expect(new DomainExceptionValidationErrorContentMatcher("name", new String[]{"a budget (budget2) already exist with same name"}));
 
-        budgetService.add(object);
+        budgetDomain.add(object);
     }
 
 }

@@ -21,9 +21,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 /**
  * manage exception on app
  * all Exception are unknown and sent 500 response status
- * all ServiceException are domain and sent 500 response status
- * all ServiceValidationException are domain and sent 400 response status
- * all ServiceException are domain and sent 409 response status
+ * all DomainException are domain and sent 500 response status
+ * all DomainValidationException are domain and sent 400 response status
+ * all DomainConflictException are domain and sent 409 response status
+ * all DomainNotFoundException are domain and sent 404 response status
  */
 @ControllerAdvice
 @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

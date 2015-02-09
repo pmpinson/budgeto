@@ -37,7 +37,7 @@ public class DomainToolsImplTest {
     private TranslatorTools translatorTools;
 
     @InjectMocks
-    private DomainToolsImpl serviceTools;
+    private DomainToolsImpl domainTools;
 
     @Before
     public void setup() {
@@ -54,7 +54,7 @@ public class DomainToolsImplTest {
     public void validateNoError() throws Exception {
         MyObjectToValidate object = new MyObjectToValidate("the value for name");
 
-        serviceTools.validate(object, "prop.name");
+        domainTools.validate(object, "prop.name");
     }
 
     @Test
@@ -64,7 +64,7 @@ public class DomainToolsImplTest {
         Mockito.when(translatorTools.get("object.desc")).thenReturn("myobject");
 
         try {
-            serviceTools.validate(null, "object.desc");
+            domainTools.validate(null, "object.desc");
             Assert.fail("Exception must be thrown");
         } catch (NullPointerException e) {
             Assertions.assertThat(e.getMessage()).isEqualTo("the message null");
@@ -88,7 +88,7 @@ public class DomainToolsImplTest {
         Mockito.when(validatorTools.validate(object)).thenReturn(violations);
 
         try {
-            serviceTools.validate(object, "object.desc");
+            domainTools.validate(object, "object.desc");
             Assert.fail("Exception must be thrown");
         } catch (DomainValidationException e) {
             Assertions.assertThat(e.getMessage()).isEqualTo("the message not valid");
@@ -110,7 +110,7 @@ public class DomainToolsImplTest {
 
     @Test
     public void isConstraintViolationExceptionForDataNull() throws Exception {
-        boolean res = serviceTools.isConstraintViolationExceptionFor(null, null);
+        boolean res = domainTools.isConstraintViolationExceptionFor(null, null);
 
         Assertions.assertThat(res).isEqualTo(false);
     }
@@ -120,7 +120,7 @@ public class DomainToolsImplTest {
 
         DataAccessException ex = Mockito.mock(DataAccessException.class);
 
-        boolean res = serviceTools.isConstraintViolationExceptionFor(ex, null);
+        boolean res = domainTools.isConstraintViolationExceptionFor(ex, null);
 
         Assertions.assertThat(res).isEqualTo(false);
     }
@@ -133,7 +133,7 @@ public class DomainToolsImplTest {
         Mockito.when(ex.getCause()).thenReturn(dupEx);
 //        Mockito.when(ex.getMessage()).thenReturn("error on budgetUniqueName");
 
-        boolean res = serviceTools.isConstraintViolationExceptionFor(ex, null);
+        boolean res = domainTools.isConstraintViolationExceptionFor(ex, null);
 
         Assertions.assertThat(res).isEqualTo(false);
     }
@@ -145,7 +145,7 @@ public class DomainToolsImplTest {
         DuplicateKeyException dupEx = Mockito.mock(DuplicateKeyException.class);
         Mockito.when(ex.getCause()).thenReturn(dupEx);
 
-        boolean res = serviceTools.isConstraintViolationExceptionFor(ex, null);
+        boolean res = domainTools.isConstraintViolationExceptionFor(ex, null);
 
         Assertions.assertThat(res).isEqualTo(false);
     }
@@ -158,7 +158,7 @@ public class DomainToolsImplTest {
         Mockito.when(ex.getCause()).thenReturn(dupEx);
         Mockito.when(ex.getMessage()).thenReturn("message with myConstraintName that is the error");
 
-        boolean res = serviceTools.isConstraintViolationExceptionFor(ex, "myConstraintError");
+        boolean res = domainTools.isConstraintViolationExceptionFor(ex, "myConstraintError");
 
         Assertions.assertThat(res).isEqualTo(false);
     }
@@ -171,7 +171,7 @@ public class DomainToolsImplTest {
         Mockito.when(ex.getCause()).thenReturn(dupEx);
         Mockito.when(ex.getMessage()).thenReturn("message with myConstraintName that is the error");
 
-        boolean res = serviceTools.isConstraintViolationExceptionFor(ex, "myConstraintName");
+        boolean res = domainTools.isConstraintViolationExceptionFor(ex, "myConstraintName");
 
         Assertions.assertThat(res).isEqualTo(true);
     }
@@ -184,7 +184,7 @@ public class DomainToolsImplTest {
         Mockito.when(ex.getCause()).thenReturn(dupEx);
         Mockito.when(ex.getMessage()).thenReturn("message with myConstraintName that is the error");
 
-        boolean res = serviceTools.isConstraintViolationExceptionFor(ex, "myConstraintName");
+        boolean res = domainTools.isConstraintViolationExceptionFor(ex, "myConstraintName");
 
         Assertions.assertThat(res).isEqualTo(false);
     }
