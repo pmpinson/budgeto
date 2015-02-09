@@ -69,10 +69,6 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
         enc.setEncoding(ENCODING);
         servletContext.addFilter(ENCODING_FILTER_NAME, enc).addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), false, ENCODING_FILTER_MAPPING);
 
-        String allowOrigin = webApplicationContext.getEnvironment().getProperty(ALLOW_ORIGIN);
-        //test in app and if ok test to null, it zith spring ?
-        //CorsFilter cors = new CorsFilter(allowOrigin);
-        //servletContext.addFilter("cors", cors).addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), false, ENCODING_FILTER_MAPPING);
         DelegatingFilterProxy corsProxy = new DelegatingFilterProxy();
         servletContext.addFilter("cors", corsProxy).addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), false, ENCODING_FILTER_MAPPING);
     }
