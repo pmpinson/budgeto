@@ -9,6 +9,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 import org.pmp.budgeto.common.controller.ControllerDispatcherConfig;
+import org.pmp.budgeto.common.controller.CorsFilter;
 import org.pmp.budgeto.domain.account.AccountConfig;
 import org.pmp.budgeto.domain.budget.BudgetConfig;
 import org.pmp.budgeto.test.TestTools;
@@ -20,6 +21,8 @@ import javax.servlet.Filter;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration.Dynamic;
 import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -27,8 +30,6 @@ public class WebAppInitializerTest {
 
     @InjectMocks
     private WebAppInitializer webAppInitializer;
-
-    private Filter filter;
 
     @Test
     public void structure() throws Exception {
@@ -78,29 +79,47 @@ public class WebAppInitializerTest {
         Mockito.doNothing().when(servlet).setAsyncSupported(true);
         // encoding filter
         final javax.servlet.FilterRegistration.Dynamic characterEncodingFilter = Mockito.mock(javax.servlet.FilterRegistration.Dynamic.class);
-        Mockito.when(servletContext.addFilter(Mockito.eq("characterEncoding"), Mockito.any(Filter.class))).then(new Answer<javax.servlet.FilterRegistration.Dynamic>() {
-            public javax.servlet.FilterRegistration.Dynamic answer(InvocationOnMock invocation) throws Throwable {
-                filter = (Filter) invocation.getArguments()[1];
-                return characterEncodingFilter;
-            }
-        });
+        FilterAnswer characterEncodingFilterAnswer = new FilterAnswer();
+        characterEncodingFilterAnswer.filterToReturn = characterEncodingFilter;
+        Mockito.when(servletContext.addFilter(Mockito.eq("characterEncoding"), Mockito.any(Filter.class))).then(characterEncodingFilterAnswer);
         Mockito.doNothing().when(characterEncodingFilter).addMappingForUrlPatterns(Mockito.any(EnumSet.class), Mockito.anyBoolean(), Mockito.eq("/*"));
+
         // cors filter
         final javax.servlet.FilterRegistration.Dynamic corsFilter = Mockito.mock(javax.servlet.FilterRegistration.Dynamic.class);
-        Mockito.when(servletContext.addFilter(Mockito.eq("cors"), Mockito.any(Filter.class))).thenReturn(corsFilter);
+        FilterAnswer corsFilterAnswer = new FilterAnswer();
+        corsFilterAnswer.filterToReturn = corsFilter;
+        Mockito.when(servletContext.addFilter(Mockito.eq("cors"), Mockito.any(Filter.class))).then(corsFilterAnswer);
         Mockito.doNothing().when(corsFilter).addMappingForUrlPatterns(Mockito.any(EnumSet.class), Mockito.anyBoolean(), Mockito.eq("/*"));
 
         webAppInitializer.onStartup(servletContext);
 
-        Assertions.assertThat(filter).isNotNull();
-        Assertions.assertThat(filter).isInstanceOf(CharacterEncodingFilter.class);
-        Assertions.assertThat(TestTools.getField(filter, "encoding", String.class)).isEqualTo("UTF-8");
+        Assertions.assertThat(characterEncodingFilterAnswer.filter).isNotNull();
+        Assertions.assertThat(characterEncodingFilterAnswer.filter).isInstanceOf(CharacterEncodingFilter.class);
+        Assertions.assertThat(TestTools.getField(characterEncodingFilterAnswer.filter, "encoding", String.class)).isEqualTo("UTF-8");
+
+        Assertions.assertThat(corsFilterAnswer.filter).isNotNull();
+        Assertions.assertThat(corsFilterAnswer.filter).isInstanceOf(CorsFilter.class);
+        Assertions.assertThat(TestTools.getField(corsFilterAnswer.filter, "allowOrigin", String.class)).isEqualTo("*");
+
         Mockito.verify(servletContext).addServlet(Mockito.anyString(), Mockito.any(DispatcherServlet.class));
         Mockito.verify(servlet).setLoadOnStartup(1);
         Mockito.verify(servlet).addMapping(new String[]{"/*"});
         Mockito.verify(servlet).setAsyncSupported(true);
-        Mockito.verify(servletContext).addFilter("characterEncoding", filter);
+        Mockito.verify(servletContext).addFilter("characterEncoding", characterEncodingFilterAnswer.filter);
+        Mockito.verify(servletContext).addFilter("cors", corsFilterAnswer.filter);
         Mockito.verify(characterEncodingFilter).addMappingForUrlPatterns(Mockito.any(EnumSet.class), Mockito.anyBoolean(), Mockito.eq("/*"));
         Mockito.verify(corsFilter).addMappingForUrlPatterns(Mockito.any(EnumSet.class), Mockito.anyBoolean(), Mockito.eq("/*"));
+    }
+
+    private static class FilterAnswer implements Answer<javax.servlet.FilterRegistration.Dynamic> {
+
+        Filter filter;
+
+        javax.servlet.FilterRegistration.Dynamic filterToReturn;
+
+        public javax.servlet.FilterRegistration.Dynamic answer(InvocationOnMock invocation) throws Throwable {
+            filter = (Filter) invocation.getArguments()[1];
+            return filterToReturn;
+        }
     }
 }
