@@ -4,11 +4,7 @@ import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
-import org.pmp.budgeto.common.domain.DomainConflictException;
-import org.pmp.budgeto.common.domain.DomainException;
-import org.pmp.budgeto.common.domain.DomainNotFoundException;
 import org.pmp.budgeto.common.domain.DomainValidationError;
-import org.pmp.budgeto.common.domain.DomainValidationException;
 
 /**
  * dto to give when an error occur in app

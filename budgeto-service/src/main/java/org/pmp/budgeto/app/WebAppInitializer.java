@@ -1,14 +1,10 @@
 package org.pmp.budgeto.app;
 
 import org.pmp.budgeto.common.controller.ControllerDispatcherConfig;
-import org.pmp.budgeto.common.controller.CorsFilter;
 import org.pmp.budgeto.domain.account.AccountConfig;
 import org.pmp.budgeto.domain.budget.BudgetConfig;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.RequestContextListener;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;

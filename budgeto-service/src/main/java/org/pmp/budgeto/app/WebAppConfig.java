@@ -6,7 +6,6 @@ import org.pmp.budgeto.common.domain.ServiceConfig;
 import org.pmp.budgeto.common.repository.RepositoryConfig;
 import org.pmp.budgeto.common.tools.ToolsConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -28,7 +27,7 @@ public class WebAppConfig {
     @Bean
     public CorsFilter cors() {
         String allowOrigin = null;
-        if (environment.containsProperty(PROP_ALLOW_ORIGIN)){
+        if (environment.containsProperty(PROP_ALLOW_ORIGIN)) {
             allowOrigin = environment.getProperty(PROP_ALLOW_ORIGIN);
         }
         return new CorsFilter(allowOrigin);

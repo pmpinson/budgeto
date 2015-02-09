@@ -5,7 +5,6 @@ import org.apache.commons.lang3.Validate;
 import org.pmp.budgeto.common.domain.DomainConflictException;
 import org.pmp.budgeto.common.domain.DomainException;
 import org.pmp.budgeto.common.domain.DomainNotFoundException;
-import org.pmp.budgeto.common.domain.DomainValidationError;
 import org.pmp.budgeto.common.domain.DomainValidationException;
 import org.pmp.budgeto.common.tools.TranslatorTools;
 import org.slf4j.Logger;
@@ -13,7 +12,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * manage exception on app
@@ -26,7 +29,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class DefaultControllerAdvice {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultControllerAdvice.class);
     public static final String OK_MSG = "Success";
     public static final int OK_CODE = 200;
     public static final String CREATED_MSG = "Creation success";
@@ -39,7 +41,7 @@ public class DefaultControllerAdvice {
     public static final int CONFLICT_CODE = 409;
     public static final String NOT_FOUND_MSG = "Request not found";
     public static final int NOT_FOUND_CODE = 404;
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultControllerAdvice.class);
     private TranslatorTools translatorTools;
 
     @Autowired
