@@ -31,33 +31,20 @@ public class ControllerError {
     @ApiModelProperty(value = "validationErros", notes = "list of validation errors")
     private final DomainValidationError[] validationErros;
 
-    public ControllerError(String message, Exception exception) {
+    public ControllerError(String type, String message, Exception exception) {
+        this.type = Validate.notNull(type);
         this.message = Validate.notNull(message);
         this.exception = Validate.notNull(exception).getMessage();
         this.exceptionType = Validate.notNull(exception).getClass().getSimpleName();
+        this.validationErros = new DomainValidationError[]{};
+    }
 
-        // manage the type by the class of exception
-        if (exception instanceof DomainException) {
-            if (exception instanceof DomainValidationException) {
-                this.type = "validation";
-                DomainValidationException s = (DomainValidationException) exception;
-                validationErros = s.getConstraintViolations();
-            } else if (exception instanceof DomainConflictException) {
-                this.type = "conflict";
-                DomainConflictException s = (DomainConflictException) exception;
-                validationErros = ArrayUtils.toArray(s.getConstraintViolations());
-            } else if (exception instanceof DomainNotFoundException) {
-                this.type = "notfound";
-                DomainNotFoundException s = (DomainNotFoundException) exception;
-                validationErros = new DomainValidationError[]{};
-            } else {
-                this.type = "server";
-                validationErros = new DomainValidationError[]{};
-            }
-        } else {
-            this.type = "unknown";
-            validationErros = new DomainValidationError[]{};
-        }
+    public ControllerError(String type, String message, Exception exception, DomainValidationError[] validationErros) {
+        this.type = Validate.notNull(type);
+        this.message = Validate.notNull(message);
+        this.exception = Validate.notNull(exception).getMessage();
+        this.exceptionType = Validate.notNull(exception).getClass().getSimpleName();
+        this.validationErros = Validate.notNull(validationErros);
     }
 
     public String getMessage() {

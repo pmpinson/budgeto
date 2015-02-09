@@ -1,9 +1,11 @@
 package org.pmp.budgeto.common.controller;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
 import org.pmp.budgeto.common.domain.DomainConflictException;
 import org.pmp.budgeto.common.domain.DomainException;
 import org.pmp.budgeto.common.domain.DomainNotFoundException;
+import org.pmp.budgeto.common.domain.DomainValidationError;
 import org.pmp.budgeto.common.domain.DomainValidationException;
 import org.pmp.budgeto.common.tools.TranslatorTools;
 import org.slf4j.Logger;
@@ -51,7 +53,7 @@ public class DefaultControllerAdvice {
     public ControllerError handleException(Exception e) {
         String msg = translatorTools.get("advice.error.unknown");
         LOGGER.error(msg, e);
-        return new ControllerError(msg, e);
+        return new ControllerError("unknown", msg, e);
     }
 
     @ExceptionHandler(DomainException.class)
@@ -60,7 +62,7 @@ public class DefaultControllerAdvice {
     public ControllerError handleException(DomainException e) {
         String msg = translatorTools.get("advice.error.domain");
         LOGGER.error(msg, e);
-        return new ControllerError(msg, e);
+        return new ControllerError("server", msg, e);
     }
 
     @ExceptionHandler(DomainValidationException.class)
@@ -69,7 +71,7 @@ public class DefaultControllerAdvice {
     public ControllerError handleException(DomainValidationException e) {
         String msg = translatorTools.get("advice.error.validation");
         LOGGER.warn(msg, e);
-        return new ControllerError(msg, e);
+        return new ControllerError("validation", msg, e, e.getConstraintViolations());
     }
 
     @ExceptionHandler(DomainConflictException.class)
@@ -78,7 +80,7 @@ public class DefaultControllerAdvice {
     public ControllerError handleException(DomainConflictException e) {
         String msg = translatorTools.get("advice.error.conflict");
         LOGGER.warn(msg, e);
-        return new ControllerError(msg, e);
+        return new ControllerError("conflict", msg, e, ArrayUtils.toArray(e.getConstraintViolations()));
     }
 
     @ExceptionHandler(DomainNotFoundException.class)
@@ -87,7 +89,7 @@ public class DefaultControllerAdvice {
     public ControllerError handleException(DomainNotFoundException e) {
         String msg = translatorTools.get("advice.error.notfound");
         LOGGER.warn(msg, e);
-        return new ControllerError(msg, e);
+        return new ControllerError("notfound", msg, e);
     }
 
 }

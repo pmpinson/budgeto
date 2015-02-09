@@ -16,81 +16,93 @@ public class ControllerErrorTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     @Test
-    public void withNullParamMsg() throws Exception {
+    public void noErrorsWithNullParamsType() throws Exception {
 
         expectedException.expect(NullPointerException.class);
 
-        ControllerError error = new ControllerError(null, null);
+        ControllerError error = new ControllerError(null, null, null);
     }
 
     @Test
-    public void withNullParamEx() throws Exception {
+    public void noErrorsWithNullParamMessage() throws Exception {
 
         expectedException.expect(NullPointerException.class);
 
-        ControllerError error = new ControllerError("", null);
+        ControllerError error = new ControllerError("mytype", null, null);
     }
 
     @Test
-    public void withParamException() throws Exception {
+    public void noErrorsWithNullException() throws Exception {
 
-        ControllerError error = new ControllerError("the message", new NullPointerException());
+        expectedException.expect(NullPointerException.class);
+
+        ControllerError error = new ControllerError("mytype", "the message", null);
+    }
+
+    @Test
+    public void noErrorsNormal() throws Exception {
+
+        ControllerError error = new ControllerError("mytype", "the message", new NullPointerException());
 
         Assertions.assertThat(error.getMessage()).isEqualTo("the message");
-        Assertions.assertThat(error.getType()).isEqualTo("unknown");
+        Assertions.assertThat(error.getType()).isEqualTo("mytype");
         Assertions.assertThat(error.getException()).isNull();
         Assertions.assertThat(error.getExceptionType()).isEqualTo(NullPointerException.class.getSimpleName());
         Assertions.assertThat(error.getValidationErros()).hasSize(0);
     }
 
-    @Test
-    public void withParamExceptionWithMessage() throws Exception {
 
-        ControllerError error = new ControllerError("the message", new NullPointerException("an error"));
+
+
+
+
+
+
+
+
+
+
+    @Test
+    public void withErrorsWithNullParamsType() throws Exception {
+
+        expectedException.expect(NullPointerException.class);
+
+        ControllerError error = new ControllerError(null, null, null, null);
+    }
+
+    @Test
+    public void withErrorsWithNullParamMessage() throws Exception {
+
+        expectedException.expect(NullPointerException.class);
+
+        ControllerError error = new ControllerError("mytype", null, null, null);
+    }
+
+    @Test
+    public void withErrorsWithNullException() throws Exception {
+
+        expectedException.expect(NullPointerException.class);
+
+        ControllerError error = new ControllerError("mytype", "the message", null, null);
+    }
+
+    @Test
+    public void withErrorsWithNullValidationErrors() throws Exception {
+
+        expectedException.expect(NullPointerException.class);
+
+        ControllerError error = new ControllerError("mytype", "the message", new NullPointerException(), null);
+    }
+
+    @Test
+    public void withErrorsNormal() throws Exception {
+
+        ControllerError error = new ControllerError("mytype", "the message", new NullPointerException(), new DomainValidationException("an error", new DomainValidationError("fieldName", "required")).getConstraintViolations());
 
         Assertions.assertThat(error.getMessage()).isEqualTo("the message");
-        Assertions.assertThat(error.getType()).isEqualTo("unknown");
-        Assertions.assertThat(error.getException()).isEqualTo("an error");
+        Assertions.assertThat(error.getType()).isEqualTo("mytype");
+        Assertions.assertThat(error.getException()).isNull();
         Assertions.assertThat(error.getExceptionType()).isEqualTo(NullPointerException.class.getSimpleName());
-        Assertions.assertThat(error.getValidationErros()).hasSize(0);
-    }
-
-    @Test
-    public void withParamServiceException() throws Exception {
-
-        ControllerError error = new ControllerError("the domain ex message", new DomainException("an error"));
-
-
-        Assertions.assertThat(error.getMessage()).isEqualTo("the domain ex message");
-        Assertions.assertThat(error.getType()).isEqualTo("server");
-        Assertions.assertThat(error.getException()).isEqualTo("an error");
-        Assertions.assertThat(error.getExceptionType()).isEqualTo(DomainException.class.getSimpleName());
-        Assertions.assertThat(error.getValidationErros()).hasSize(0);
-    }
-
-    @Test
-    public void withParamServiceValidationException() throws Exception {
-
-        ControllerError error = new ControllerError("the domain message", new DomainValidationException("an error", new DomainValidationError("fieldName", "required")));
-
-
-        Assertions.assertThat(error.getMessage()).isEqualTo("the domain message");
-        Assertions.assertThat(error.getType()).isEqualTo("validation");
-        Assertions.assertThat(error.getException()).isEqualTo("an error");
-        Assertions.assertThat(error.getExceptionType()).isEqualTo(DomainValidationException.class.getSimpleName());
-        Assertions.assertThat(error.getValidationErros()).hasSize(1);
-    }
-
-    @Test
-    public void withParamServiceConflictException() throws Exception {
-
-        ControllerError error = new ControllerError("the conflict message", new DomainConflictException("an error", new DomainValidationError("fieldName", "required")));
-
-
-        Assertions.assertThat(error.getMessage()).isEqualTo("the conflict message");
-        Assertions.assertThat(error.getType()).isEqualTo("conflict");
-        Assertions.assertThat(error.getException()).isEqualTo("an error");
-        Assertions.assertThat(error.getExceptionType()).isEqualTo(DomainConflictException.class.getSimpleName());
         Assertions.assertThat(error.getValidationErros()).hasSize(1);
     }
 
