@@ -8,9 +8,7 @@ import java.util.Map;
 
 public class CorsFilter implements Filter {
 
-    public static final String ALLOW_ALL_ORIGIN = "*";
-
-    private String allowOrigin = ALLOW_ALL_ORIGIN;
+    private String allowOrigin;
 
     public CorsFilter(String allowOrigin) {
         this.allowOrigin = allowOrigin;

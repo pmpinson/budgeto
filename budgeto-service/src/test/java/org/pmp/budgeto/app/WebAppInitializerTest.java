@@ -14,6 +14,7 @@ import org.pmp.budgeto.domain.account.AccountConfig;
 import org.pmp.budgeto.domain.budget.BudgetConfig;
 import org.pmp.budgeto.test.TestTools;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
@@ -98,8 +99,8 @@ public class WebAppInitializerTest {
         Assertions.assertThat(TestTools.getField(characterEncodingFilterAnswer.filter, "encoding", String.class)).isEqualTo("UTF-8");
 
         Assertions.assertThat(corsFilterAnswer.filter).isNotNull();
-        Assertions.assertThat(corsFilterAnswer.filter).isInstanceOf(CorsFilter.class);
-        Assertions.assertThat(TestTools.getField(corsFilterAnswer.filter, "allowOrigin", String.class)).isEqualTo("*");
+        Assertions.assertThat(corsFilterAnswer.filter).isInstanceOf(DelegatingFilterProxy.class);
+        //Assertions.assertThat(TestTools.getField(corsFilterAnswer.filter, "allowOrigin", String.class)).isEqualTo("*");
 
         Mockito.verify(servletContext).addServlet(Mockito.anyString(), Mockito.any(DispatcherServlet.class));
         Mockito.verify(servlet).setLoadOnStartup(1);

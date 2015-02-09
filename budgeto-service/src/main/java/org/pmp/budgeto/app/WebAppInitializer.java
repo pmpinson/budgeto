@@ -10,6 +10,7 @@ import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import javax.servlet.DispatcherType;
@@ -68,13 +69,15 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
         super.onStartup(servletContext);
         servletContext.addListener(new RequestContextListener());
 
-        final CharacterEncodingFilter enc = new CharacterEncodingFilter();
+        CharacterEncodingFilter enc = new CharacterEncodingFilter();
         enc.setEncoding(ENCODING);
         servletContext.addFilter(ENCODING_FILTER_NAME, enc).addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), false, ENCODING_FILTER_MAPPING);
 
         String allowOrigin = webApplicationContext.getEnvironment().getProperty(ALLOW_ORIGIN);
         //test in app and if ok test to null, it zith spring ?
-        final CorsFilter cors = new CorsFilter(allowOrigin);
-        servletContext.addFilter("cors", cors).addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), false, ENCODING_FILTER_MAPPING);
+        //CorsFilter cors = new CorsFilter(allowOrigin);
+        //servletContext.addFilter("cors", cors).addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), false, ENCODING_FILTER_MAPPING);
+        DelegatingFilterProxy corsProxy = new DelegatingFilterProxy();
+        servletContext.addFilter("cors", corsProxy).addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), false, ENCODING_FILTER_MAPPING);
     }
 }
