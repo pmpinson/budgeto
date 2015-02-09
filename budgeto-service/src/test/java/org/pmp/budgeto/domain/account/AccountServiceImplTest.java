@@ -8,6 +8,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -56,7 +57,37 @@ public class AccountServiceImplTest {
         List<Account> objects = accountService.findAll();
 
         Assertions.assertThat(objects).hasSize(2);
+
         Mockito.verify(accountRepository).findAll();
+        Mockito.verifyNoMoreInteractions(accountRepository);
+    }
+
+    @Test
+    public void findNull() throws Exception {
+        Account object = new Account().setName("accountYYYY");
+        Mockito.when(accountRepository.findByName(Matchers.anyString())).thenReturn(null);
+        Mockito.when(accountRepository.findByName("accountYYYY")).thenReturn(object);
+
+        Account account = accountService.find("accountXXX");
+
+        Assertions.assertThat(account).isNull();
+
+        Mockito.verify(accountRepository).findByName("accountXXX");
+        Mockito.verifyNoMoreInteractions(accountRepository);
+    }
+
+    @Test
+    public void find() throws Exception {
+        Account object = new Account().setName("accountYYYY");
+        Mockito.when(accountRepository.findByName(Matchers.anyString())).thenReturn(null);
+        Mockito.when(accountRepository.findByName("accountYYYY")).thenReturn(object);
+
+        Account account = accountService.find("accountYYYY");
+
+        Assertions.assertThat(account).isNotNull();
+        Assertions.assertThat(account.getName()).isEqualTo("accountYYYY");
+
+        Mockito.verify(accountRepository).findByName("accountYYYY");
         Mockito.verifyNoMoreInteractions(accountRepository);
     }
 

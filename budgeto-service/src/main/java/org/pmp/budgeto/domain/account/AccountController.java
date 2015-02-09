@@ -5,6 +5,8 @@ import org.apache.commons.lang3.Validate;
 import org.pmp.budgeto.common.controller.ControllerError;
 import org.pmp.budgeto.common.controller.DefaultControllerAdvice;
 import org.pmp.budgeto.common.domain.DomainException;
+import org.pmp.budgeto.common.domain.DomainNotFoundException;
+import org.pmp.budgeto.common.tools.TranslatorTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +28,12 @@ public class AccountController {
 
     private AccountService accountService;
 
+    private TranslatorTools translatorTools;
+
     @Autowired
-    public AccountController(AccountService accountService) {
+    public AccountController(AccountService accountService, TranslatorTools translatorTools) {
         this.accountService = Validate.notNull(accountService);
+        this.translatorTools = Validate.notNull(translatorTools);
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
@@ -41,7 +46,27 @@ public class AccountController {
     })
     public List<Account> findAll() {
         LOGGER.info("get all account");
+
         return accountService.findAll();
+    }
+
+    @RequestMapping(value = "{name}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Retrieve an account by it name", notes = "No")
+    @ApiResponses({
+            @ApiResponse(code = DefaultControllerAdvice.OK_CODE, message = DefaultControllerAdvice.OK_MSG),
+            @ApiResponse(code = DefaultControllerAdvice.NOT_FOUND_CODE, message = DefaultControllerAdvice.NOT_FOUND_MSG, response = ControllerError.class),
+            @ApiResponse(code = DefaultControllerAdvice.INTER_ERR_CODE, message = DefaultControllerAdvice.INTER_ERR_MSG, response = ControllerError.class)
+    })
+    public Account find(@ApiParam(name = "name", required = true, value = "name of account to get operations") @PathVariable String name) throws DomainException {
+        LOGGER.info("get account {}", name);
+
+        Account account = accountService.find(name);
+        if (account == null) {
+            throw new DomainNotFoundException(translatorTools.get("account.notexit", name));
+        }
+
+        return account;
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
@@ -70,11 +95,11 @@ public class AccountController {
             @ApiResponse(code = DefaultControllerAdvice.NOT_FOUND_CODE, message = DefaultControllerAdvice.NOT_FOUND_MSG, response = ControllerError.class),
             @ApiResponse(code = DefaultControllerAdvice.INTER_ERR_CODE, message = DefaultControllerAdvice.INTER_ERR_MSG, response = ControllerError.class)
     })
-    public Set<Operation> find(@ApiParam(name = "name", required = true, value = "name of account to get operations") @PathVariable String name) {
-        LOGGER.info("get account {}", name);
-        Account account = accountService.find(name);
+    public Set<Operation> operations(@ApiParam(name = "name", required = true, value = "name of account to get operations") @PathVariable String name) throws DomainException {
+        LOGGER.info("get operations {}", name);
 
-        // to do verif account found (exception mapped sur 404)
+        Account account = find(name);
+
         return account.getOperations();
     }
 

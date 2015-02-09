@@ -6,6 +6,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
 import org.pmp.budgeto.common.domain.DomainConflictException;
 import org.pmp.budgeto.common.domain.DomainException;
+import org.pmp.budgeto.common.domain.DomainNotFoundException;
 import org.pmp.budgeto.common.domain.DomainValidationError;
 import org.pmp.budgeto.common.domain.DomainValidationException;
 
@@ -45,6 +46,10 @@ public class ControllerError {
                 this.type = "conflict";
                 DomainConflictException s = (DomainConflictException) exception;
                 validationErros = ArrayUtils.toArray(s.getConstraintViolations());
+            } else if (exception instanceof DomainNotFoundException) {
+                this.type = "notfound";
+                DomainNotFoundException s = (DomainNotFoundException) exception;
+                validationErros = new DomainValidationError[]{};
             } else {
                 this.type = "server";
                 validationErros = new DomainValidationError[]{};

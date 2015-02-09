@@ -1,6 +1,7 @@
 package org.pmp.budgeto.domain.budget;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,8 +48,11 @@ public class BudgetControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType("application/json;charset=UTF-8"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.*", Matchers.hasSize(2)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.name=='budget1')].name").value("budget1"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.name=='budget2')].name").value("budget2"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.name=='budget1')].note").value("a note on first"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.name=='budget2')].name").value("budget2"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.name=='budget2')].note").value("a note on second"));
     }
 
     @Test

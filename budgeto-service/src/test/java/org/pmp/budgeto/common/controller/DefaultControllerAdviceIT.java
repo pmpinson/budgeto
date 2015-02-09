@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.pmp.budgeto.common.domain.DomainConflictException;
 import org.pmp.budgeto.common.domain.DomainException;
+import org.pmp.budgeto.common.domain.DomainNotFoundException;
 import org.pmp.budgeto.common.domain.DomainValidationError;
 import org.pmp.budgeto.common.domain.DomainValidationException;
 import org.pmp.budgeto.domain.account.Account;
@@ -62,10 +63,10 @@ public class DefaultControllerAdviceIT {
     }
 
     @Test
-    public void handleServiceException() throws Exception {
+    public void handleDomainException() throws Exception {
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                .get("/defaultControllerAdviceTestController/domainexception").accept("application/json;charset=UTF-8"))
+                .get("/defaultControllerAdviceTestController/domainException").accept("application/json;charset=UTF-8"))
                 .andExpect(MockMvcResultMatchers.status().isInternalServerError())
                 .andExpect(MockMvcResultMatchers.content().contentType("application/json;charset=UTF-8"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Domain Error"))
@@ -77,10 +78,10 @@ public class DefaultControllerAdviceIT {
     }
 
     @Test
-    public void handleServiceValidationException() throws Exception {
+    public void handleDomainValidationException() throws Exception {
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                .get("/defaultControllerAdviceTestController/domainvalidationexception").accept("application/json;charset=UTF-8"))
+                .get("/defaultControllerAdviceTestController/domainValidationException").accept("application/json;charset=UTF-8"))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andExpect(MockMvcResultMatchers.content().contentType("application/json;charset=UTF-8"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Validation Error"))
@@ -100,10 +101,10 @@ public class DefaultControllerAdviceIT {
     }
 
     @Test
-    public void handleServiceConflictException() throws Exception {
+    public void handleDomainConflictException() throws Exception {
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                .get("/defaultControllerAdviceTestController/domainconflictexception").accept("application/json;charset=UTF-8"))
+                .get("/defaultControllerAdviceTestController/domainConflictException").accept("application/json;charset=UTF-8"))
                 .andExpect(MockMvcResultMatchers.status().isConflict())
                 .andExpect(MockMvcResultMatchers.content().contentType("application/json;charset=UTF-8"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Conflict error"))
@@ -118,6 +119,21 @@ public class DefaultControllerAdviceIT {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.validationErros[0].errors", Matchers.contains("a conflict")));
     }
 
+    @Test
+    public void handleDomainNoFoundException() throws Exception {
+
+        this.mockMvc.perform(MockMvcRequestBuilders
+                .get("/defaultControllerAdviceTestController/domainNotFoundException").accept("application/json;charset=UTF-8"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json;charset=UTF-8"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Entity not found"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.type").value("notfound"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.exception").value("msg of not found"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.exceptionType").value("DomainNotFoundException"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.validationErros").isArray())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.validationErros", Matchers.hasSize(0)));
+    }
+
     @RestController
     @RequestMapping(value = "defaultControllerAdviceTestController")
     public static class DefaultControllerAdviceTestController {
@@ -128,22 +144,28 @@ public class DefaultControllerAdviceIT {
             throw new NullPointerException("msg of null objet");
         }
 
-        @RequestMapping(value = "domainexception", method = RequestMethod.GET)
+        @RequestMapping(value = "domainException", method = RequestMethod.GET)
         @ResponseStatus(HttpStatus.OK)
-        public List<Account> domainexception() throws Exception {
+        public List<Account> domainException() throws Exception {
             throw new DomainException("msg of domain error");
         }
 
-        @RequestMapping(value = "domainvalidationexception", method = RequestMethod.GET)
+        @RequestMapping(value = "domainValidationException", method = RequestMethod.GET)
         @ResponseStatus(HttpStatus.OK)
-        public List<Account> domainvalidationexception() throws Exception {
+        public List<Account> domainValidationException() throws Exception {
             throw new DomainValidationException("msg of domain validation error", new DomainValidationError("firstField", "may not be empty", "may have 2 values"), new DomainValidationError("secondField", "may not be null"));
         }
 
-        @RequestMapping(value = "domainconflictexception", method = RequestMethod.GET)
+        @RequestMapping(value = "domainConflictException", method = RequestMethod.GET)
         @ResponseStatus(HttpStatus.OK)
-        public List<Account> domainconflictexception() throws Exception {
+        public List<Account> domainConflictException() throws Exception {
             throw new DomainConflictException("msg of domain conflict error", new DomainValidationError("firstField", "a conflict"));
+        }
+
+        @RequestMapping(value = "domainNotFoundException", method = RequestMethod.GET)
+        @ResponseStatus(HttpStatus.OK)
+        public List<Account> domainNotFoundException() throws Exception {
+            throw new DomainNotFoundException("msg of not found");
         }
 
     }

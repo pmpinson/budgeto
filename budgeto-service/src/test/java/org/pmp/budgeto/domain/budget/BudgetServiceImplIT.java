@@ -45,7 +45,8 @@ public class BudgetServiceImplIT {
         List<Budget> objects = budgetService.findAll();
 
         Assertions.assertThat(objects).hasSize(2);
-        Assertions.assertThat(objects).extracting("name").containsExactly("budget1", "budget2");
+        budgetHelper.controlBudget1(budgetHelper.findByName(objects, "budget1"));
+        budgetHelper.controlBudget2(budgetHelper.findByName(objects, "budget2"));
     }
 
     @Test
