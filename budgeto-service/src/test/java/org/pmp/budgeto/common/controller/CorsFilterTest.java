@@ -44,6 +44,16 @@ public class CorsFilterTest {
         doFilter(new CorsFilter("www.thedomain.com"), "www.thedomain.com");
     }
 
+    @Test
+    public void init(){
+        new CorsFilter(null).init(null);
+    }
+
+    @Test
+    public void destroy(){
+        new CorsFilter(null).destroy();
+    }
+
     private void doFilter(CorsFilter corsFilter, String allowOrigin) throws Exception {
 
         Map<String, String> headers = new HashMap<>();

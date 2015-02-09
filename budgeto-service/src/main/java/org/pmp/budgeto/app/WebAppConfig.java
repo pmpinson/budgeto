@@ -19,14 +19,17 @@ import org.springframework.core.env.Environment;
 @Import({PropertiesConfig.class, ToolsConfig.class, RepositoryConfig.class, ServiceConfig.class})
 public class WebAppConfig {
 
+    private static final String PROP_APP_BASE = "app";
+    public static final String PROP_ALLOW_ORIGIN = PROP_APP_BASE + ".allow.origin";
+
     @Autowired
     private Environment environment;
 
     @Bean
     public CorsFilter cors() {
         String allowOrigin = null;
-        if (environment.containsProperty("app.allow.origin")){
-            allowOrigin = environment.getProperty("app.allow.origin");
+        if (environment.containsProperty(PROP_ALLOW_ORIGIN)){
+            allowOrigin = environment.getProperty(PROP_ALLOW_ORIGIN);
         }
         return new CorsFilter(allowOrigin);
     }
