@@ -20,7 +20,7 @@ public final class TrimNotEmptyValidator implements ConstraintValidator<TrimNotE
      */
     @Override
     public boolean isValid(String value, ConstraintValidatorContext constraintValidatorContext) {
-        if (value == null || "".equals(value.trim())) {
+        if (value == null || "" .equals(value.trim())) {
             return false;
         }
         return true;
