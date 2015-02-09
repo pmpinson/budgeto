@@ -61,10 +61,10 @@ public class RepositoryConfigTest {
     @Test
     public void mongoTemplate() throws Exception {
 
-        Mockito.when(environment.getProperty("mongo.srv.host")).thenReturn("192.168.1.127");
-        Mockito.when(environment.getProperty("mongo.db.user")).thenReturn("user");
-        Mockito.when(environment.getProperty("mongo.db.password")).thenReturn("pass");
-        Mockito.when(environment.getProperty("mongo.db.name")).thenReturn("mydb");
+        Mockito.when(environment.getProperty(RepositoryConfig.PROP_SRV_HOST)).thenReturn("192.168.1.127");
+        Mockito.when(environment.getProperty(RepositoryConfig.PROP_DB_USER)).thenReturn("user");
+        Mockito.when(environment.getProperty(RepositoryConfig.PROP_DB_PASSWORD)).thenReturn("pass");
+        Mockito.when(environment.getProperty(RepositoryConfig.PROP_DB_NAME)).thenReturn("mydb");
         MongoDbFactory mongoDbFactory = Mockito.mock(MongoDbFactory.class);
         Mockito.when(mongoTools.mongoDbFactory("user", "pass", "mydb", null)).thenReturn(mongoDbFactory);
 
@@ -78,7 +78,7 @@ public class RepositoryConfigTest {
     @Test
     public void mongoFactoryBean() throws Exception {
 
-        Mockito.when(environment.getProperty("mongo.srv.host")).thenReturn("192.168.1.127");
+        Mockito.when(environment.getProperty(RepositoryConfig.PROP_SRV_HOST)).thenReturn("192.168.1.127");
         MongoFactoryBean mongoFactoryBean = Mockito.mock(MongoFactoryBean.class);
         Mockito.when(mongoTools.mongoFactoryBean("192.168.1.127", null)).thenReturn(mongoFactoryBean);
 
@@ -95,8 +95,8 @@ public class RepositoryConfigTest {
     @Test
     public void mongoFactoryBeanWithPort() throws Exception {
 
-        Mockito.when(environment.getProperty("mongo.srv.host")).thenReturn("192.168.1.127");
-        Mockito.when(environment.getProperty("mongo.srv.port")).thenReturn("59878");
+        Mockito.when(environment.getProperty(RepositoryConfig.PROP_SRV_HOST)).thenReturn("192.168.1.127");
+        Mockito.when(environment.getProperty(RepositoryConfig.PROP_SRV_PORT)).thenReturn("59878");
         MongoFactoryBean mongoFactoryBean = Mockito.mock(MongoFactoryBean.class);
         Mockito.when(mongoTools.mongoFactoryBean("192.168.1.127", 59878)).thenReturn(mongoFactoryBean);
 
@@ -113,10 +113,10 @@ public class RepositoryConfigTest {
     @Test
     public void mongoDbFactory() throws Exception {
 
-        Mockito.when(environment.getProperty("mongo.srv.host")).thenReturn("192.168.1.127");
-        Mockito.when(environment.getProperty("mongo.db.user")).thenReturn("user");
-        Mockito.when(environment.getProperty("mongo.db.password")).thenReturn("pass");
-        Mockito.when(environment.getProperty("mongo.db.name")).thenReturn("mydb");
+        Mockito.when(environment.getProperty(RepositoryConfig.PROP_SRV_HOST)).thenReturn("192.168.1.127");
+        Mockito.when(environment.getProperty(RepositoryConfig.PROP_DB_USER)).thenReturn("user");
+        Mockito.when(environment.getProperty(RepositoryConfig.PROP_DB_PASSWORD)).thenReturn("pass");
+        Mockito.when(environment.getProperty(RepositoryConfig.PROP_DB_NAME)).thenReturn("mydb");
         MongoDbFactory mongoDbFactory = Mockito.mock(MongoDbFactory.class);
         Mockito.when(mongoTools.mongoDbFactory("user", "pass", "mydb", null)).thenReturn(mongoDbFactory);
 

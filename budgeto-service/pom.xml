@@ -142,6 +142,12 @@
 							<properties>
 								<cargo.servlet.port>${server-port}</cargo.servlet.port>
 							</properties>
+							<configfiles>
+								<configfile>
+									<file>${project.basedir}/etc/config.properties</file>
+									<todir>etc</todir>
+								</configfile>
+							</configfiles>
 						</configuration>
 					</configuration>
 				</plugin>
@@ -171,8 +177,7 @@
 							<goal>exec</goal>
 						</goals>
 						<phase>post-integration-test</phase>
-						<configuration><doc>
-						</doc>
+						<configuration>
 							<executable>${project.basedir}/src/build/post-integration-tests.sh</executable>
 						</configuration>
 					</execution>

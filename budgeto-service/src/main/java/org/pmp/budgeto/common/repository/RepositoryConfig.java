@@ -22,12 +22,12 @@ import org.springframework.data.mongodb.core.WriteConcernResolver;
 public class RepositoryConfig {
 
     private static final String PROP_SRV_BASE = "mongo.srv";
-    private static final String PROP_SRV_HOST = PROP_SRV_BASE + ".host";
-    private static final String PROP_SRV_PORT = PROP_SRV_BASE + ".port";
+    public static final String PROP_SRV_HOST = PROP_SRV_BASE + ".host";
+    public static final String PROP_SRV_PORT = PROP_SRV_BASE + ".port";
     private static final String PROP_DB_BASE = "mongo.db";
-    private static final String PROP_DB_USER = PROP_DB_BASE + ".user";
-    private static final String PROP_DB_PASSWORD = PROP_DB_BASE + ".password";
-    private static final String PROP_DB_NAME = PROP_DB_BASE + ".name";
+    public static final String PROP_DB_USER = PROP_DB_BASE + ".user";
+    public static final String PROP_DB_PASSWORD = PROP_DB_BASE + ".password";
+    public static final String PROP_DB_NAME = PROP_DB_BASE + ".name";
 
     @Autowired
     private WriteConcernResolver writeConcernResolver;
