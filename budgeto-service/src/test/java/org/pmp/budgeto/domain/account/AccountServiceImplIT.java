@@ -1,6 +1,7 @@
 package org.pmp.budgeto.domain.account;
 
 import org.assertj.core.api.Assertions;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -47,7 +48,25 @@ public class AccountServiceImplIT {
         List<Account> objects = accountService.findAll();
 
         Assertions.assertThat(objects).hasSize(2);
-        Assertions.assertThat(objects).extracting("name").containsExactly("account1", "account2");
+        accountHelper.controlAccount1(accountHelper.findByName(objects, "account1"));
+        accountHelper.controlAccount2(accountHelper.findByName(objects, "account2"));
+    }
+
+    @Test
+    public void findNull() throws Exception {
+
+        Account account = accountService.find("accountXXX");
+
+        Assertions.assertThat(account).isNull();
+    }
+
+    @Test
+    public void find() throws Exception {
+
+        Account account = accountService.find("account2");
+
+        Assertions.assertThat(account).isNotNull();
+        accountHelper.controlAccount2(account);
     }
 
     @Test
@@ -83,12 +102,6 @@ public class AccountServiceImplIT {
         expectedException.expect(new ServiceExceptionValidationErrorContentMatcher("name", new String[]{"an account (account2) already exist with same name"}));
 
         accountService.add(object);
-    }
-
-    @Test
-    public void find() throws Exception {
-        Account account = accountService.find("account2");
-        System.out.println(account);
     }
 
 }
