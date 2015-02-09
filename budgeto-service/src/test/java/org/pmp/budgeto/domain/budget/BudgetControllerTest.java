@@ -29,7 +29,7 @@ public class BudgetControllerTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     @Mock
-    private BudgetService budgetService;
+    private BudgetDomain budgetDomain;
 
     private BudgetController budgetController;
 
@@ -37,7 +37,7 @@ public class BudgetControllerTest {
 
     @Before
     public void setup() {
-        budgetController = new BudgetController(budgetService);
+        budgetController = new BudgetController(budgetDomain);
     }
 
     @Test
@@ -77,19 +77,19 @@ public class BudgetControllerTest {
 
         Budget object1 = new Budget().setName("budget1");
         Budget object2 = new Budget().setName("budget2");
-        Mockito.when(budgetService.findAll()).thenReturn(Lists.newArrayList(object1, object2));
+        Mockito.when(budgetDomain.findAll()).thenReturn(Lists.newArrayList(object1, object2));
 
         List<Budget> objects = budgetController.findAll();
 
         Assertions.assertThat(objects).hasSize(2);
-        Mockito.verify(budgetService).findAll();
-        Mockito.verifyNoMoreInteractions(budgetService);
+        Mockito.verify(budgetDomain).findAll();
+        Mockito.verifyNoMoreInteractions(budgetDomain);
     }
 
     @Test
     public void add() throws Exception {
         Budget object = new Budget().setName("my budget to add");
-        Mockito.when(budgetService.add(Mockito.any(Budget.class))).then(new Answer<Void>() {
+        Mockito.when(budgetDomain.add(Mockito.any(Budget.class))).then(new Answer<Void>() {
             public Void answer(InvocationOnMock var1) throws Throwable {
                 result = (Budget) var1.getArguments()[0];
                 return null;
@@ -100,8 +100,8 @@ public class BudgetControllerTest {
 
         Assertions.assertThat(result).isEqualTo(object);
 
-        Mockito.verify(budgetService).add(Mockito.any(Budget.class));
-        Mockito.verifyNoMoreInteractions(budgetService);
+        Mockito.verify(budgetDomain).add(Mockito.any(Budget.class));
+        Mockito.verifyNoMoreInteractions(budgetDomain);
     }
 //
 //    @Test

@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * manager of account
  */
-public interface AccountService {
+public interface AccountDomain {
 
     /**
      * find all accounts

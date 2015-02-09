@@ -10,7 +10,7 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.pmp.budgeto.common.PropertiesConfig;
 import org.pmp.budgeto.common.controller.CorsFilter;
-import org.pmp.budgeto.common.domain.ServiceConfig;
+import org.pmp.budgeto.common.domain.DomainConfig;
 import org.pmp.budgeto.common.repository.RepositoryConfig;
 import org.pmp.budgeto.common.tools.ToolsConfig;
 import org.pmp.budgeto.test.TestTools;
@@ -37,7 +37,7 @@ public class WebAppConfigTest {
         Assertions.assertThat(WebAppConfig.class.getAnnotation(Import.class).value()).hasSize(4);
         Assertions.assertThat(WebAppConfig.class.getAnnotation(Import.class).value()).contains(ToolsConfig.class);
         Assertions.assertThat(WebAppConfig.class.getAnnotation(Import.class).value()).contains(RepositoryConfig.class);
-        Assertions.assertThat(WebAppConfig.class.getAnnotation(Import.class).value()).contains(ServiceConfig.class);
+        Assertions.assertThat(WebAppConfig.class.getAnnotation(Import.class).value()).contains(DomainConfig.class);
         Assertions.assertThat(WebAppConfig.class.getAnnotation(Import.class).value()).contains(PropertiesConfig.class);
     }
 

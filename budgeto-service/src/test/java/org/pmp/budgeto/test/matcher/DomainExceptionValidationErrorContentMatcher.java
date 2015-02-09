@@ -10,15 +10,15 @@ import org.pmp.budgeto.common.domain.DomainValidationException;
 import java.util.Arrays;
 
 /**
- * matcher to control ServiceValidationException and ServiceConflictException message in ServiceValidationError
+ * matcher to control DomainValidationException and DomainConflictException message in DomainValidationError
  */
-public class ServiceExceptionValidationErrorContentMatcher extends TypeSafeMatcher<DomainException> {
+public class DomainExceptionValidationErrorContentMatcher extends TypeSafeMatcher<DomainException> {
 
     private String field;
     private String[] errors;
     private String[] actualErrors;
 
-    public ServiceExceptionValidationErrorContentMatcher(String field, String[] errors) {
+    public DomainExceptionValidationErrorContentMatcher(String field, String[] errors) {
         this.field = field;
         this.errors = errors;
     }

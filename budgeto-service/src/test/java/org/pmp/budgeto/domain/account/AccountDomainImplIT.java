@@ -1,7 +1,6 @@
 package org.pmp.budgeto.domain.account;
 
 import org.assertj.core.api.Assertions;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -10,8 +9,8 @@ import org.junit.runner.RunWith;
 import org.pmp.budgeto.common.domain.DomainConflictException;
 import org.pmp.budgeto.common.domain.DomainException;
 import org.pmp.budgeto.test.config.ITConfig;
-import org.pmp.budgeto.test.matcher.ServiceExceptionValidationErrorContentMatcher;
-import org.pmp.budgeto.test.matcher.ServiceExceptionValidationErrorsSizeMatcher;
+import org.pmp.budgeto.test.matcher.DomainExceptionValidationErrorContentMatcher;
+import org.pmp.budgeto.test.matcher.DomainExceptionValidationErrorsSizeMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -23,7 +22,7 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {ITConfig.class, AccountConfig.class})
 @ActiveProfiles("test")
-public class AccountServiceImplIT {
+public class AccountDomainImplIT {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -32,7 +31,7 @@ public class AccountServiceImplIT {
     private AccountHelper accountHelper;
 
     @Autowired
-    private AccountService accountService;
+    private AccountDomain accountDomain;
     @Autowired
     private AccountRepository accountRepository;
 
@@ -45,7 +44,7 @@ public class AccountServiceImplIT {
     @Test
     public void findAll() throws Exception {
 
-        List<Account> objects = accountService.findAll();
+        List<Account> objects = accountDomain.findAll();
 
         Assertions.assertThat(objects).hasSize(3);
         accountHelper.controlAccount1(accountHelper.findByName(objects, "account1"));
@@ -55,7 +54,7 @@ public class AccountServiceImplIT {
     @Test
     public void findNull() throws Exception {
 
-        Account account = accountService.find("accountXXX");
+        Account account = accountDomain.find("accountXXX");
 
         Assertions.assertThat(account).isNull();
     }
@@ -63,7 +62,7 @@ public class AccountServiceImplIT {
     @Test
     public void find() throws Exception {
 
-        Account account = accountService.find("account2");
+        Account account = accountDomain.find("account2");
 
         Assertions.assertThat(account).isNotNull();
         accountHelper.controlAccount2(account);
@@ -74,7 +73,7 @@ public class AccountServiceImplIT {
 
         Account object = new Account().setName("my account to add");
 
-        Account newObject = accountService.add(object);
+        Account newObject = accountDomain.add(object);
 
         Assertions.assertThat(accountHelper.nbAccounts()).isEqualTo(4);
         Assertions.assertThat(newObject.getName()).isEqualTo("my account to add");
@@ -88,7 +87,7 @@ public class AccountServiceImplIT {
         expectedException.expect(DomainException.class);
         expectedException.expectMessage("object account not valid");
 
-        accountService.add(object);
+        accountDomain.add(object);
     }
 
     @Test
@@ -98,10 +97,10 @@ public class AccountServiceImplIT {
 
         expectedException.expect(DomainConflictException.class);
         expectedException.expectMessage("error on a constraint during add of account");
-        expectedException.expect(new ServiceExceptionValidationErrorsSizeMatcher(1));
-        expectedException.expect(new ServiceExceptionValidationErrorContentMatcher("name", new String[]{"an account (account2) already exist with same name"}));
+        expectedException.expect(new DomainExceptionValidationErrorsSizeMatcher(1));
+        expectedException.expect(new DomainExceptionValidationErrorContentMatcher("name", new String[]{"an account (account2) already exist with same name"}));
 
-        accountService.add(object);
+        accountDomain.add(object);
     }
 
 }

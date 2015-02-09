@@ -30,11 +30,11 @@ public class BudgetController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BudgetController.class);
 
-    private BudgetService budgetService;
+    private BudgetDomain budgetDomain;
 
     @Autowired
-    public BudgetController(BudgetService budgetService) {
-        this.budgetService = Validate.notNull(budgetService);
+    public BudgetController(BudgetDomain budgetDomain) {
+        this.budgetDomain = Validate.notNull(budgetDomain);
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
@@ -47,7 +47,7 @@ public class BudgetController {
     })
     public List<Budget> findAll() {
         LOGGER.info("get all account");
-        return budgetService.findAll();
+        return budgetDomain.findAll();
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
@@ -65,7 +65,7 @@ public class BudgetController {
 
         Budget newObject = new Budget().setName(budget.getName()).setNote(budget.getNote());
 
-        budgetService.add(newObject);
+        budgetDomain.add(newObject);
     }
 
 }

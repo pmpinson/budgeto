@@ -22,7 +22,7 @@ import java.util.List;
 
 
 @RunWith(MockitoJUnitRunner.class)
-public class BudgetServiceImplTest {
+public class BudgetDomainImplTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -30,20 +30,20 @@ public class BudgetServiceImplTest {
     @Mock
     private BudgetRepository budgetRepository;
 
-    private BudgetService budgetService;
+    private BudgetDomain budgetDomain;
 
     @Before
     public void setup() {
-        budgetService = new BudgetServiceImpl(budgetRepository, TestConfig.translatorTools, TestConfig.domainTools);
+        budgetDomain = new BudgetDomainImpl(budgetRepository, TestConfig.translatorTools, TestConfig.domainTools);
     }
 
     @Test
     public void springConf() throws Exception {
-        Assertions.assertThat(BudgetServiceImpl.class.getAnnotations()).hasSize(1);
-        Assertions.assertThat(BudgetServiceImpl.class.isAnnotationPresent(Service.class)).isTrue();
+        Assertions.assertThat(BudgetDomainImpl.class.getAnnotations()).hasSize(1);
+        Assertions.assertThat(BudgetDomainImpl.class.isAnnotationPresent(Service.class)).isTrue();
 
-        Assertions.assertThat(BudgetServiceImpl.class.getConstructors()).hasSize(1);
-        Assertions.assertThat(BudgetServiceImpl.class.getConstructors()[0].isAnnotationPresent(Autowired.class)).isTrue();
+        Assertions.assertThat(BudgetDomainImpl.class.getConstructors()).hasSize(1);
+        Assertions.assertThat(BudgetDomainImpl.class.getConstructors()[0].isAnnotationPresent(Autowired.class)).isTrue();
     }
 
     @Test
@@ -53,7 +53,7 @@ public class BudgetServiceImplTest {
         Budget object2 = new Budget().setName("budget2");
         Mockito.when(budgetRepository.findAll()).thenReturn(Lists.newArrayList(object1, object2));
 
-        List<Budget> objects = budgetService.findAll();
+        List<Budget> objects = budgetDomain.findAll();
 
         Assertions.assertThat(objects).hasSize(2);
         Mockito.verify(budgetRepository).findAll();
@@ -66,7 +66,7 @@ public class BudgetServiceImplTest {
         Budget object = new Budget().setName("my budget to add");
         Mockito.when(budgetRepository.save(Mockito.any(Budget.class))).thenReturn(object);
 
-        budgetService.add(object);
+        budgetDomain.add(object);
 
         Mockito.verify(budgetRepository).save(Mockito.any(Budget.class));
         Mockito.verifyNoMoreInteractions(budgetRepository);
@@ -78,7 +78,7 @@ public class BudgetServiceImplTest {
         expectedException.expect(NullPointerException.class);
         expectedException.expectMessage("empty object budget");
 
-        budgetService.add(null);
+        budgetDomain.add(null);
 
         Mockito.verify(budgetRepository).save(Mockito.any(Budget.class));
         Mockito.verifyNoMoreInteractions(budgetRepository);
@@ -92,7 +92,7 @@ public class BudgetServiceImplTest {
         expectedException.expect(DomainException.class);
         expectedException.expectMessage("object budget not valid");
 
-        budgetService.add(object);
+        budgetDomain.add(object);
 
         Mockito.verify(budgetRepository).save(Mockito.any(Budget.class));
         Mockito.verifyNoMoreInteractions(budgetRepository);
@@ -107,7 +107,7 @@ public class BudgetServiceImplTest {
 
         expectedException.expect(DataAccessException.class);
 
-        budgetService.add(object);
+        budgetDomain.add(object);
 
         Mockito.verify(budgetRepository).save(Mockito.any(Budget.class));
         Mockito.verifyNoMoreInteractions(budgetRepository);
@@ -125,7 +125,7 @@ public class BudgetServiceImplTest {
 
         expectedException.expect(DomainConflictException.class);
 
-        budgetService.add(object);
+        budgetDomain.add(object);
 
         Mockito.verify(budgetRepository).save(Mockito.any(Budget.class));
         Mockito.verifyNoMoreInteractions(budgetRepository);

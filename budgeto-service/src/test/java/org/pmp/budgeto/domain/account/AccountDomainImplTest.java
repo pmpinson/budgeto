@@ -23,7 +23,7 @@ import java.util.List;
 
 
 @RunWith(MockitoJUnitRunner.class)
-public class AccountServiceImplTest {
+public class AccountDomainImplTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -31,20 +31,20 @@ public class AccountServiceImplTest {
     @Mock
     private AccountRepository accountRepository;
 
-    private AccountService accountService;
+    private AccountDomain accountDomain;
 
     @Before
     public void setup() {
-        accountService = new AccountServiceImpl(accountRepository, TestConfig.translatorTools, TestConfig.domainTools);
+        accountDomain = new AccountDomainImpl(accountRepository, TestConfig.translatorTools, TestConfig.domainTools);
     }
 
     @Test
     public void springConf() throws Exception {
-        Assertions.assertThat(AccountServiceImpl.class.getAnnotations()).hasSize(1);
-        Assertions.assertThat(AccountServiceImpl.class.isAnnotationPresent(Service.class)).isTrue();
+        Assertions.assertThat(AccountDomainImpl.class.getAnnotations()).hasSize(1);
+        Assertions.assertThat(AccountDomainImpl.class.isAnnotationPresent(Service.class)).isTrue();
 
-        Assertions.assertThat(AccountServiceImpl.class.getConstructors()).hasSize(1);
-        Assertions.assertThat(AccountServiceImpl.class.getConstructors()[0].isAnnotationPresent(Autowired.class)).isTrue();
+        Assertions.assertThat(AccountDomainImpl.class.getConstructors()).hasSize(1);
+        Assertions.assertThat(AccountDomainImpl.class.getConstructors()[0].isAnnotationPresent(Autowired.class)).isTrue();
     }
 
     @Test
@@ -54,7 +54,7 @@ public class AccountServiceImplTest {
         Account object2 = new Account().setName("account2");
         Mockito.when(accountRepository.findAll()).thenReturn(Lists.newArrayList(object1, object2));
 
-        List<Account> objects = accountService.findAll();
+        List<Account> objects = accountDomain.findAll();
 
         Assertions.assertThat(objects).hasSize(2);
 
@@ -68,7 +68,7 @@ public class AccountServiceImplTest {
         Mockito.when(accountRepository.findByName(Matchers.anyString())).thenReturn(null);
         Mockito.when(accountRepository.findByName("accountYYYY")).thenReturn(object);
 
-        Account account = accountService.find("accountXXX");
+        Account account = accountDomain.find("accountXXX");
 
         Assertions.assertThat(account).isNull();
 
@@ -82,7 +82,7 @@ public class AccountServiceImplTest {
         Mockito.when(accountRepository.findByName(Matchers.anyString())).thenReturn(null);
         Mockito.when(accountRepository.findByName("accountYYYY")).thenReturn(object);
 
-        Account account = accountService.find("accountYYYY");
+        Account account = accountDomain.find("accountYYYY");
 
         Assertions.assertThat(account).isNotNull();
         Assertions.assertThat(account.getName()).isEqualTo("accountYYYY");
@@ -97,7 +97,7 @@ public class AccountServiceImplTest {
         Account object = new Account().setName("my account to add");
         Mockito.when(accountRepository.save(Mockito.any(Account.class))).thenReturn(object);
 
-        accountService.add(object);
+        accountDomain.add(object);
 
         Mockito.verify(accountRepository).save(Mockito.any(Account.class));
         Mockito.verifyNoMoreInteractions(accountRepository);
@@ -109,7 +109,7 @@ public class AccountServiceImplTest {
         expectedException.expect(NullPointerException.class);
         expectedException.expectMessage("empty object account");
 
-        accountService.add(null);
+        accountDomain.add(null);
 
         Mockito.verify(accountRepository).save(Mockito.any(Account.class));
         Mockito.verifyNoMoreInteractions(accountRepository);
@@ -123,10 +123,10 @@ public class AccountServiceImplTest {
         expectedException.expect(DomainException.class);
         expectedException.expectMessage("object account not valid");
 
-        accountService.add(object);
+        accountDomain.add(object);
 
         Mockito.verify(accountRepository).save(Mockito.any(Account.class));
-        Mockito.verifyNoMoreInteractions(accountRepository, accountService);
+        Mockito.verifyNoMoreInteractions(accountRepository, accountDomain);
     }
 
     @Test
@@ -138,7 +138,7 @@ public class AccountServiceImplTest {
 
         expectedException.expect(DataAccessException.class);
 
-        accountService.add(object);
+        accountDomain.add(object);
 
         Mockito.verify(accountRepository).save(Mockito.any(Account.class));
         Mockito.verifyNoMoreInteractions(accountRepository);
@@ -156,7 +156,7 @@ public class AccountServiceImplTest {
 
         expectedException.expect(DomainConflictException.class);
 
-        accountService.add(object);
+        accountDomain.add(object);
 
         Mockito.verify(accountRepository).save(Mockito.any(Account.class));
         Mockito.verifyNoMoreInteractions(accountRepository);

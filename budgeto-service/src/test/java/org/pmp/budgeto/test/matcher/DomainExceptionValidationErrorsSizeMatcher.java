@@ -8,14 +8,14 @@ import org.pmp.budgeto.common.domain.DomainValidationException;
 
 
 /**
- * matcher to control ServiceValidationException and ServiceConflictException
+ * matcher to control DomainValidationException and DomainConflictException
  */
-public class ServiceExceptionValidationErrorsSizeMatcher extends TypeSafeMatcher<DomainException> {
+public class DomainExceptionValidationErrorsSizeMatcher extends TypeSafeMatcher<DomainException> {
 
     private int size;
     private int actualSize;
 
-    public ServiceExceptionValidationErrorsSizeMatcher(int size) {
+    public DomainExceptionValidationErrorsSizeMatcher(int size) {
         this.size = size;
     }
 
