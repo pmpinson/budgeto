@@ -26,12 +26,24 @@ public class OperationTest {
     @Test
     public void getterSetter() throws Exception {
 
-        DateTime now = DateTime.now();
-        Operation object = new Operation().setDate(now).setLabel("theLabel");
+        DateTime date = DateTools.FORMATTER_DATE.parseDateTime("2015-05-08");
+        Operation object = new Operation().setDate(date).setLabel("theLabel");
 
         Assertions.assertThat(object.getLabel()).isEqualTo("theLabel");
         Assertions.assertThat(object.getLabel()).isEqualTo(object.getLabel());
-        Assertions.assertThat(object.getDate()).isEqualTo(DateTools.toUTCDate(now));
+        Assertions.assertThat(object.getDate()).isEqualTo(DateTools.toUTCDate(date));
+        Assertions.assertThat(object.getDate()).isEqualTo(object.getDate());
+    }
+
+    @Test
+    public void getterSetterDateString() throws Exception {
+
+        DateTime date = DateTools.FORMATTER_DATE.parseDateTime("2015-05-08");
+        Operation object = new Operation().setDate("2015-05-08").setLabel("theLabel");
+
+        Assertions.assertThat(object.getLabel()).isEqualTo("theLabel");
+        Assertions.assertThat(object.getLabel()).isEqualTo(object.getLabel());
+        Assertions.assertThat(object.getDate()).isEqualTo(DateTools.toUTCDate(date));
         Assertions.assertThat(object.getDate()).isEqualTo(object.getDate());
     }
 
@@ -73,7 +85,7 @@ public class OperationTest {
     @Test
     public void toStringDefault() throws Exception {
 
-        Operation object = new Operation().setLabel("theName").setDate(DateTools.FORMATTER_DATETIME_WITHZONE.parseDateTime("2015-01-18T18:52:26-06:00"));
+        Operation object = new Operation().setLabel("theName").setDate("2015-01-18");
 
         Assertions.assertThat(object.toString()).isEqualTo("Operation[label=theName,date=2015-01-18T00:00:00+0000]");
     }

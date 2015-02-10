@@ -36,6 +36,11 @@ public class Operation {
         return this;
     }
 
+    public Operation setDate(String date) {
+        this.date = DateTools.toUTCDate(DateTools.FORMATTER_DATE.parseDateTime(date));
+        return this;
+    }
+
     public String getLabel() {
         return label;
     }
