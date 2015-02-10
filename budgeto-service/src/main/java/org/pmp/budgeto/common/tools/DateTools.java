@@ -10,9 +10,7 @@ import org.joda.time.format.DateTimeFormatter;
  */
 public class DateTools {
 
-    public static final DateTimeFormatter FORMATTER_DATETIME = DateTimeFormat.forPattern("yyyy/MM/dd HH:mm:ss");
-
-    public static final DateTimeFormatter FORMATTER_DATETIME_WITHZONE = DateTimeFormat.forPattern("yyyy/MM/dd HH:mm:ss ZZZ");
+    public static final DateTimeFormatter FORMATTER_DATE = DateTimeFormat.forPattern("yyyy/MM/dd");
 
     public static final DateTimeFormatter FORMATTER_DATETIMEMS_WITHZONE = DateTimeFormat.forPattern("yyyy/MM/dd HH:mm:ss.SSS ZZZ");
 
