@@ -9,7 +9,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.joda.ser.DateTimeSerializer;
-import com.fasterxml.jackson.datatype.joda.ser.JacksonJodaFormat;
+import com.fasterxml.jackson.datatype.joda.cfg.JacksonJodaFormat;
 
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean;
