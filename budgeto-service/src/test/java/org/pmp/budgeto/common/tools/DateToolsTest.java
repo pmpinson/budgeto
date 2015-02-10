@@ -23,7 +23,7 @@ public class DateToolsTest {
     public void toUTCWithOtherTimeZone() {
         DateTime dateOneWithTimeZone = DateTools.FORMATTER_DATETIME_WITHZONE.parseDateTime("2014-02-26T18:52:26-05");
 
-        DateTime dateOneWithGMT = DateTools.FORMATTER_DATETIME_WITHZONE.parseDateTime("2014-02-26T18:52:26+00").withZone(DateTimeZone.UTC);
+        DateTime dateOneWithGMT = DateTools.FORMATTER_DATETIME_WITHZONE.parseDateTime("2014-02-26T13:52:26-05");//.withZone(DateTimeZone.UTC);
         Assertions.assertThat(DateTools.toUTC(dateOneWithTimeZone)).isEqualTo(dateOneWithGMT);
     }
 
