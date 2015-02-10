@@ -63,9 +63,4 @@ public class RepositoryConfig {
         return mongoTools.mongoDbFactory(dbUser, dbPass, dbName, mongoFactoryBean());
     }
 
-//    @Bean
-//    public MongoListener listener() {
-//        return new MongoListener();
-//    }
-
 }
