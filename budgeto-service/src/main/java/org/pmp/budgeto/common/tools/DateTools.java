@@ -10,11 +10,11 @@ import org.joda.time.format.DateTimeFormatter;
  */
 public class DateTools {
 
-    public static final DateTimeFormatter FORMATTER_DATE = DateTimeFormat.forPattern("yyyy/MM/dd");
+    public static final DateTimeFormatter FORMATTER_DATE = DateTimeFormat.forPattern("yyyy-MM-dd");
 
-    public static final String PATTERN_DATETIMEMS_WITHZONE = "yyyy/MM/dd HH:mm:ss.SSS ZZZ";
+    public static final String PATTERN_DATETIME_WITHZONE = "yyyy-MM-dd'T'HH:mm:ssZ";
 
-    public static final DateTimeFormatter FORMATTER_DATETIMEMS_WITHZONE = DateTimeFormat.forPattern(PATTERN_DATETIMEMS_WITHZONE);
+    public static final DateTimeFormatter FORMATTER_DATETIME_WITHZONE = DateTimeFormat.forPattern(PATTERN_DATETIME_WITHZONE);
 
     /**
      * se to private

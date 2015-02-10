@@ -24,7 +24,7 @@ public class ControllerDispatcherConfig extends WebMvcConfigurerAdapter {
     public MappingJackson2HttpMessageConverter jacksonConverter() {
         Jackson2ObjectMapperFactoryBean factory = new Jackson2ObjectMapperFactoryBean();
         factory.setIndentOutput(true);
-        factory.setSimpleDateFormat(DateTools.PATTERN_DATETIMEMS_WITHZONE);
+        factory.setSimpleDateFormat(DateTools.PATTERN_DATETIME_WITHZONE);
         factory.afterPropertiesSet();
 
         ObjectMapper objectMapper = factory.getObject();
