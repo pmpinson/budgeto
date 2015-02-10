@@ -24,29 +24,17 @@ public class DateTools {
     }
 
     /**
-     * convert date to UTC keeping data same as the original timezone
+     * convert datetime to UTC truncating time
      *
      * @param date the date to modify
      * @return the new date
      */
-    public static DateTime toUTC(DateTime date) {
+    public static DateTime toUTCDate(DateTime date) {
         if (date == null) {
             return date;
         }
-        return date.withZoneRetainFields(DateTimeZone.UTC);
-    }
-
-    /**
-     * truncate hour of a date
-     *
-     * @param date the date to truncate
-     * @return the date truncated
-     */
-    public static DateTime truncateTime(DateTime date) {
-        if (date == null) {
-            return date;
-        }
-        return date.withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
+        return date.withZoneRetainFields(DateTimeZone.UTC)
+            .withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
     }
 
 }
