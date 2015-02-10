@@ -24,21 +24,29 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @EnableWebMvc
 @ComponentScan(basePackages = {"org.pmp.budgeto.common.controller"})
 public class ControllerDispatcherConfig extends WebMvcConfigurerAdapter {
-
-    @Override
-    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+    
+    public Jackson2ObjectMapperFactoryBean jacksonFactory() {
         Jackson2ObjectMapperFactoryBean factory = new Jackson2ObjectMapperFactoryBean();
         factory.setIndentOutput(true);
         factory.setSimpleDateFormat(DateTools.PATTERN_DATETIMEMS_WITHZONE);
         factory.afterPropertiesSet();
-        
+        return factory;
+    }
+    
+    public ObjectMapper jacksonMapper(Jackson2ObjectMapperFactoryBean factory) {
         ObjectMapper objectMapper = factory.getObject();
         objectMapper.registerModule(new JodaModule());
-        
+        return objectMapper;
+    }
+    
+    public MappingJackson2HttpMessageConverter jacksonConverter() {
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        converter.setObjectMapper(objectMapper);
-        
-        converters.add(converter);
+        converter.setObjectMapper(jacksonMapper(jacksonFactory()));
+    }
+
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        converters.add(jacksonConverter());
     }
 
 }
