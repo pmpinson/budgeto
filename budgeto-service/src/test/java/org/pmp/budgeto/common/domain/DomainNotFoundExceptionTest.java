@@ -1,6 +1,5 @@
 package org.pmp.budgeto.common.domain;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 

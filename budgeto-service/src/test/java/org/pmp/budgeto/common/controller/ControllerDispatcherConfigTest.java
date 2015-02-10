@@ -1,20 +1,23 @@
 package org.pmp.budgeto.common.controller;
 
-import java.util.Map;
-import org.pmp.budgeto.test.TestTools;
-import org.pmp.budgeto.common.tools.DateTools;
-import java.text.SimpleDateFormat;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.joda.JodaModule;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.pmp.budgeto.common.tools.DateTools;
+import org.pmp.budgeto.test.TestTools;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import com.fasterxml.jackson.databind.SerializationFeature;
-
 import org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+import java.text.SimpleDateFormat;
+import java.util.Map;
+import java.util.Set;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -34,12 +37,15 @@ public class ControllerDispatcherConfigTest {
     }
     
     @Test
-    public void jacksonFactory() {
-        Jackson2ObjectMapperFactoryBean factory = controllerDispatcherConfig.jacksonFactory();
+    public void jacksonConverter() {
+        MappingJackson2HttpMessageConverter converter = controllerDispatcherConfig.jacksonConverter();
         
-        Assertions.assertThat(factory).isNotNull();
-        Assertions.assertThat(TestTools.get(TestTools.get(factory, "dateFormat", SimpleDateFormat.class), "pattern", String.class)).isEqualsTo(DateTools.PATTERN_DATETIMEMS_WITHZONE);
-        Assertions.assertThat(TestTools.get(factory, "features", Map.class).get(SerializationFeature.INDENT_OUTPUT)).isEqualsTo(true);
+        Assertions.assertThat(converter).isNotNull();
+
+        Assertions.assertThat(converter.getObjectMapper().isEnabled(SerializationFeature.INDENT_OUTPUT)).isTrue();
+        Assertions.assertThat(converter.getObjectMapper().getDateFormat()).isEqualTo(new SimpleDateFormat(DateTools.PATTERN_DATETIMEMS_WITHZONE));
+                Assertions.assertThat(TestTools.getField(converter.getObjectMapper(), "_registeredModuleTypes", Set.class)).hasSize(1);
+        Assertions.assertThat(TestTools.getField(converter.getObjectMapper(), "_registeredModuleTypes", Set.class)).contains(JodaModule.class.getName());
     }
 
 }
