@@ -75,7 +75,7 @@ public class OperationTest {
 
         Operation object = new Operation().setLabel("theName").setDate(DateTools.FORMATTER_DATETIME_WITHZONE.parseDateTime("2015-01-18T18:52:26-06:00"));
 
-        Assertions.assertThat(object.toString()).isEqualTo("Operation[date=2015-01-18T00:00:00.000Z,label=theName]");
+        Assertions.assertThat(object.toString()).isEqualTo("Operation[label=theName,date=2015-01-18T00:00:00+0000]");
     }
 
     @Test

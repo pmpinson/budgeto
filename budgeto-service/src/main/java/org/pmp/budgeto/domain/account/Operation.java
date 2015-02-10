@@ -47,7 +47,9 @@ public class Operation {
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("label", String.valueOf(label))
+                .append("date", DateTools.FORMATTER_DATETIME_WITHZONE.print(date)).toString();
     }
 
 }
