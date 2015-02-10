@@ -31,7 +31,7 @@ public class OperationTest {
 
         Assertions.assertThat(object.getLabel()).isEqualTo("theLabel");
         Assertions.assertThat(object.getLabel()).isEqualTo(object.getLabel());
-        Assertions.assertThat(object.getDate()).isEqualTo(DateTools.toUTC(DateTools.truncateTime(now)));
+        Assertions.assertThat(object.getDate()).isEqualTo(DateTools.toUTCDate(now));
         Assertions.assertThat(object.getDate()).isEqualTo(object.getDate());
     }
 
@@ -75,7 +75,7 @@ public class OperationTest {
 
         Operation object = new Operation().setLabel("theName").setDate(DateTools.FORMATTER_DATETIME_WITHZONE.parseDateTime("2015-01-18T18:52:26-06:00"));
 
-        Assertions.assertThat(object.toString()).isEqualTo("Operation[date=2015-01-18T00:00:00Z,label=theName]");
+        Assertions.assertThat(object.toString()).isEqualTo("Operation[date=2015-01-18T00:00:00.000Z,label=theName]");
     }
 
     @Test
