@@ -8,8 +8,6 @@ import org.joda.time.DateTime;
 
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.joda.ser.DateTimeSerializer;
-import com.fasterxml.jackson.datatype.joda.cfg.JacksonJodaDateFormat;
 
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean;
@@ -34,11 +32,8 @@ public class ControllerDispatcherConfig extends WebMvcConfigurerAdapter {
         factory.setSimpleDateFormat(DateTools.PATTERN_DATETIMEMS_WITHZONE);
         factory.afterPropertiesSet();
         
-        JodaModule jodaModule = new JodaModule();
-        jodaModule.addSerializer(DateTime.class, new DateTimeSerializer(new JacksonJodaDateFormat(DateTools.FORMATTER_DATETIMEMS_WITHZONE)));
-        
         ObjectMapper objectMapper = factory.getObject();
-        objectMapper.registerModule(jodaModule);
+        objectMapper.registerModule(new JodaModule());
         
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
         converter.setObjectMapper(objectMapper);
