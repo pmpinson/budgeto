@@ -42,6 +42,7 @@ public class ControllerDispatcherConfig extends WebMvcConfigurerAdapter {
     public MappingJackson2HttpMessageConverter jacksonConverter() {
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
         converter.setObjectMapper(jacksonMapper(jacksonFactory()));
+        return converter;
     }
 
     @Override
