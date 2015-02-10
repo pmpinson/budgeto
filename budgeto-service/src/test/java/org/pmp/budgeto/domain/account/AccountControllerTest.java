@@ -41,8 +41,6 @@ public class AccountControllerTest {
 
     private AccountController accountController;
 
-    private Account result;
-
     @Before
     public void setup() {
         accountController = new AccountController(accountDomain, TestConfig.translatorTools);
@@ -78,6 +76,24 @@ public class AccountControllerTest {
         Assertions.assertThat(AccountController.class.getDeclaredMethod("add", new Class[]{Account.class}).getAnnotation(ResponseStatus.class).value()).isEqualTo(HttpStatus.CREATED);
         Assertions.assertThat(AccountController.class.getDeclaredMethod("add", new Class[]{Account.class}).getParameterAnnotations()[0]).hasSize(1);
         Assertions.assertThat(AccountController.class.getDeclaredMethod("add", new Class[]{Account.class}).getParameterAnnotations()[0][0].annotationType()).isEqualTo(RequestBody.class);
+
+        Assertions.assertThat(AccountController.class.getDeclaredMethod("find", String.class).getAnnotations()).hasSize(4);
+        Assertions.assertThat(AccountController.class.getDeclaredMethod("find", String.class).getAnnotation(ApiOperation.class)).isNotNull();
+        Assertions.assertThat(AccountController.class.getDeclaredMethod("find", String.class).getAnnotation(ApiResponses.class)).isNotNull();
+        Assertions.assertThat(AccountController.class.getDeclaredMethod("find", String.class).getAnnotation(RequestMapping.class)).isNotNull();
+        Assertions.assertThat(AccountController.class.getDeclaredMethod("find", String.class).getAnnotation(RequestMapping.class).value()).containsOnly("{name}");
+        Assertions.assertThat(AccountController.class.getDeclaredMethod("find", String.class).getAnnotation(RequestMapping.class).method()).containsOnly(RequestMethod.GET);
+        Assertions.assertThat(AccountController.class.getDeclaredMethod("find", String.class).getAnnotation(ResponseStatus.class)).isNotNull();
+        Assertions.assertThat(AccountController.class.getDeclaredMethod("find", String.class).getAnnotation(ResponseStatus.class).value()).isEqualTo(HttpStatus.OK);
+
+        Assertions.assertThat(AccountController.class.getDeclaredMethod("operations", String.class).getAnnotations()).hasSize(4);
+        Assertions.assertThat(AccountController.class.getDeclaredMethod("operations", String.class).getAnnotation(ApiOperation.class)).isNotNull();
+        Assertions.assertThat(AccountController.class.getDeclaredMethod("operations", String.class).getAnnotation(ApiResponses.class)).isNotNull();
+        Assertions.assertThat(AccountController.class.getDeclaredMethod("operations", String.class).getAnnotation(RequestMapping.class)).isNotNull();
+        Assertions.assertThat(AccountController.class.getDeclaredMethod("operations", String.class).getAnnotation(RequestMapping.class).value()).containsOnly("{name}/operations");
+        Assertions.assertThat(AccountController.class.getDeclaredMethod("operations", String.class).getAnnotation(RequestMapping.class).method()).containsOnly(RequestMethod.GET);
+        Assertions.assertThat(AccountController.class.getDeclaredMethod("operations", String.class).getAnnotation(ResponseStatus.class)).isNotNull();
+        Assertions.assertThat(AccountController.class.getDeclaredMethod("operations", String.class).getAnnotation(ResponseStatus.class).value()).isEqualTo(HttpStatus.OK);
     }
 
     @Test
@@ -125,16 +141,12 @@ public class AccountControllerTest {
     @Test
     public void add() throws Exception {
         Account object = new Account().setName("my account to add");
-        Mockito.when(accountDomain.add(Mockito.any(Account.class))).then(new Answer<Void>() {
-            public Void answer(InvocationOnMock var1) throws Throwable {
-                result = (Account) var1.getArguments()[0];
-                return null;
-            }
-        });
+        ResultExtractor extractor = new ResultExtractor();
+        Mockito.when(accountDomain.add(Mockito.any(Account.class))).then(extractor);
 
         accountController.add(object);
 
-        Assertions.assertThat(result).isEqualTo(object);
+        Assertions.assertThat(extractor.result).isEqualTo(object);
 
         Mockito.verify(accountDomain).add(Mockito.any(Account.class));
         Mockito.verifyNoMoreInteractions(accountDomain);
@@ -142,7 +154,9 @@ public class AccountControllerTest {
 
     @Test
     public void operations() throws Exception {
-        Account object = new Account().setName("accountYYYY").addOperations(new Operation().setLabel("ope1")).addOperations(new Operation().setLabel("op2"));
+        Account object = new Account().setName("accountYYYY")
+                .addOperations(new Operation(TestConfig.dateTools).setLabel("ope1"))
+                .addOperations(new Operation(TestConfig.dateTools).setLabel("op2"));
         Mockito.when(accountDomain.find(Matchers.anyString())).thenReturn(null);
         Mockito.when(accountDomain.find("accountYYYY")).thenReturn(object);
 
@@ -154,6 +168,17 @@ public class AccountControllerTest {
 
         Mockito.verify(accountDomain).find("accountYYYY");
         Mockito.verifyNoMoreInteractions(accountDomain);
+    }
+
+    private static class ResultExtractor implements Answer<Void> {
+
+        Account result;
+
+        @Override
+        public Void answer(InvocationOnMock var1) throws Throwable {
+            result = (Account) var1.getArguments()[0];
+            return null;
+        }
     }
 
 }

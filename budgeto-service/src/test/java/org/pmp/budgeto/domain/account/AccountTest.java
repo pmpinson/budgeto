@@ -4,6 +4,7 @@ import org.assertj.core.api.Assertions;
 import org.assertj.core.groups.Tuple;
 import org.joda.time.DateTime;
 import org.junit.Test;
+import org.pmp.budgeto.test.config.TestConfig;
 import org.pmp.budgeto.test.extractor.ConstraintViolationExtractor;
 
 import javax.validation.ConstraintViolation;
@@ -118,8 +119,8 @@ public class AccountTest {
     @Test
     public void operations() throws Exception {
 
-        Operation operation1 = new Operation().setDate(DateTime.now()).setLabel("ope1");
-        Operation operation2 = new Operation().setDate(DateTime.now().minusDays(3)).setLabel("ope2");
+        Operation operation1 = new Operation(TestConfig.dateTools).setDate(DateTime.now()).setLabel("ope1");
+        Operation operation2 = new Operation(TestConfig.dateTools).setDate(DateTime.now().minusDays(3)).setLabel("ope2");
         Account object = new Account().setName("theName").addOperations(operation1).addOperations(operation2);
 
         Assertions.assertThat(object.getOperations()).hasSize(2);
@@ -132,8 +133,8 @@ public class AccountTest {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
 
-        Operation operation1 = new Operation().setDate(DateTime.now()).setLabel("ope1");
-        Operation operation2 = new Operation().setDate(DateTime.now().minusDays(3)).setLabel("ope2");
+        Operation operation1 = new Operation(TestConfig.dateTools).setDate(DateTime.now()).setLabel("ope1");
+        Operation operation2 = new Operation(TestConfig.dateTools).setDate(DateTime.now().minusDays(3)).setLabel("ope2");
         Account object = new Account().setName("theName").addOperations(operation1).addOperations(operation2);
 
         Set<ConstraintViolation<Account>> violations = validator.validate(object);
@@ -147,8 +148,8 @@ public class AccountTest {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
 
-        Operation operation1 = new Operation().setDate(DateTime.now()).setLabel("ope1");
-        Operation operation2 = new Operation().setLabel("ope2");
+        Operation operation1 = new Operation(TestConfig.dateTools).setDate(DateTime.now()).setLabel("ope1");
+        Operation operation2 = new Operation(TestConfig.dateTools).setLabel("ope2");
         Account object = new Account().setName("theName").addOperations(operation1).addOperations(operation2);
 
         Set<ConstraintViolation<Account>> violations = validator.validate(object);

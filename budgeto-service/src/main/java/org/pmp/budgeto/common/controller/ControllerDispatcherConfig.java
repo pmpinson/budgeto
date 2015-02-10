@@ -3,6 +3,7 @@ package org.pmp.budgeto.common.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import org.pmp.budgeto.common.tools.DateTools;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -21,10 +22,13 @@ import java.util.List;
 @ComponentScan(basePackages = {"org.pmp.budgeto.common.controller"})
 public class ControllerDispatcherConfig extends WebMvcConfigurerAdapter {
 
+    @Autowired
+    private DateTools dateTools;
+
     public MappingJackson2HttpMessageConverter jacksonConverter() {
         Jackson2ObjectMapperFactoryBean factory = new Jackson2ObjectMapperFactoryBean();
         factory.setIndentOutput(true);
-        factory.setSimpleDateFormat(DateTools.PATTERN_DATETIME_WITHZONE);
+        factory.setSimpleDateFormat(dateTools.getPatternDatetimeWithzone());
         factory.afterPropertiesSet();
 
         ObjectMapper objectMapper = factory.getObject();

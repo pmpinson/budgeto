@@ -1,5 +1,6 @@
 package org.pmp.budgeto.domain.account;
 
+import org.springframework.data.mongodb.core.mapping.event.AbstractMongoEventListener;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
