@@ -9,7 +9,6 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 import org.pmp.budgeto.common.controller.ControllerDispatcherConfig;
-import org.pmp.budgeto.common.controller.CorsFilter;
 import org.pmp.budgeto.domain.account.AccountConfig;
 import org.pmp.budgeto.domain.budget.BudgetConfig;
 import org.pmp.budgeto.test.TestTools;
@@ -22,8 +21,6 @@ import javax.servlet.Filter;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration.Dynamic;
 import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
 
 
 @RunWith(MockitoJUnitRunner.class)

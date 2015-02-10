@@ -4,8 +4,6 @@ import org.assertj.core.api.Assertions;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.pmp.budgeto.common.domain.DomainConflictException;
-import org.pmp.budgeto.common.domain.DomainException;
 import org.pmp.budgeto.common.domain.DomainValidationError;
 import org.pmp.budgeto.common.domain.DomainValidationException;
 
