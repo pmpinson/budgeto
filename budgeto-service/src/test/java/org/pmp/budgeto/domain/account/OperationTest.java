@@ -73,7 +73,7 @@ public class OperationTest {
     @Test
     public void toStringDefault() throws Exception {
 
-        Operation object = new Operation().setLabel("theName").setDate(DateTools.FORMATTER_DATETIME_WITHZONE.parseDateTime("2015/01/18 18:52:26 America/Los_Angeles"));
+        Operation object = new Operation().setLabel("theName").setDate(DateTools.FORMATTER_DATETIMEMS_WITHZONE.parseDateTime("2015/01/18 18:52:26.685 America/Los_Angeles"));
 
         Assertions.assertThat(object.toString()).isEqualTo("Operation[date=2015-01-18T00:00:00.000Z,label=theName]");
     }
