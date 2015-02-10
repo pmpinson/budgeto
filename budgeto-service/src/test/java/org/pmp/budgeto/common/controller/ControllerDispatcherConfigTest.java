@@ -34,11 +34,11 @@ public class ControllerDispatcherConfigTest {
     
     @Test
     public void jacksonFactory() {
-        Jackson2ObjectMapperFactoryBean factory = controllerDispatcherConfig.jacksonFactory()
+        Jackson2ObjectMapperFactoryBean factory = controllerDispatcherConfig.jacksonFactory();
         
         Assertions.assertThat(factory).isNotNull();
-        Assertions.assertThat(TestTools.get(TestTools.get(factory, dateFormat, SimpleDateFormat.class), pattern, String.class).isEqualsTo(DateTools.PATTERN_DATETIMEMS_WITHZONE);
-        Assertions.assertThat(TestTools.get(factory, features, Map.class.get(SerializationFeature.INDENT_OUTPUT))).isEqualsTo(true);
+        Assertions.assertThat(TestTools.get(TestTools.get(factory, dateFormat, SimpleDateFormat.class), pattern, String.class)).isEqualsTo(DateTools.PATTERN_DATETIMEMS_WITHZONE);
+        Assertions.assertThat(TestTools.get(factory, features, Map.class).get(SerializationFeature.INDENT_OUTPUT)).isEqualsTo(true);
     }
 
 }
