@@ -1,9 +1,16 @@
 package org.pmp.budgeto.common.controller;
 
 import org.pmp.budgeto.common.tools.DateTools;
+
 import java.util.List;
+
+import org.joda.time.DateTime;
+
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.joda.ser.DateTimeZoneSerializer;
+import com.fasterxml.jackson.datatype.joda.ser.JacksonJodaFormat;
+
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -27,8 +34,11 @@ public class ControllerDispatcherConfig extends WebMvcConfigurerAdapter {
         factory.setSimpleDateFormat(DateTools.PATTERN_DATETIMEMS_WITHZONE);
         factory.afterPropertiesSet();
         
+        JodaModule jodaModule = new JodaModule();
+        jodaModule.addSerializer(DateTime.class, new DateTimeSerializer(new JacksonJodaFormat(DateTools.FORMATTER_DATETIMEMS_WITHZONE)));
+        
         ObjectMapper objectMapper = factory.getObject();
-        objectMapper.registerModule(new JodaModule());
+        objectMapper.registerModule(jodaModule);
         
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
         converter.setObjectMapper(objectMapper);
