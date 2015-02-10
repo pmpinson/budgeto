@@ -108,9 +108,9 @@ public class AccountControllerIT {
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.*", Matchers.hasSize(2)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.label=='operation 1')].label").value("operation 1"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.label=='operation 1')].date").value(1424908800000L))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.label=='operation 1')].date").value("2015-02-26T00:00:00.000Z"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.label=='ope2')].label").value("ope2"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.label=='ope2')].date").value(1424995200000L));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.label=='ope2')].date").value("2015-02-27T00:00:00.000Z"));
     }
 
 }
