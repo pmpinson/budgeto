@@ -10,11 +10,11 @@ import org.joda.time.format.DateTimeFormatter;
  */
 public class DateTools {
 
-    public static final DateTimeFormatter FORMATTER_DATE = DateTimeFormat.forPattern("yyyy/MM/dd");
+    public static final DateTimeFormatter FORMATTER_DATE = DateTimeFormat.forPattern("yyyy-MM-dd");
 
-    public static final String PATTERN_DATETIMEMS_WITHZONE = "yyyy/MM/dd HH:mm:ss.SSS ZZZ";
+    public static final String PATTERN_DATETIME_WITHZONE = "yyyy-MM-dd'T'HH:mm:ssZ";
 
-    public static final DateTimeFormatter FORMATTER_DATETIMEMS_WITHZONE = DateTimeFormat.forPattern(PATTERN_DATETIMEMS_WITHZONE);
+    public static final DateTimeFormatter FORMATTER_DATETIME_WITHZONE = DateTimeFormat.forPattern(PATTERN_DATETIME_WITHZONE);
 
     /**
      * se to private
@@ -24,29 +24,17 @@ public class DateTools {
     }
 
     /**
-     * convert date to UTC keeping data same as the original timezone
+     * convert datetime to UTC truncating time
      *
      * @param date the date to modify
      * @return the new date
      */
-    public static DateTime toUTC(DateTime date) {
+    public static DateTime toUTCDate(DateTime date) {
         if (date == null) {
             return date;
         }
-        return date.withZoneRetainFields(DateTimeZone.UTC);
-    }
-
-    /**
-     * truncate hour of a date
-     *
-     * @param date the date to truncate
-     * @return the date truncated
-     */
-    public static DateTime truncateTime(DateTime date) {
-        if (date == null) {
-            return date;
-        }
-        return date.withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
+        return date.withZoneRetainFields(DateTimeZone.UTC)
+            .withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
     }
 
 }

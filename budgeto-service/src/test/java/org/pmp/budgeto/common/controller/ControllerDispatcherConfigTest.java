@@ -43,7 +43,7 @@ public class ControllerDispatcherConfigTest {
         Assertions.assertThat(converter).isNotNull();
 
         Assertions.assertThat(converter.getObjectMapper().isEnabled(SerializationFeature.INDENT_OUTPUT)).isTrue();
-        Assertions.assertThat(converter.getObjectMapper().getDateFormat()).isEqualTo(new SimpleDateFormat(DateTools.PATTERN_DATETIMEMS_WITHZONE));
+        Assertions.assertThat(converter.getObjectMapper().getDateFormat()).isEqualTo(new SimpleDateFormat(DateTools.PATTERN_DATETIME_WITHZONE));
                 Assertions.assertThat(TestTools.getField(converter.getObjectMapper(), "_registeredModuleTypes", Set.class)).hasSize(1);
         Assertions.assertThat(TestTools.getField(converter.getObjectMapper(), "_registeredModuleTypes", Set.class)).contains(JodaModule.class.getName());
     }

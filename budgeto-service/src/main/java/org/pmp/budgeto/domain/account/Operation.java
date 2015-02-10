@@ -32,7 +32,12 @@ public class Operation {
     }
 
     public Operation setDate(DateTime date) {
-        this.date = DateTools.toUTC(DateTools.truncateTime(date));
+        this.date = DateTools.toUTCDate(date);
+        return this;
+    }
+
+    public Operation setDate(String date) {
+        this.date = DateTools.toUTCDate(DateTools.FORMATTER_DATE.parseDateTime(date));
         return this;
     }
 
@@ -47,7 +52,9 @@ public class Operation {
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("label", String.valueOf(label))
+                .append("date", DateTools.FORMATTER_DATETIME_WITHZONE.print(date)).toString();
     }
 
 }
