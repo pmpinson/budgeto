@@ -32,7 +32,7 @@ public class Operation {
     }
 
     public Operation setDate(DateTime date) {
-        this.date = DateTools.toUTC(DateTools.truncateTime(date));
+        this.date = DateTools.toUTCDate(date);
         return this;
     }
 
