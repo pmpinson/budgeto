@@ -5,7 +5,6 @@ import org.assertj.core.groups.Tuple;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
-import org.pmp.budgeto.common.tools.DateTools;
 import org.pmp.budgeto.test.config.TestConfig;
 import org.pmp.budgeto.test.extractor.ConstraintViolationExtractor;
 
@@ -26,32 +25,32 @@ public class OperationTest {
     @Test
     public void getterSetter() throws Exception {
 
-        DateTime date = DateTools.FORMATTER_DATE.parseDateTime("2015-05-08");
-        Operation object = new Operation().setDate(date).setLabel("theLabel");
+        DateTime date = TestConfig.dateTools.getFormatterDate().parseDateTime("2015-05-08");
+        Operation object = new Operation(TestConfig.dateTools).setDate(date).setLabel("theLabel");
 
         Assertions.assertThat(object.getLabel()).isEqualTo("theLabel");
         Assertions.assertThat(object.getLabel()).isEqualTo(object.getLabel());
-        Assertions.assertThat(object.getDate()).isEqualTo(DateTools.toUTCDate(date));
+        Assertions.assertThat(object.getDate()).isEqualTo(TestConfig.dateTools.toUTCDate(date));
         Assertions.assertThat(object.getDate()).isEqualTo(object.getDate());
     }
 
     @Test
     public void getterSetterDateString() throws Exception {
 
-        DateTime date = DateTools.FORMATTER_DATE.parseDateTime("2015-05-08");
-        Operation object = new Operation().setDate("2015-05-08").setLabel("theLabel");
+        DateTime date = TestConfig.dateTools.getFormatterDate().parseDateTime("2015-05-08");
+        Operation object = new Operation(TestConfig.dateTools).setDate("2015-05-08").setLabel("theLabel");
 
         Assertions.assertThat(object.getLabel()).isEqualTo("theLabel");
         Assertions.assertThat(object.getLabel()).isEqualTo(object.getLabel());
-        Assertions.assertThat(object.getDate()).isEqualTo(DateTools.toUTCDate(date));
+        Assertions.assertThat(object.getDate()).isEqualTo(TestConfig.dateTools.toUTCDate(date));
         Assertions.assertThat(object.getDate()).isEqualTo(object.getDate());
     }
 
     @Test
     public void notEqualsAndHashcodeDefault() throws Exception {
 
-        Operation object1 = new Operation().setLabel("theLabel");
-        Operation object2 = new Operation().setLabel("theLabel");
+        Operation object1 = new Operation(TestConfig.dateTools).setLabel("theLabel");
+        Operation object2 = new Operation(TestConfig.dateTools).setLabel("theLabel");
 
         Assertions.assertThat(object1).isNotEqualTo(object2);
         Assertions.assertThat(object1.hashCode()).isNotEqualTo(object2.hashCode());
@@ -60,7 +59,7 @@ public class OperationTest {
     @Test
     public void equalsSame() throws Exception {
 
-        Operation object1 = new Operation().setLabel("theLabel");
+        Operation object1 = new Operation(TestConfig.dateTools).setLabel("theLabel");
 
         Assertions.assertThat(object1).isEqualTo(object1);
     }
@@ -68,7 +67,7 @@ public class OperationTest {
     @Test
     public void notEqualsToNull() throws Exception {
 
-        Operation object1 = new Operation().setLabel("theLabel");
+        Operation object1 = new Operation(TestConfig.dateTools).setLabel("theLabel");
         Operation object2 = null;
 
         Assertions.assertThat(object1).isNotEqualTo(object2);
@@ -77,7 +76,7 @@ public class OperationTest {
     @Test
     public void notEqualsOtherClass() throws Exception {
 
-        Operation object1 = new Operation().setLabel("theLabel");
+        Operation object1 = new Operation(TestConfig.dateTools).setLabel("theLabel");
 
         Assertions.assertThat(object1).isNotEqualTo("test string");
     }
@@ -85,7 +84,7 @@ public class OperationTest {
     @Test
     public void toStringDefault() throws Exception {
 
-        Operation object = new Operation().setLabel("theName").setDate("2015-01-18");
+        Operation object = new Operation(TestConfig.dateTools).setLabel("theName").setDate("2015-01-18");
 
         Assertions.assertThat(object.toString()).isEqualTo("Operation[label=theName,date=2015-01-18T00:00:00+0000]");
     }
@@ -95,7 +94,7 @@ public class OperationTest {
 
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
-        Operation object = new Operation().setLabel("theName").setDate(DateTime.now());
+        Operation object = new Operation(TestConfig.dateTools).setLabel("theName").setDate(DateTime.now());
 
         Set<ConstraintViolation<Operation>> violations = validator.validate(object);
 
@@ -107,7 +106,7 @@ public class OperationTest {
 
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
-        Operation object = new Operation().setDate(DateTime.now());
+        Operation object = new Operation(TestConfig.dateTools).setDate(DateTime.now());
 
         Set<ConstraintViolation<Operation>> violations = validator.validate(object);
 
@@ -122,7 +121,7 @@ public class OperationTest {
 
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
-        Operation object = new Operation().setLabel("theName");
+        Operation object = new Operation(TestConfig.dateTools).setLabel("theName");
 
         Set<ConstraintViolation<Operation>> violations = validator.validate(object);
 

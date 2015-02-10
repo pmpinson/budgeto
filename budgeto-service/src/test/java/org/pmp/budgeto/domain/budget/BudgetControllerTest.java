@@ -15,6 +15,7 @@ import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
+import org.pmp.budgeto.domain.account.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,8 +37,6 @@ public class BudgetControllerTest {
     private BudgetDomain budgetDomain;
 
     private BudgetController budgetController;
-
-    private Budget result;
 
     @Before
     public void setup() {
@@ -93,19 +92,26 @@ public class BudgetControllerTest {
     @Test
     public void add() throws Exception {
         Budget object = new Budget().setName("my budget to add");
-        Mockito.when(budgetDomain.add(Mockito.any(Budget.class))).then(new Answer<Void>() {
-            public Void answer(InvocationOnMock var1) throws Throwable {
-                result = (Budget) var1.getArguments()[0];
-                return null;
-            }
-        });
+        ResultExtractor extractor = new ResultExtractor();
+        Mockito.when(budgetDomain.add(Mockito.any(Budget.class))).then(extractor);
 
         budgetController.add(object);
 
-        Assertions.assertThat(result).isEqualTo(object);
+        Assertions.assertThat(extractor.result).isEqualTo(object);
 
         Mockito.verify(budgetDomain).add(Mockito.any(Budget.class));
         Mockito.verifyNoMoreInteractions(budgetDomain);
+    }
+
+    private static class ResultExtractor implements Answer<Void> {
+
+        Budget result;
+
+        @Override
+        public Void answer(InvocationOnMock var1) throws Throwable {
+            result = (Budget) var1.getArguments()[0];
+            return null;
+        }
     }
 
 }

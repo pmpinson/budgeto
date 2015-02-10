@@ -5,7 +5,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.assertj.core.api.Assertions;
 import org.hibernate.validator.constraints.NotBlank;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -14,7 +13,6 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.pmp.budgeto.common.tools.TranslatorTools;
 import org.pmp.budgeto.common.tools.ValidatorToolsImpl;
-import org.pmp.budgeto.test.config.TestConfig;
 import org.pmp.budgeto.test.extractor.DomainValidationErrorExtractor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
@@ -46,11 +44,6 @@ public class DomainToolsImplTest {
 
     @InjectMocks
     private DomainToolsImpl domainTools;
-
-    @Before
-    public void setup() {
-        TestConfig.init();
-    }
 
     @Test
     public void springConf() throws Exception {

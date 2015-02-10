@@ -45,12 +45,12 @@ public class CorsFilterTest {
     }
 
     @Test
-    public void init(){
+    public void init() {
         new CorsFilter(null).init(null);
     }
 
     @Test
-    public void destroy(){
+    public void destroy() {
         new CorsFilter(null).destroy();
     }
 

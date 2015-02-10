@@ -3,8 +3,6 @@ package org.pmp.budgeto.common.tools;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.pmp.budgeto.common.domain.validator.TrimNotEmpty;
 import org.pmp.budgeto.test.config.TestConfig;
 import org.pmp.budgeto.test.extractor.ConstraintViolationExtractor;
@@ -13,7 +11,6 @@ import javax.validation.ConstraintViolation;
 import java.util.Set;
 
 
-@RunWith(MockitoJUnitRunner.class)
 public class TrimNotEmptyValidatorTest {
 
     @Before

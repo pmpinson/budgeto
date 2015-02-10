@@ -2,11 +2,13 @@ package org.pmp.budgeto.domain.account;
 
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
+import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.joda.time.DateTime;
 import org.pmp.budgeto.common.domain.validator.TrimNotEmpty;
 import org.pmp.budgeto.common.tools.DateTools;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
@@ -19,6 +21,9 @@ import javax.validation.constraints.NotNull;
 @ApiModel(value = "Account", description = "Object describing an account")
 public class Operation {
 
+    @Transient
+    private DateTools dateTools;
+
     @NotNull
     @ApiModelProperty(value = "date", notes = "date of the operation", required = true, dataType = "[year, month, day]")
     private DateTime date;
@@ -27,17 +32,32 @@ public class Operation {
     @ApiModelProperty(value = "label", notes = "description of the operation", required = true)
     private String label;
 
+    /**
+     * use by mongo to load
+     */
+    private Operation() {
+    }
+
+    /**
+     * use extenaly
+     *
+     * @param dateTools
+     */
+    public Operation(DateTools dateTools) {
+        this.dateTools = Validate.notNull(dateTools);
+    }
+
     public DateTime getDate() {
         return date;
     }
 
-    public Operation setDate(DateTime date) {
-        this.date = DateTools.toUTCDate(date);
+    public Operation setDate(String date) {
+        this.date = dateTools.toUTCDate(dateTools.getFormatterDate().parseDateTime(date));
         return this;
     }
 
-    public Operation setDate(String date) {
-        this.date = DateTools.toUTCDate(DateTools.FORMATTER_DATE.parseDateTime(date));
+    public Operation setDate(DateTime date) {
+        this.date = dateTools.toUTCDate(date);
         return this;
     }
 
@@ -54,7 +74,7 @@ public class Operation {
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("label", String.valueOf(label))
-                .append("date", DateTools.FORMATTER_DATETIME_WITHZONE.print(date)).toString();
+                .append("date", dateTools.getFormatterDatetimeWithzone().print(date)).toString();
     }
 
 }
