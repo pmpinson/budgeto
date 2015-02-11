@@ -5,6 +5,9 @@ import org.assertj.core.groups.Tuple;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
+import org.pmp.budgeto.common.tools.DateTools;
+import org.pmp.budgeto.test.AssertTools;
+import org.pmp.budgeto.test.TestTools;
 import org.pmp.budgeto.test.config.TestConfig;
 import org.pmp.budgeto.test.extractor.ConstraintViolationExtractor;
 
@@ -20,6 +23,15 @@ public class OperationTest {
     @Before
     public void setup() {
         TestConfig.init();
+    }
+
+    @Test
+    public void constructors() throws Exception {
+        AssertTools.assertThat(Operation.class).hasConstructors(2);
+        AssertTools.assertThat(Operation.class.getDeclaredConstructor(new Class[]{})).isPrivate();
+        AssertTools.assertThat(Operation.class.getDeclaredConstructor(new Class[]{DateTools.class})).isPublic();
+
+        TestTools.callPrivateConstructor(Operation.class);
     }
 
     @Test

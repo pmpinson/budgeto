@@ -1,6 +1,15 @@
 package org.pmp.budgeto.test;
 
+import org.apache.commons.lang3.Validate;
+import org.assertj.core.api.AbstractClassAssert;
+import org.assertj.core.api.AbstractObjectAssert;
 import org.assertj.core.api.Assertions;
+import org.assertj.core.api.ClassAssert;
+import org.assertj.core.api.ObjectAssert;
+import org.assertj.core.error.BasicErrorMessageFactory;
+import org.assertj.core.error.ErrorMessageFactory;
+import org.assertj.core.error.ShouldBeInterface;
+import org.assertj.core.internal.Failures;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
@@ -14,24 +23,87 @@ public class AssertTools {
         // nothing
     }
 
-    /**
-     * test if consructor is unique and private
-     *
-     * @param clazz the class of value expected
-     * @throws java.lang.Exception if error during reflexion on clazz
-     */
-    public static void onePrivateConstructorForUtilityClass(Class<?> clazz) throws Exception {
-        // test 1 constructor
-        Assertions.assertThat(clazz.getDeclaredConstructors()).hasSize(1);
+    public static ConstructorAssert assertThat(Constructor<?> actual) {
+        return new ConstructorAssert(actual);
+    }
 
-        // controle if constructor private
-        Constructor<?> constructor = clazz.getDeclaredConstructor();
-        Assertions.assertThat(Modifier.isPrivate(constructor.getModifiers())).isTrue();
+    public static class ConstructorAssert extends ObjectAssert<Constructor<?>> {
+        Failures failures = Failures.instance();
 
-        // create a new instance for test coverage
-        constructor.setAccessible(true);
-        constructor.newInstance();
-        constructor.setAccessible(false);
+        public ConstructorAssert(Constructor<?> actual) {
+            super(actual);
+        }
+
+        public ConstructorAssert isPrivate() {
+            Validate.notNull(info);
+            Validate.notNull(actual);
+            if (!Modifier.isPrivate(actual.getModifiers())) {
+                throw this.failures.failure(info, ShouldBePrivate.shouldBePrivate(actual));
+            }
+            return (ConstructorAssert) this.myself;
+        }
+
+        public ConstructorAssert isPublic() {
+            Validate.notNull(info);
+            Validate.notNull(actual);
+            if (!Modifier.isPublic(actual.getModifiers())) {
+                throw this.failures.failure(info, ShouldBePrivate.shouldBePrivate(actual));
+            }
+            return (ConstructorAssert) this.myself;
+        }
+    }
+
+    public static class ShouldBePrivate extends BasicErrorMessageFactory {
+        public static ErrorMessageFactory shouldBePrivate(Constructor<?> actual) {
+            return new ShouldBePrivate(actual, true);
+        }
+
+        private ShouldBePrivate(Constructor<?> actual, boolean toBeOrNotToBe) {
+            super("\nExpecting\n  <%s>\n" + (toBeOrNotToBe ? "" : " not ") + "to be private", new Object[]{actual});
+        }
+    }
+
+    public static class ShouldBePublic extends BasicErrorMessageFactory {
+        public static ErrorMessageFactory shouldBePublic(Constructor<?> actual) {
+            return new ShouldBePublic(actual, true);
+        }
+
+        private ShouldBePublic(Constructor<?> actual, boolean toBeOrNotToBe) {
+            super("\nExpecting\n  <%s>\n" + (toBeOrNotToBe?"":" not ") + "to be public", new Object[]{actual});
+        }
+    }
+
+    public static ClassAssert assertThat(Class<?> actual) {
+        return new ClassAssert(actual);
+    }
+
+    public static class ClassAssert extends org.assertj.core.api.ClassAssert {
+        Failures failures = Failures.instance();
+
+        public ClassAssert(Class<?> actual) {
+            super(actual);
+        }
+
+        public ClassAssert hasConstructors(int size) {
+            Validate.notNull(info);
+            Validate.notNull(actual);
+            int nb = actual.getDeclaredConstructors().length;
+            if (nb != size) {
+                throw this.failures.failure(info, ShouldHaveConstructors.shouldHaveConstructors(actual, size, nb));
+            }
+            return (ClassAssert) this.myself;
+        }
+    }
+
+    public static  class ShouldHaveConstructors extends BasicErrorMessageFactory {
+
+        public static ShouldHaveConstructors shouldHaveConstructors(Class<?> actual, int expected, int received) {
+            return new ShouldHaveConstructors(actual, expected, received);
+        }
+
+        private ShouldHaveConstructors(Class<?> actual, int expected, int received) {
+            super("\nExpecting\n  <%s>\n to have <%s> constructors and have <%s>", new Object[]{actual, expected, received});
+        }
     }
 
 }
