@@ -51,13 +51,13 @@ public class Operation {
         return date;
     }
 
-    public Operation setDate(String date) {
-        this.date = dateTools.toUTCDate(dateTools.getFormatterDate().parseDateTime(date));
+    public Operation setDate(DateTime date) {
+        this.date = dateTools.toUTCDate(date);
         return this;
     }
 
-    public Operation setDate(DateTime date) {
-        this.date = dateTools.toUTCDate(date);
+    public Operation setDate(String date) {
+        this.date = dateTools.toUTCDate(dateTools.getFormatterDate().parseDateTime(date));
         return this;
     }
 

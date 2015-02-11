@@ -4,7 +4,6 @@ import org.joda.time.DateTime;
 import org.pmp.budgeto.common.PropertiesConfig;
 import org.pmp.budgeto.common.domain.DomainConfig;
 import org.pmp.budgeto.common.repository.RepositoryConfig;
-import org.pmp.budgeto.common.tools.DateTools;
 import org.pmp.budgeto.common.tools.ToolsConfig;
 import org.pmp.budgeto.domain.account.Account;
 import org.pmp.budgeto.domain.account.AccountConfig;

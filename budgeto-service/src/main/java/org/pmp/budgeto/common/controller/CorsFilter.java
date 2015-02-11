@@ -19,7 +19,7 @@ public class CorsFilter implements Filter {
 
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
         HttpServletResponse response = (HttpServletResponse) res;
-        if (allowOrigin != null && !"" .equals(allowOrigin.trim())) {
+        if (allowOrigin != null && !"".equals(allowOrigin.trim())) {
             response.setHeader("Access-Control-Allow-Origin", allowOrigin);
         }
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");

@@ -1,9 +1,5 @@
 package org.pmp.budgeto.domain.account;
 
-import com.wordnik.swagger.annotations.Api;
-import com.wordnik.swagger.annotations.ApiOperation;
-import com.wordnik.swagger.annotations.ApiResponses;
-import junit.framework.Assert;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,13 +10,7 @@ import org.pmp.budgeto.common.tools.DateToolsImpl;
 import org.pmp.budgeto.test.TestTools;
 import org.pmp.budgeto.test.config.TestConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
 
 
 @RunWith(MockitoJUnitRunner.class)
