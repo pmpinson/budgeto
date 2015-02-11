@@ -13,10 +13,13 @@ import org.pmp.budgeto.common.tools.DateTools;
 import org.pmp.budgeto.test.TestTools;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 
@@ -51,6 +54,16 @@ public class ControllerDispatcherConfigTest {
         Assertions.assertThat(converter.getObjectMapper().getDateFormat()).isEqualTo(new SimpleDateFormat(dateTools.getPatternDatetimeWithzone()));
         Assertions.assertThat(TestTools.getField(converter.getObjectMapper(), "_registeredModuleTypes", Set.class)).hasSize(1);
         Assertions.assertThat(TestTools.getField(converter.getObjectMapper(), "_registeredModuleTypes", Set.class)).contains(JodaModule.class.getName());
+    }
+
+    @Test
+    public void configureMessageConverters() throws Exception {
+        List<HttpMessageConverter<?>> converters = new ArrayList<>();
+        Mockito.when(dateTools.getPatternDatetimeWithzone()).thenReturn("yyyy-MM-dd");
+
+        controllerDispatcherConfig.configureMessageConverters(converters);
+
+        Assertions.assertThat(converters).hasSize(1);
     }
 
 }
