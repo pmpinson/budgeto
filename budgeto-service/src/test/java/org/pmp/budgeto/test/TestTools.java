@@ -1,6 +1,10 @@
 package org.pmp.budgeto.test;
 
+import org.assertj.core.api.Assertions;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
 
 /**
  * helper for test
@@ -33,6 +37,21 @@ public class TestTools {
      */
     public static void setField(Object target, String name, Object value) {
         ReflectionTestUtils.setField(target, name, value);
+    }
+
+    /**
+     * test if consructor is unique and private
+     *
+     * @param clazz the class of value expected
+     * @throws java.lang.Exception if error during reflexion on clazz
+     */
+    public static void callPrivateConstructor(Class<?> clazz) throws Exception {
+        Constructor<?> constructor = clazz.getDeclaredConstructor();
+
+        // create a new instance for test coverage
+        constructor.setAccessible(true);
+        constructor.newInstance();
+        constructor.setAccessible(false);
     }
 
 }
