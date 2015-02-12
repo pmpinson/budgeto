@@ -23,7 +23,7 @@ MONGO_ADDRESS=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' budge
 MONGO_PORT=27017
 
 echo 'test if mongo available'
-for i in `seq 1 1`;
+for i in `seq 1 20`;
 do
         wget --delete-after http://$MONGO_ADDRESS:$MONGO_PORT/
         if [ $? -eq 0 ]; then
