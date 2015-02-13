@@ -25,7 +25,7 @@ public class Operation {
     private DateTools dateTools;
 
     @NotNull
-    @ApiModelProperty(value = "date", notes = "date of the operation", required = true, dataType = "yyyy-MM-dd'T'HH:mm:ssZ")
+    @ApiModelProperty(value = "date", notes = "date of the operation, format [yyyy-MM-dd'T'HH:mm:ssZ]", required = true)
     private DateTime date;
 
     @TrimNotEmpty
@@ -51,13 +51,13 @@ public class Operation {
         return date;
     }
 
-    public Operation setDate(DateTime date) {
-        this.date = dateTools.toUTCDate(date);
+    public Operation setDate(String date) {
+        this.date = dateTools.toUTCDate(dateTools.getFormatterDate().parseDateTime(date));
         return this;
     }
 
-    public Operation setDate(String date) {
-        this.date = dateTools.toUTCDate(dateTools.getFormatterDate().parseDateTime(date));
+    public Operation setDate(DateTime date) {
+        this.date = dateTools.toUTCDate(date);
         return this;
     }
 
