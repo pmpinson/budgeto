@@ -1,9 +1,8 @@
-#!/bin/sh
-#
-# ---------------------------------------------------------------------
-# Start mongo db docker container
-# ---------------------------------------------------------------------
-#
+rem
+rem ---------------------------------------------------------------------
+rem Start mongo db docker container
+rem ---------------------------------------------------------------------
+rem
 
 rm target/docker.started
 rm target/config.properties.sav
@@ -14,11 +13,11 @@ docker inspect --format '{{ .NetworkSettings.IPAddress }}' budgeto-mongo-testser
 if [ $? -ne 0 ]; then
 
     echo 'container not started, start it'
-    docker run -d --name budgeto-mongo-testserver -p 192.168.59.103:27018:27017 mongo
+    docker run -d --name budgeto-mongo-testserver -p 27018:27017 mongo
     touch target/docker.started
 fi;
 
-# get configuration
+rem get configuration
 MONGO_ADDRESS=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' budgeto-mongo-testserver)
 MONGO_PORT=27017
 
