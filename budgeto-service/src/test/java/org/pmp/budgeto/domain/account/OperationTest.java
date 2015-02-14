@@ -50,7 +50,7 @@ public class OperationTest {
     public void getterSetterDateString() throws Exception {
 
         DateTime date = TestConfig.dateTools.getFormatterDate().parseDateTime("2015-05-08");
-        Operation object = new Operation(TestConfig.dateTools).setDate("2015-05-08").setLabel("theLabel");
+        Operation object = new Operation(TestConfig.dateTools).setDateString("2015-05-08").setLabel("theLabel");
 
         Assertions.assertThat(object.getLabel()).isEqualTo("theLabel");
         Assertions.assertThat(object.getLabel()).isEqualTo(object.getLabel());
@@ -96,7 +96,7 @@ public class OperationTest {
     @Test
     public void toStringDefault() throws Exception {
 
-        Operation object = new Operation(TestConfig.dateTools).setLabel("theName").setDate("2015-01-18");
+        Operation object = new Operation(TestConfig.dateTools).setLabel("theName").setDateString("2015-01-18");
 
         Assertions.assertThat(object.toString()).isEqualTo("Operation[label=theName,date=2015-01-18T00:00:00+0000]");
     }
