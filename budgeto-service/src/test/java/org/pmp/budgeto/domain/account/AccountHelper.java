@@ -32,8 +32,8 @@ public class AccountHelper {
         accountRepository.save(object);
 
         object = new Account().setName("account3").setNote("a third account with operations")
-                .addOperations(new Operation(dateTools).setLabel("operation 1").setDate("2015-02-26"))
-                .addOperations(new Operation(dateTools).setLabel("ope2").setDate("2015-02-27"));
+                .addOperations(new Operation(dateTools).setLabel("operation 1").setDateString("2015-02-26"))
+                .addOperations(new Operation(dateTools).setLabel("ope2").setDateString("2015-02-27"));
         accountRepository.save(object);
     }
 
