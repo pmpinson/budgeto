@@ -87,7 +87,7 @@ public class AccountTest {
 
         Account object = new Account().setName("theName").setNote("theNote");
 
-        Assertions.assertThat(object.toString()).isEqualTo("Account[name=theName,note=theNote,operations=[],links=[]]");
+        Assertions.assertThat(object.toString()).isEqualTo("Account[name=theName,note=theNote,operations=[]]");
     }
 
     @Test

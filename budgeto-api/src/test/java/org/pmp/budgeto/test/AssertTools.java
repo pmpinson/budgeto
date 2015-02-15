@@ -1,14 +1,9 @@
 package org.pmp.budgeto.test;
 
 import org.apache.commons.lang3.Validate;
-import org.assertj.core.api.AbstractClassAssert;
-import org.assertj.core.api.AbstractObjectAssert;
-import org.assertj.core.api.Assertions;
-import org.assertj.core.api.ClassAssert;
 import org.assertj.core.api.ObjectAssert;
 import org.assertj.core.error.BasicErrorMessageFactory;
 import org.assertj.core.error.ErrorMessageFactory;
-import org.assertj.core.error.ShouldBeInterface;
 import org.assertj.core.internal.Failures;
 
 import java.lang.reflect.Constructor;
@@ -69,7 +64,7 @@ public class AssertTools {
         }
 
         private ShouldBePublic(Constructor<?> actual, boolean toBeOrNotToBe) {
-            super("\nExpecting\n  <%s>\n" + (toBeOrNotToBe?"":" not ") + "to be public", new Object[]{actual});
+            super("\nExpecting\n  <%s>\n" + (toBeOrNotToBe ? "" : " not ") + "to be public", new Object[]{actual});
         }
     }
 
@@ -95,7 +90,7 @@ public class AssertTools {
         }
     }
 
-    public static  class ShouldHaveConstructors extends BasicErrorMessageFactory {
+    public static class ShouldHaveConstructors extends BasicErrorMessageFactory {
 
         public static ShouldHaveConstructors shouldHaveConstructors(Class<?> actual, int expected, int received) {
             return new ShouldHaveConstructors(actual, expected, received);

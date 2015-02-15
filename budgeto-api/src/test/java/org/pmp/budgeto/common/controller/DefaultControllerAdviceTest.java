@@ -16,7 +16,6 @@ import org.pmp.budgeto.common.tools.TranslatorTools;
 import org.pmp.budgeto.domain.account.AccountController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,8 +37,8 @@ public class DefaultControllerAdviceTest {
         Assertions.assertThat(DefaultControllerAdvice.class.getAnnotations()).hasSize(2);
         Assertions.assertThat(DefaultControllerAdvice.class.isAnnotationPresent(ControllerAdvice.class)).isTrue();
         Assertions.assertThat(DefaultControllerAdvice.class.isAnnotationPresent(RequestMapping.class)).isTrue();
-        Assertions.assertThat(DefaultControllerAdvice.class.getAnnotation(RequestMapping.class).consumes()).containsOnly(MediaType.APPLICATION_JSON_VALUE);
-        Assertions.assertThat(DefaultControllerAdvice.class.getAnnotation(RequestMapping.class).produces()).containsOnly(MediaType.APPLICATION_JSON_VALUE);
+        Assertions.assertThat(DefaultControllerAdvice.class.getAnnotation(RequestMapping.class).consumes()).isEmpty();
+        Assertions.assertThat(DefaultControllerAdvice.class.getAnnotation(RequestMapping.class).produces()).containsOnly(DefaultControllerAdvice.JSON_CONTENT_TYPE);
 
         Assertions.assertThat(AccountController.class.getConstructors()).hasSize(1);
         Assertions.assertThat(AccountController.class.getConstructors()[0].isAnnotationPresent(Autowired.class)).isTrue();

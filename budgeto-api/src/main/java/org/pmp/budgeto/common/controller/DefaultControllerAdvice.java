@@ -27,9 +27,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * all DomainNotFoundException are domain and sent 404 response status
  */
 @ControllerAdvice
-@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(produces = DefaultControllerAdvice.JSON_CONTENT_TYPE)
 public class DefaultControllerAdvice {
 
+    public static final String JSON_CONTENT_TYPE = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8";
     public static final String OK_MSG = "Success";
     public static final int OK_CODE = 200;
     public static final String CREATED_MSG = "Creation success";

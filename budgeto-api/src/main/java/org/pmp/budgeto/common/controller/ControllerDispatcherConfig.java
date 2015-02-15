@@ -25,6 +25,7 @@ public class ControllerDispatcherConfig extends WebMvcConfigurerAdapter {
     @Autowired
     private DateTools dateTools;
 
+
     public MappingJackson2HttpMessageConverter jacksonConverter() {
         Jackson2ObjectMapperFactoryBean factory = new Jackson2ObjectMapperFactoryBean();
         factory.setIndentOutput(true);

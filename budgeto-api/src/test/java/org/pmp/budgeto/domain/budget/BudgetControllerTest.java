@@ -15,6 +15,7 @@ import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
+import org.pmp.budgeto.common.controller.DefaultControllerAdvice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,6 +50,8 @@ public class BudgetControllerTest {
         Assertions.assertThat(BudgetController.class.isAnnotationPresent(Api.class)).isTrue();
         Assertions.assertThat(BudgetController.class.isAnnotationPresent(RequestMapping.class)).isTrue();
         Assertions.assertThat(BudgetController.class.getAnnotation(RequestMapping.class).value()).containsOnly("budget");
+        Assertions.assertThat(BudgetController.class.getAnnotation(RequestMapping.class).consumes()).isEmpty();
+        Assertions.assertThat(BudgetController.class.getAnnotation(RequestMapping.class).produces()).containsOnly(DefaultControllerAdvice.JSON_CONTENT_TYPE);
 
         Assertions.assertThat(BudgetController.class.getConstructors()).hasSize(1);
         Assertions.assertThat(BudgetController.class.getConstructors()[0].isAnnotationPresent(Autowired.class)).isTrue();
@@ -57,6 +60,8 @@ public class BudgetControllerTest {
         Assertions.assertThat(BudgetController.class.getDeclaredMethod("findAll").getAnnotation(ApiOperation.class)).isNotNull();
         Assertions.assertThat(BudgetController.class.getDeclaredMethod("findAll").getAnnotation(ApiResponses.class)).isNotNull();
         Assertions.assertThat(BudgetController.class.getDeclaredMethod("findAll").getAnnotation(RequestMapping.class)).isNotNull();
+        Assertions.assertThat(BudgetController.class.getDeclaredMethod("findAll").getAnnotation(RequestMapping.class).consumes()).isEmpty();
+        Assertions.assertThat(BudgetController.class.getDeclaredMethod("findAll").getAnnotation(RequestMapping.class).produces()).isEmpty();
         Assertions.assertThat(BudgetController.class.getDeclaredMethod("findAll").getAnnotation(RequestMapping.class).value()).containsOnly("");
         Assertions.assertThat(BudgetController.class.getDeclaredMethod("findAll").getAnnotation(RequestMapping.class).method()).containsOnly(RequestMethod.GET);
         Assertions.assertThat(BudgetController.class.getDeclaredMethod("findAll").getAnnotation(ResponseStatus.class)).isNotNull();
@@ -66,6 +71,8 @@ public class BudgetControllerTest {
         Assertions.assertThat(BudgetController.class.getDeclaredMethod("add", new Class[]{Budget.class}).getAnnotation(ApiOperation.class)).isNotNull();
         Assertions.assertThat(BudgetController.class.getDeclaredMethod("add", new Class[]{Budget.class}).getAnnotation(ApiResponses.class)).isNotNull();
         Assertions.assertThat(BudgetController.class.getDeclaredMethod("add", new Class[]{Budget.class}).getAnnotation(RequestMapping.class)).isNotNull();
+        Assertions.assertThat(BudgetController.class.getDeclaredMethod("add", new Class[]{Budget.class}).getAnnotation(RequestMapping.class).consumes()).isEmpty();
+        Assertions.assertThat(BudgetController.class.getDeclaredMethod("add", new Class[]{Budget.class}).getAnnotation(RequestMapping.class).produces()).isEmpty();
         Assertions.assertThat(BudgetController.class.getDeclaredMethod("add", new Class[]{Budget.class}).getAnnotation(RequestMapping.class).value()).containsOnly("");
         Assertions.assertThat(BudgetController.class.getDeclaredMethod("add", new Class[]{Budget.class}).getAnnotation(RequestMapping.class).method()).containsOnly(RequestMethod.POST);
         Assertions.assertThat(BudgetController.class.getDeclaredMethod("add", new Class[]{Budget.class}).getAnnotation(ResponseStatus.class)).isNotNull();

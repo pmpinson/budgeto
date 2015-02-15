@@ -1,22 +1,18 @@
 package org.pmp.budgeto.domain.account;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.joda.time.DateTime;
+import org.pmp.budgeto.common.domain.Domain;
 import org.pmp.budgeto.common.domain.validator.TrimNotEmpty;
 import org.pmp.budgeto.common.tools.DateTools;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.ResourceSupport;
-import org.springframework.hateoas.mvc.BasicLinkBuilder;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 
 /**
@@ -24,7 +20,7 @@ import java.util.List;
  */
 @Document
 @ApiModel(value = "Operation", description = "Operation occured on an account")
-public class Operation extends ResourceSupport {
+public class Operation extends Domain {
 
     @Transient
     private DateTools dateTools;
@@ -36,14 +32,6 @@ public class Operation extends ResourceSupport {
     @TrimNotEmpty
     @ApiModelProperty(value = "description of the operation", required = true)
     private String label;
-
-    @Override
-    @JsonProperty("links")
-    @ApiModelProperty(value = "links", notes = "the list of links to relations object")
-    public List<Link> getLinks() {
-        removeLinks();
-        return super.getLinks();
-    }
 
     /**
      * use by mongo to load
@@ -58,6 +46,10 @@ public class Operation extends ResourceSupport {
      */
     public Operation(DateTools dateTools) {
         this.dateTools = Validate.notNull(dateTools);
+    }
+
+    @Override
+    protected void generateLinks() {
     }
 
     public DateTime getDate() {

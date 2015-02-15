@@ -1,21 +1,16 @@
 package org.pmp.budgeto.domain.budget;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.pmp.budgeto.common.domain.Domain;
 import org.pmp.budgeto.common.domain.validator.TrimNotEmpty;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.ResourceSupport;
 import org.springframework.hateoas.mvc.BasicLinkBuilder;
-
-import java.util.Arrays;
-import java.util.List;
 
 
 /**
@@ -23,7 +18,7 @@ import java.util.List;
  */
 @Document
 @ApiModel(value = "Budget", description = "Object describing a budget (future and perspective)")
-public class Budget extends ResourceSupport {
+public class Budget extends Domain {
 
     public static final String UNIQUE_IDX_NAME = "budgetUniqueName";
 
@@ -36,12 +31,8 @@ public class Budget extends ResourceSupport {
     private String note;
 
     @Override
-    @JsonProperty("links")
-    @ApiModelProperty(value = "links", notes = "the list of links to relations object")
-    public List<Link> getLinks() {
-        removeLinks();
+    protected void generateLinks() {
         add(BasicLinkBuilder.linkToCurrentMapping().slash("budget").slash(String.valueOf(name)).withSelfRel());
-        return super.getLinks();
     }
 
     public String getName() {
