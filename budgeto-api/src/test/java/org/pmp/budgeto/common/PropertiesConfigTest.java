@@ -53,8 +53,9 @@ public class PropertiesConfigTest {
         Assertions.assertThat(PropertiesConfig.ProdPropertiesConfig.class.isAnnotationPresent(Configuration.class)).isTrue();
         Assertions.assertThat(PropertiesConfig.ProdPropertiesConfig.class.isAnnotationPresent(PropertiesConfig.EnvironnementProduction.class)).isTrue();
         Assertions.assertThat(PropertiesConfig.ProdPropertiesConfig.class.isAnnotationPresent(PropertySource.class)).isTrue();
-        Assertions.assertThat(PropertiesConfig.ProdPropertiesConfig.class.getAnnotation(PropertySource.class).value()).hasSize(2);
-        Assertions.assertThat(PropertiesConfig.ProdPropertiesConfig.class.getAnnotation(PropertySource.class).value()).containsExactly(PropertiesConfig.PROD_CONFIG_FILE, PropertiesConfig.EXTERNAL_FILE);
+        Assertions.assertThat(PropertiesConfig.ProdPropertiesConfig.class.getAnnotation(PropertySource.class).value()).hasSize(3);
+        Assertions.assertThat(PropertiesConfig.ProdPropertiesConfig.class.getAnnotation(PropertySource.class).value()).containsExactly(PropertiesConfig.PROD_CONFIG_FILE, PropertiesConfig.EXTERNAL_FILE, PropertiesConfig.EXTERNAL_OVERRIDE_FILE);
+        Assertions.assertThat(PropertiesConfig.ProdPropertiesConfig.class.getAnnotation(PropertySource.class).ignoreResourceNotFound()).isTrue();
 
         Assertions.assertThat(PropertiesConfig.EnvironnementTest.class.getAnnotations()).hasSize(3);
         Assertions.assertThat(PropertiesConfig.EnvironnementTest.class.isAnnotationPresent(Target.class)).isTrue();
@@ -68,8 +69,9 @@ public class PropertiesConfigTest {
         Assertions.assertThat(PropertiesConfig.TestPropertiesConfig.class.isAnnotationPresent(Configuration.class)).isTrue();
         Assertions.assertThat(PropertiesConfig.TestPropertiesConfig.class.isAnnotationPresent(PropertiesConfig.EnvironnementTest.class)).isTrue();
         Assertions.assertThat(PropertiesConfig.TestPropertiesConfig.class.isAnnotationPresent(PropertySource.class)).isTrue();
-        Assertions.assertThat(PropertiesConfig.TestPropertiesConfig.class.getAnnotation(PropertySource.class).value()).hasSize(2);
-        Assertions.assertThat(PropertiesConfig.TestPropertiesConfig.class.getAnnotation(PropertySource.class).value()).contains(PropertiesConfig.TEST_CONFIG_FILE, PropertiesConfig.EXTERNAL_FILE);
+        Assertions.assertThat(PropertiesConfig.TestPropertiesConfig.class.getAnnotation(PropertySource.class).value()).hasSize(3);
+        Assertions.assertThat(PropertiesConfig.TestPropertiesConfig.class.getAnnotation(PropertySource.class).value()).contains(PropertiesConfig.TEST_CONFIG_FILE, PropertiesConfig.EXTERNAL_FILE, PropertiesConfig.EXTERNAL_OVERRIDE_FILE);
+        Assertions.assertThat(PropertiesConfig.TestPropertiesConfig.class.getAnnotation(PropertySource.class).ignoreResourceNotFound()).isTrue();
     }
 
 }

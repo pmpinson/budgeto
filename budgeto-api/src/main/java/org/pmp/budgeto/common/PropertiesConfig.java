@@ -26,6 +26,8 @@ public class PropertiesConfig {
 
     public static final String EXTERNAL_FILE = "file:etc/config.properties";
 
+    public static final String EXTERNAL_OVERRIDE_FILE = "file:etc/override.properties";
+
     public static final String PROD_PROFILE = "prod";
 
     public static final String PROD_CONFIG_FILE = "classpath:config-" + PROD_PROFILE + ".properties";
@@ -48,13 +50,13 @@ public class PropertiesConfig {
 
     @Configuration
     @EnvironnementProduction
-    @PropertySource({PROD_CONFIG_FILE, EXTERNAL_FILE})
+    @PropertySource(value = {PROD_CONFIG_FILE, EXTERNAL_FILE, EXTERNAL_OVERRIDE_FILE}, ignoreResourceNotFound = true)
     public static class ProdPropertiesConfig {
     }
 
     @Configuration
     @EnvironnementTest
-    @PropertySource({TEST_CONFIG_FILE, EXTERNAL_FILE})
+    @PropertySource(value = {TEST_CONFIG_FILE, EXTERNAL_FILE, EXTERNAL_OVERRIDE_FILE}, ignoreResourceNotFound = true)
     public static class TestPropertiesConfig {
     }
 
