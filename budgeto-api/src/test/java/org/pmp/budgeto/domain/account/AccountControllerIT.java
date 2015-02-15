@@ -5,9 +5,9 @@ import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.pmp.budgeto.common.controller.DefaultControllerAdvice;
 import org.pmp.budgeto.test.config.WebITConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -87,7 +87,7 @@ public class AccountControllerIT {
 
         ObjectMapper mapper = new ObjectMapper();
         this.mockMvc.perform(
-                MockMvcRequestBuilders.post("/account").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(object)))
+                MockMvcRequestBuilders.post("/account").contentType(DefaultControllerAdvice.JSON_CONTENT_TYPE).content(mapper.writeValueAsString(object)))
                 .andExpect(MockMvcResultMatchers.status().isCreated());
 
         this.mockMvc.perform(MockMvcRequestBuilders.get("/account").accept("application/json;charset=UTF-8"))

@@ -6,6 +6,7 @@ import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.joda.time.DateTime;
+import org.pmp.budgeto.common.domain.Domain;
 import org.pmp.budgeto.common.domain.validator.TrimNotEmpty;
 import org.pmp.budgeto.common.tools.DateTools;
 import org.springframework.data.annotation.Transient;
@@ -19,7 +20,7 @@ import javax.validation.constraints.NotNull;
  */
 @Document
 @ApiModel(value = "Operation", description = "Operation occured on an account")
-public class Operation {
+public class Operation extends Domain {
 
     @Transient
     private DateTools dateTools;
@@ -45,6 +46,10 @@ public class Operation {
      */
     public Operation(DateTools dateTools) {
         this.dateTools = Validate.notNull(dateTools);
+    }
+
+    @Override
+    protected void generateLinks() {
     }
 
     public DateTime getDate() {
@@ -74,7 +79,8 @@ public class Operation {
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("label", String.valueOf(label))
-                .append("date", dateTools.getFormatterDatetimeWithzone().print(date)).toString();
+                .append("date", dateTools.getFormatterDatetimeWithzone().print(date))
+                .toString();
     }
 
 }

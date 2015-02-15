@@ -17,8 +17,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.*;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistration;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistration;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -103,21 +108,6 @@ public class SwaggerDispatcherConfigTest {
         Mockito.verify(indexResourceHandlerRegistration).addResourceLocations("classpath:swagger/");
         Mockito.verify(indexResourceHandlerRegistration).setCachePeriod(0);
         Mockito.verifyNoMoreInteractions(resourceHandlerRegistry, swaggerResourceHandlerRegistration, indexResourceHandlerRegistration);
-    }
-
-    @Test
-    public void addViewControllers() throws Exception {
-
-        ViewControllerRegistry viewControllerRegistry = Mockito.mock(ViewControllerRegistry.class);
-        ViewControllerRegistration viewControllerRegistration = Mockito.mock(ViewControllerRegistration.class);
-        Mockito.when(viewControllerRegistry.addViewController("/")).thenReturn(viewControllerRegistration);
-        Mockito.doNothing().when(viewControllerRegistration).setViewName("redirect:index.html");
-
-        swaggerDispatcherConfig.addViewControllers(viewControllerRegistry);
-
-        Mockito.verify(viewControllerRegistry).addViewController("/");
-        Mockito.verify(viewControllerRegistration).setViewName("redirect:index.html");
-        Mockito.verifyNoMoreInteractions(viewControllerRegistry, viewControllerRegistration);
     }
 
     @Test

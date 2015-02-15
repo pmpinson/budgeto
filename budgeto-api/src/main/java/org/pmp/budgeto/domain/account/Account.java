@@ -8,11 +8,14 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.validator.internal.util.CollectionHelper;
+import org.pmp.budgeto.common.domain.Domain;
 import org.pmp.budgeto.common.domain.validator.TrimNotEmpty;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.hateoas.mvc.BasicLinkBuilder;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,7 +25,7 @@ import java.util.Set;
  */
 @Document
 @ApiModel(value = "Account", description = "Object describing an account")
-public class Account {
+public class Account extends Domain {
 
     public static final String UNIQUE_IDX_NAME = "accountUniqueName";
 
@@ -36,6 +39,12 @@ public class Account {
 
     @Valid
     private Set<Operation> operations = new HashSet<>();
+
+    @Override
+    protected void generateLinks() {
+        add(BasicLinkBuilder.linkToCurrentMapping().slash("account").slash(String.valueOf(name)).withSelfRel());
+        add(BasicLinkBuilder.linkToCurrentMapping().slash("account").slash(String.valueOf(name)).slash("operations").withRel("operations"));
+    }
 
     public String getName() {
         return name;
@@ -91,7 +100,11 @@ public class Account {
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("name", String.valueOf(name))
+                .append("note", String.valueOf(note))
+                .append("operations", Arrays.toString(operations.toArray()))
+                .toString();
     }
 
 }

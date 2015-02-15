@@ -147,6 +147,10 @@
 									<file>${project.basedir}/etc/config.properties</file>
 									<todir>etc</todir>
 								</configfile>
+                                <configfile>
+                                    <file>${project.basedir}/etc/override.properties</file>
+                                    <todir>etc</todir>
+                                </configfile>
 							</configfiles>
 						</configuration>
 					</configuration>
