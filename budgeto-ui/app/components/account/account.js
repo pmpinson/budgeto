@@ -20,11 +20,11 @@ angular.module('budgeto.account', [
 .factory('OperationsResource', [ '$resource', OperationsResourceFactory ]);
 
 function AccountResourceFactory($resource) {
-  return $resource('http://localhost:9001/budgeto-service/account', {}, {});
+  return $resource('http://localhost:9001/budgeto-api/account', {}, {});
 }
 
 function OperationsResourceFactory(resource) {
-  return resource('http://localhost:9001/budgeto-service/account/:name/operations', {}, {});
+  return resource('http://localhost:9001/budgeto-api/account/:name/operations', {}, {});
 }
 
 /**
