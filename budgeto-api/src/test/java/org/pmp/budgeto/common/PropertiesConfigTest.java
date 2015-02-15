@@ -31,47 +31,52 @@ public class PropertiesConfigTest {
     @Test
     public void springConf() throws Exception {
 
-        Assertions.assertThat(PropertiesConfig.class.getAnnotations()).hasSize(3);
-        Assertions.assertThat(PropertiesConfig.class.isAnnotationPresent(Configuration.class)).isTrue();
-        Assertions.assertThat(PropertiesConfig.class.isAnnotationPresent(Import.class)).isTrue();
-        Assertions.assertThat(PropertiesConfig.class.getAnnotation(Import.class).value()).hasSize(2);
-        Assertions.assertThat(PropertiesConfig.class.getAnnotation(Import.class).value()).contains(PropertiesConfig.ProdPropertiesConfig.class);
-        Assertions.assertThat(PropertiesConfig.class.getAnnotation(Import.class).value()).contains(PropertiesConfig.TestPropertiesConfig.class);
-        Assertions.assertThat(PropertiesConfig.class.isAnnotationPresent(PropertySource.class)).isTrue();
-        Assertions.assertThat(PropertiesConfig.class.getAnnotation(PropertySource.class).value()).hasSize(1);
-        Assertions.assertThat(PropertiesConfig.class.getAnnotation(PropertySource.class).value()).containsExactly(PropertiesConfig.CONFIG_FILE);
+        Class<?> clazz = propertiesConfig.getClass();
+        Assertions.assertThat(clazz.getAnnotations()).hasSize(3);
+        Assertions.assertThat(clazz.isAnnotationPresent(Configuration.class)).isTrue();
+        Assertions.assertThat(clazz.isAnnotationPresent(Import.class)).isTrue();
+        Assertions.assertThat(clazz.getAnnotation(Import.class).value()).hasSize(2);
+        Assertions.assertThat(clazz.getAnnotation(Import.class).value()).contains(PropertiesConfig.ProdPropertiesConfig.class);
+        Assertions.assertThat(clazz.getAnnotation(Import.class).value()).contains(PropertiesConfig.TestPropertiesConfig.class);
+        Assertions.assertThat(clazz.isAnnotationPresent(PropertySource.class)).isTrue();
+        Assertions.assertThat(clazz.getAnnotation(PropertySource.class).value()).hasSize(1);
+        Assertions.assertThat(clazz.getAnnotation(PropertySource.class).value()).containsExactly(PropertiesConfig.CONFIG_FILE);
 
-        Assertions.assertThat(PropertiesConfig.EnvironnementProduction.class.getAnnotations()).hasSize(3);
-        Assertions.assertThat(PropertiesConfig.EnvironnementProduction.class.isAnnotationPresent(Target.class)).isTrue();
-        Assertions.assertThat(PropertiesConfig.EnvironnementProduction.class.getAnnotation(Target.class).value()).containsExactly(ElementType.TYPE);
-        Assertions.assertThat(PropertiesConfig.EnvironnementProduction.class.isAnnotationPresent(Retention.class)).isTrue();
-        Assertions.assertThat(PropertiesConfig.EnvironnementProduction.class.getAnnotation(Retention.class).value()).isEqualTo(RetentionPolicy.RUNTIME);
-        Assertions.assertThat(PropertiesConfig.EnvironnementProduction.class.isAnnotationPresent(Profile.class)).isTrue();
-        Assertions.assertThat(PropertiesConfig.EnvironnementProduction.class.getAnnotation(Profile.class).value()).containsExactly(PropertiesConfig.PROD_PROFILE);
+        clazz = PropertiesConfig.EnvironnementProduction.class;
+        Assertions.assertThat(clazz.getAnnotations()).hasSize(3);
+        Assertions.assertThat(clazz.isAnnotationPresent(Target.class)).isTrue();
+        Assertions.assertThat(clazz.getAnnotation(Target.class).value()).containsExactly(ElementType.TYPE);
+        Assertions.assertThat(clazz.isAnnotationPresent(Retention.class)).isTrue();
+        Assertions.assertThat(clazz.getAnnotation(Retention.class).value()).isEqualTo(RetentionPolicy.RUNTIME);
+        Assertions.assertThat(clazz.isAnnotationPresent(Profile.class)).isTrue();
+        Assertions.assertThat(clazz.getAnnotation(Profile.class).value()).containsExactly(PropertiesConfig.PROD_PROFILE);
 
-        Assertions.assertThat(PropertiesConfig.ProdPropertiesConfig.class.getAnnotations()).hasSize(3);
-        Assertions.assertThat(PropertiesConfig.ProdPropertiesConfig.class.isAnnotationPresent(Configuration.class)).isTrue();
-        Assertions.assertThat(PropertiesConfig.ProdPropertiesConfig.class.isAnnotationPresent(PropertiesConfig.EnvironnementProduction.class)).isTrue();
-        Assertions.assertThat(PropertiesConfig.ProdPropertiesConfig.class.isAnnotationPresent(PropertySource.class)).isTrue();
-        Assertions.assertThat(PropertiesConfig.ProdPropertiesConfig.class.getAnnotation(PropertySource.class).value()).hasSize(3);
-        Assertions.assertThat(PropertiesConfig.ProdPropertiesConfig.class.getAnnotation(PropertySource.class).value()).containsExactly(PropertiesConfig.PROD_CONFIG_FILE, PropertiesConfig.EXTERNAL_FILE, PropertiesConfig.EXTERNAL_OVERRIDE_FILE);
-        Assertions.assertThat(PropertiesConfig.ProdPropertiesConfig.class.getAnnotation(PropertySource.class).ignoreResourceNotFound()).isTrue();
+        clazz = prodPropertiesConfig.getClass();
+        Assertions.assertThat(clazz.getAnnotations()).hasSize(3);
+        Assertions.assertThat(clazz.isAnnotationPresent(Configuration.class)).isTrue();
+        Assertions.assertThat(clazz.isAnnotationPresent(PropertiesConfig.EnvironnementProduction.class)).isTrue();
+        Assertions.assertThat(clazz.isAnnotationPresent(PropertySource.class)).isTrue();
+        Assertions.assertThat(clazz.getAnnotation(PropertySource.class).value()).hasSize(3);
+        Assertions.assertThat(clazz.getAnnotation(PropertySource.class).value()).containsExactly(PropertiesConfig.PROD_CONFIG_FILE, PropertiesConfig.EXTERNAL_FILE, PropertiesConfig.EXTERNAL_OVERRIDE_FILE);
+        Assertions.assertThat(clazz.getAnnotation(PropertySource.class).ignoreResourceNotFound()).isTrue();
 
-        Assertions.assertThat(PropertiesConfig.EnvironnementTest.class.getAnnotations()).hasSize(3);
-        Assertions.assertThat(PropertiesConfig.EnvironnementTest.class.isAnnotationPresent(Target.class)).isTrue();
-        Assertions.assertThat(PropertiesConfig.EnvironnementTest.class.getAnnotation(Target.class).value()).containsExactly(ElementType.TYPE);
-        Assertions.assertThat(PropertiesConfig.EnvironnementTest.class.isAnnotationPresent(Retention.class)).isTrue();
-        Assertions.assertThat(PropertiesConfig.EnvironnementTest.class.getAnnotation(Retention.class).value()).isEqualTo(RetentionPolicy.RUNTIME);
-        Assertions.assertThat(PropertiesConfig.EnvironnementTest.class.isAnnotationPresent(Profile.class)).isTrue();
-        Assertions.assertThat(PropertiesConfig.EnvironnementTest.class.getAnnotation(Profile.class).value()).containsExactly(PropertiesConfig.TEST_PROFILE);
+        clazz = PropertiesConfig.EnvironnementTest.class;
+        Assertions.assertThat(clazz.getAnnotations()).hasSize(3);
+        Assertions.assertThat(clazz.isAnnotationPresent(Target.class)).isTrue();
+        Assertions.assertThat(clazz.getAnnotation(Target.class).value()).containsExactly(ElementType.TYPE);
+        Assertions.assertThat(clazz.isAnnotationPresent(Retention.class)).isTrue();
+        Assertions.assertThat(clazz.getAnnotation(Retention.class).value()).isEqualTo(RetentionPolicy.RUNTIME);
+        Assertions.assertThat(clazz.isAnnotationPresent(Profile.class)).isTrue();
+        Assertions.assertThat(clazz.getAnnotation(Profile.class).value()).containsExactly(PropertiesConfig.TEST_PROFILE);
 
-        Assertions.assertThat(PropertiesConfig.TestPropertiesConfig.class.getAnnotations()).hasSize(3);
-        Assertions.assertThat(PropertiesConfig.TestPropertiesConfig.class.isAnnotationPresent(Configuration.class)).isTrue();
-        Assertions.assertThat(PropertiesConfig.TestPropertiesConfig.class.isAnnotationPresent(PropertiesConfig.EnvironnementTest.class)).isTrue();
-        Assertions.assertThat(PropertiesConfig.TestPropertiesConfig.class.isAnnotationPresent(PropertySource.class)).isTrue();
-        Assertions.assertThat(PropertiesConfig.TestPropertiesConfig.class.getAnnotation(PropertySource.class).value()).hasSize(3);
-        Assertions.assertThat(PropertiesConfig.TestPropertiesConfig.class.getAnnotation(PropertySource.class).value()).contains(PropertiesConfig.TEST_CONFIG_FILE, PropertiesConfig.EXTERNAL_FILE, PropertiesConfig.EXTERNAL_OVERRIDE_FILE);
-        Assertions.assertThat(PropertiesConfig.TestPropertiesConfig.class.getAnnotation(PropertySource.class).ignoreResourceNotFound()).isTrue();
+        clazz = testPropertiesConfig.getClass();
+        Assertions.assertThat(clazz.getAnnotations()).hasSize(3);
+        Assertions.assertThat(clazz.isAnnotationPresent(Configuration.class)).isTrue();
+        Assertions.assertThat(clazz.isAnnotationPresent(PropertiesConfig.EnvironnementTest.class)).isTrue();
+        Assertions.assertThat(clazz.isAnnotationPresent(PropertySource.class)).isTrue();
+        Assertions.assertThat(clazz.getAnnotation(PropertySource.class).value()).hasSize(3);
+        Assertions.assertThat(clazz.getAnnotation(PropertySource.class).value()).contains(PropertiesConfig.TEST_CONFIG_FILE, PropertiesConfig.EXTERNAL_FILE, PropertiesConfig.EXTERNAL_OVERRIDE_FILE);
+        Assertions.assertThat(clazz.getAnnotation(PropertySource.class).ignoreResourceNotFound()).isTrue();
     }
 
 }

@@ -10,16 +10,19 @@ public class BudgetRepositoryTest {
 
     @Test
     public void structure() throws Exception {
-        Assertions.assertThat(BudgetRepository.class.getInterfaces()).hasSize(1);
-        Assertions.assertThat(BudgetRepository.class.getInterfaces()).contains(MongoRepository.class);
-        Assertions.assertThat(BudgetRepository.class.getGenericInterfaces()[0].toString()).isEqualTo(MongoRepository.class.getName() + "<" + Budget.class.getName() + ", " + Long.class.getName() + ">");
+
+        Class<?> clazz = BudgetRepository.class;
+        Assertions.assertThat(clazz.getInterfaces()).hasSize(1);
+        Assertions.assertThat(clazz.getInterfaces()).contains(MongoRepository.class);
+        Assertions.assertThat(clazz.getGenericInterfaces()[0].toString()).isEqualTo(MongoRepository.class.getName() + "<" + Budget.class.getName() + ", " + Long.class.getName() + ">");
     }
 
     @Test
     public void springConf() throws Exception {
 
-        Assertions.assertThat(BudgetRepository.class.getAnnotations()).hasSize(1);
-        Assertions.assertThat(BudgetRepository.class.isAnnotationPresent(Repository.class)).isTrue();
+        Class<?> clazz = BudgetRepository.class;
+        Assertions.assertThat(clazz.getAnnotations()).hasSize(1);
+        Assertions.assertThat(clazz.isAnnotationPresent(Repository.class)).isTrue();
     }
 
 }

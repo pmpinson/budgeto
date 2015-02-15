@@ -35,11 +35,12 @@ public class ControllerDispatcherConfigTest {
     @Test
     public void springConf() throws Exception {
 
-        Assertions.assertThat(ControllerDispatcherConfig.class.getAnnotations()).hasSize(3);
-        Assertions.assertThat(ControllerDispatcherConfig.class.isAnnotationPresent(Configuration.class)).isTrue();
-        Assertions.assertThat(ControllerDispatcherConfig.class.isAnnotationPresent(EnableWebMvc.class)).isTrue();
-        Assertions.assertThat(ControllerDispatcherConfig.class.isAnnotationPresent(ComponentScan.class)).isTrue();
-        Assertions.assertThat(ControllerDispatcherConfig.class.getAnnotation(ComponentScan.class).basePackages()).containsExactly("org.pmp.budgeto.common.controller");
+        Class<?> clazz = controllerDispatcherConfig.getClass();
+        Assertions.assertThat(clazz.getAnnotations()).hasSize(3);
+        Assertions.assertThat(clazz.isAnnotationPresent(Configuration.class)).isTrue();
+        Assertions.assertThat(clazz.isAnnotationPresent(EnableWebMvc.class)).isTrue();
+        Assertions.assertThat(clazz.isAnnotationPresent(ComponentScan.class)).isTrue();
+        Assertions.assertThat(clazz.getAnnotation(ComponentScan.class).basePackages()).containsExactly("org.pmp.budgeto.common.controller");
     }
 
     @Test

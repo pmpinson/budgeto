@@ -25,11 +25,13 @@ public class AccountListenerTest {
 
     @Test
     public void springConf() throws Exception {
-        Assertions.assertThat(AccountListener.class.getAnnotations()).hasSize(1);
-        Assertions.assertThat(AccountListener.class.isAnnotationPresent(Component.class)).isTrue();
 
-        Assertions.assertThat(AccountController.class.getConstructors()).hasSize(1);
-        Assertions.assertThat(AccountController.class.getConstructors()[0].isAnnotationPresent(Autowired.class)).isTrue();
+        Class<?> clazz = accountListener.getClass();
+        Assertions.assertThat(clazz.getAnnotations()).hasSize(1);
+        Assertions.assertThat(clazz.isAnnotationPresent(Component.class)).isTrue();
+
+        Assertions.assertThat(clazz.getConstructors()).hasSize(1);
+        Assertions.assertThat(clazz.getConstructors()[0].isAnnotationPresent(Autowired.class)).isTrue();
     }
 
     @Test

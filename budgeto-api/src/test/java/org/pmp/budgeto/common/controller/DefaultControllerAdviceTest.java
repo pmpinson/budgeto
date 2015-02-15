@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.lang.reflect.Method;
+
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultControllerAdviceTest {
@@ -34,42 +36,48 @@ public class DefaultControllerAdviceTest {
 
     @Test
     public void springConf() throws Exception {
-        Assertions.assertThat(DefaultControllerAdvice.class.getAnnotations()).hasSize(2);
-        Assertions.assertThat(DefaultControllerAdvice.class.isAnnotationPresent(ControllerAdvice.class)).isTrue();
-        Assertions.assertThat(DefaultControllerAdvice.class.isAnnotationPresent(RequestMapping.class)).isTrue();
-        Assertions.assertThat(DefaultControllerAdvice.class.getAnnotation(RequestMapping.class).consumes()).isEmpty();
-        Assertions.assertThat(DefaultControllerAdvice.class.getAnnotation(RequestMapping.class).produces()).containsOnly(DefaultControllerAdvice.JSON_CONTENT_TYPE);
 
-        Assertions.assertThat(AccountController.class.getConstructors()).hasSize(1);
-        Assertions.assertThat(AccountController.class.getConstructors()[0].isAnnotationPresent(Autowired.class)).isTrue();
+        Class<?> clazz = defaultControllerAdvice.getClass();
+        Assertions.assertThat(clazz.getAnnotations()).hasSize(2);
+        Assertions.assertThat(clazz.isAnnotationPresent(ControllerAdvice.class)).isTrue();
+        Assertions.assertThat(clazz.isAnnotationPresent(RequestMapping.class)).isTrue();
+        Assertions.assertThat(clazz.getAnnotation(RequestMapping.class).consumes()).isEmpty();
+        Assertions.assertThat(clazz.getAnnotation(RequestMapping.class).produces()).containsOnly(DefaultControllerAdvice.JSON_CONTENT_TYPE);
 
-        Assertions.assertThat(DefaultControllerAdvice.class.getDeclaredMethod("handleException", new Class[]{Exception.class}).getAnnotations()).hasSize(3);
-        Assertions.assertThat(DefaultControllerAdvice.class.getDeclaredMethod("handleException", new Class[]{Exception.class}).getAnnotation(ExceptionHandler.class)).isNotNull();
-        Assertions.assertThat(DefaultControllerAdvice.class.getDeclaredMethod("handleException", new Class[]{Exception.class}).getAnnotation(ExceptionHandler.class).value()).containsOnly(Exception.class);
-        Assertions.assertThat(DefaultControllerAdvice.class.getDeclaredMethod("handleException", new Class[]{Exception.class}).getAnnotation(ResponseBody.class)).isNotNull();
-        Assertions.assertThat(DefaultControllerAdvice.class.getDeclaredMethod("handleException", new Class[]{Exception.class}).getAnnotation(ResponseStatus.class)).isNotNull();
-        Assertions.assertThat(DefaultControllerAdvice.class.getDeclaredMethod("handleException", new Class[]{Exception.class}).getAnnotation(ResponseStatus.class).value()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+        Assertions.assertThat(clazz.getConstructors()).hasSize(1);
+        Assertions.assertThat(clazz.getConstructors()[0].isAnnotationPresent(Autowired.class)).isTrue();
 
-        Assertions.assertThat(DefaultControllerAdvice.class.getDeclaredMethod("handleException", new Class[]{DomainException.class}).getAnnotations()).hasSize(3);
-        Assertions.assertThat(DefaultControllerAdvice.class.getDeclaredMethod("handleException", new Class[]{DomainException.class}).getAnnotation(ExceptionHandler.class)).isNotNull();
-        Assertions.assertThat(DefaultControllerAdvice.class.getDeclaredMethod("handleException", new Class[]{DomainException.class}).getAnnotation(ExceptionHandler.class).value()).containsOnly(DomainException.class);
-        Assertions.assertThat(DefaultControllerAdvice.class.getDeclaredMethod("handleException", new Class[]{DomainException.class}).getAnnotation(ResponseBody.class)).isNotNull();
-        Assertions.assertThat(DefaultControllerAdvice.class.getDeclaredMethod("handleException", new Class[]{DomainException.class}).getAnnotation(ResponseStatus.class)).isNotNull();
-        Assertions.assertThat(DefaultControllerAdvice.class.getDeclaredMethod("handleException", new Class[]{DomainException.class}).getAnnotation(ResponseStatus.class).value()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+        Method mHandleException = clazz.getDeclaredMethod("handleException", new Class[]{Exception.class});
+        Assertions.assertThat(mHandleException.getAnnotations()).hasSize(3);
+        Assertions.assertThat(mHandleException.getAnnotation(ExceptionHandler.class)).isNotNull();
+        Assertions.assertThat(mHandleException.getAnnotation(ExceptionHandler.class).value()).containsOnly(Exception.class);
+        Assertions.assertThat(mHandleException.getAnnotation(ResponseBody.class)).isNotNull();
+        Assertions.assertThat(mHandleException.getAnnotation(ResponseStatus.class)).isNotNull();
+        Assertions.assertThat(mHandleException.getAnnotation(ResponseStatus.class).value()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
 
-        Assertions.assertThat(DefaultControllerAdvice.class.getDeclaredMethod("handleException", new Class[]{DomainValidationException.class}).getAnnotations()).hasSize(3);
-        Assertions.assertThat(DefaultControllerAdvice.class.getDeclaredMethod("handleException", new Class[]{DomainValidationException.class}).getAnnotation(ExceptionHandler.class)).isNotNull();
-        Assertions.assertThat(DefaultControllerAdvice.class.getDeclaredMethod("handleException", new Class[]{DomainValidationException.class}).getAnnotation(ExceptionHandler.class).value()).containsOnly(DomainValidationException.class);
-        Assertions.assertThat(DefaultControllerAdvice.class.getDeclaredMethod("handleException", new Class[]{DomainValidationException.class}).getAnnotation(ResponseBody.class)).isNotNull();
-        Assertions.assertThat(DefaultControllerAdvice.class.getDeclaredMethod("handleException", new Class[]{DomainValidationException.class}).getAnnotation(ResponseStatus.class)).isNotNull();
-        Assertions.assertThat(DefaultControllerAdvice.class.getDeclaredMethod("handleException", new Class[]{DomainValidationException.class}).getAnnotation(ResponseStatus.class).value()).isEqualTo(HttpStatus.BAD_REQUEST);
+        mHandleException = clazz.getDeclaredMethod("handleException", new Class[]{DomainException.class});
+        Assertions.assertThat(mHandleException.getAnnotations()).hasSize(3);
+        Assertions.assertThat(mHandleException.getAnnotation(ExceptionHandler.class)).isNotNull();
+        Assertions.assertThat(mHandleException.getAnnotation(ExceptionHandler.class).value()).containsOnly(DomainException.class);
+        Assertions.assertThat(mHandleException.getAnnotation(ResponseBody.class)).isNotNull();
+        Assertions.assertThat(mHandleException.getAnnotation(ResponseStatus.class)).isNotNull();
+        Assertions.assertThat(mHandleException.getAnnotation(ResponseStatus.class).value()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
 
-        Assertions.assertThat(DefaultControllerAdvice.class.getDeclaredMethod("handleException", new Class[]{DomainNotFoundException.class}).getAnnotations()).hasSize(3);
-        Assertions.assertThat(DefaultControllerAdvice.class.getDeclaredMethod("handleException", new Class[]{DomainNotFoundException.class}).getAnnotation(ExceptionHandler.class)).isNotNull();
-        Assertions.assertThat(DefaultControllerAdvice.class.getDeclaredMethod("handleException", new Class[]{DomainNotFoundException.class}).getAnnotation(ExceptionHandler.class).value()).containsOnly(DomainNotFoundException.class);
-        Assertions.assertThat(DefaultControllerAdvice.class.getDeclaredMethod("handleException", new Class[]{DomainNotFoundException.class}).getAnnotation(ResponseBody.class)).isNotNull();
-        Assertions.assertThat(DefaultControllerAdvice.class.getDeclaredMethod("handleException", new Class[]{DomainNotFoundException.class}).getAnnotation(ResponseStatus.class)).isNotNull();
-        Assertions.assertThat(DefaultControllerAdvice.class.getDeclaredMethod("handleException", new Class[]{DomainNotFoundException.class}).getAnnotation(ResponseStatus.class).value()).isEqualTo(HttpStatus.NOT_FOUND);
+        mHandleException = clazz.getDeclaredMethod("handleException", new Class[]{DomainValidationException.class});
+        Assertions.assertThat(mHandleException.getAnnotations()).hasSize(3);
+        Assertions.assertThat(mHandleException.getAnnotation(ExceptionHandler.class)).isNotNull();
+        Assertions.assertThat(mHandleException.getAnnotation(ExceptionHandler.class).value()).containsOnly(DomainValidationException.class);
+        Assertions.assertThat(mHandleException.getAnnotation(ResponseBody.class)).isNotNull();
+        Assertions.assertThat(mHandleException.getAnnotation(ResponseStatus.class)).isNotNull();
+        Assertions.assertThat(mHandleException.getAnnotation(ResponseStatus.class).value()).isEqualTo(HttpStatus.BAD_REQUEST);
+
+        mHandleException = clazz.getDeclaredMethod("handleException", new Class[]{DomainNotFoundException.class});
+        Assertions.assertThat(mHandleException.getAnnotations()).hasSize(3);
+        Assertions.assertThat(mHandleException.getAnnotation(ExceptionHandler.class)).isNotNull();
+        Assertions.assertThat(mHandleException.getAnnotation(ExceptionHandler.class).value()).containsOnly(DomainNotFoundException.class);
+        Assertions.assertThat(mHandleException.getAnnotation(ResponseBody.class)).isNotNull();
+        Assertions.assertThat(mHandleException.getAnnotation(ResponseStatus.class)).isNotNull();
+        Assertions.assertThat(mHandleException.getAnnotation(ResponseStatus.class).value()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @Test

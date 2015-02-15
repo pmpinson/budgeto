@@ -31,14 +31,16 @@ public class WebAppConfigTest {
     @Test
     public void springConf() throws Exception {
 
-        Assertions.assertThat(WebAppConfig.class.getAnnotations()).hasSize(2);
-        Assertions.assertThat(WebAppConfig.class.isAnnotationPresent(Configuration.class)).isTrue();
-        Assertions.assertThat(WebAppConfig.class.isAnnotationPresent(Import.class)).isTrue();
-        Assertions.assertThat(WebAppConfig.class.getAnnotation(Import.class).value()).hasSize(4);
-        Assertions.assertThat(WebAppConfig.class.getAnnotation(Import.class).value()).contains(ToolsConfig.class);
-        Assertions.assertThat(WebAppConfig.class.getAnnotation(Import.class).value()).contains(RepositoryConfig.class);
-        Assertions.assertThat(WebAppConfig.class.getAnnotation(Import.class).value()).contains(DomainConfig.class);
-        Assertions.assertThat(WebAppConfig.class.getAnnotation(Import.class).value()).contains(PropertiesConfig.class);
+        Class<?> clazz = webAppConfig.getClass();
+        Assertions.assertThat(clazz.getAnnotations()).hasSize(2);
+        Assertions.assertThat(clazz.isAnnotationPresent(Configuration.class)).isTrue();
+        Assertions.assertThat(clazz.isAnnotationPresent(Import.class)).isTrue();
+        Import aImport = clazz.getAnnotation(Import.class);
+        Assertions.assertThat(aImport.value()).hasSize(4);
+        Assertions.assertThat(aImport.value()).contains(ToolsConfig.class);
+        Assertions.assertThat(aImport.value()).contains(RepositoryConfig.class);
+        Assertions.assertThat(aImport.value()).contains(DomainConfig.class);
+        Assertions.assertThat(aImport.value()).contains(PropertiesConfig.class);
     }
 
     @Test

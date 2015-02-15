@@ -18,10 +18,11 @@ public class DomainConfigTest {
     @Test
     public void springConf() throws Exception {
 
-        Assertions.assertThat(DomainConfig.class.getAnnotations()).hasSize(2);
-        Assertions.assertThat(DomainConfig.class.isAnnotationPresent(Configuration.class)).isTrue();
-        Assertions.assertThat(DomainConfig.class.isAnnotationPresent(ComponentScan.class)).isTrue();
-        Assertions.assertThat(DomainConfig.class.getAnnotation(ComponentScan.class).basePackages()).containsExactly("org.pmp.budgeto.common.domain");
+        Class<?> clazz = domainConfig.getClass();
+        Assertions.assertThat(clazz.getAnnotations()).hasSize(2);
+        Assertions.assertThat(clazz.isAnnotationPresent(Configuration.class)).isTrue();
+        Assertions.assertThat(clazz.isAnnotationPresent(ComponentScan.class)).isTrue();
+        Assertions.assertThat(clazz.getAnnotation(ComponentScan.class).basePackages()).containsExactly("org.pmp.budgeto.common.domain");
     }
 
 }

@@ -29,8 +29,9 @@ public class MongoToolsTest {
     @Test
     public void springConf() throws Exception {
 
-        Assertions.assertThat(MongoToolsImpl.class.getAnnotations()).hasSize(1);
-        Assertions.assertThat(MongoToolsImpl.class.isAnnotationPresent(Component.class)).isTrue();
+        Class<?> clazz = mongoTools.getClass();
+        Assertions.assertThat(clazz.getAnnotations()).hasSize(1);
+        Assertions.assertThat(clazz.isAnnotationPresent(Component.class)).isTrue();
     }
 
     @Test
