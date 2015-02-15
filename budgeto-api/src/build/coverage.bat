@@ -4,4 +4,4 @@ rem Run unit tests, integration tests and generate report tests / coverage repor
 rem ---------------------------------------------------------------------
 rem
 
-mvn clean verify site
+mvn verify site

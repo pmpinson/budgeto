@@ -5,4 +5,4 @@
 # ---------------------------------------------------------------------
 #
 
-mvn clean package cargo:run -Dmaven.test.skip=true
+mvn package cargo:run -Dmaven.test.skip=true

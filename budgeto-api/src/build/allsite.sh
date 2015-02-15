@@ -5,4 +5,4 @@
 # ---------------------------------------------------------------------
 #
 
-mvn clean verify site -Pdeploy
+mvn verify site -Pdeploy

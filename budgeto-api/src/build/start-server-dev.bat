@@ -4,4 +4,4 @@ rem Start application in tomcat8 (port 9001) with cargo. run with jvm debug mode
 rem ---------------------------------------------------------------------
 rem
 
-mvn clean package cargo:run -Pcargo-dev -Dmaven.test.skip=true
+mvn package cargo:run -Pcargo-dev -Dmaven.test.skip=true

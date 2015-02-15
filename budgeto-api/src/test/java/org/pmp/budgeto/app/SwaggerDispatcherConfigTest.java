@@ -111,21 +111,6 @@ public class SwaggerDispatcherConfigTest {
     }
 
     @Test
-    public void addViewControllers() throws Exception {
-
-        ViewControllerRegistry viewControllerRegistry = Mockito.mock(ViewControllerRegistry.class);
-        ViewControllerRegistration viewControllerRegistration = Mockito.mock(ViewControllerRegistration.class);
-        Mockito.when(viewControllerRegistry.addViewController("/")).thenReturn(viewControllerRegistration);
-        Mockito.doNothing().when(viewControllerRegistration).setViewName("redirect:index.html");
-
-        swaggerDispatcherConfig.addViewControllers(viewControllerRegistry);
-
-        Mockito.verify(viewControllerRegistry).addViewController("/");
-        Mockito.verify(viewControllerRegistration).setViewName("redirect:index.html");
-        Mockito.verifyNoMoreInteractions(viewControllerRegistry, viewControllerRegistration);
-    }
-
-    @Test
     public void configureDefaultServletHandling() throws Exception {
 
         DefaultServletHandlerConfigurer defaultServletHandlerConfigurer = Mockito.mock(DefaultServletHandlerConfigurer.class);
