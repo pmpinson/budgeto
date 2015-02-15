@@ -1,5 +1,6 @@
 package org.pmp.budgeto.domain.account;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.Validate;
@@ -10,8 +11,12 @@ import org.pmp.budgeto.common.domain.validator.TrimNotEmpty;
 import org.pmp.budgeto.common.tools.DateTools;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.ResourceSupport;
+import org.springframework.hateoas.mvc.BasicLinkBuilder;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 
 /**
@@ -19,7 +24,7 @@ import javax.validation.constraints.NotNull;
  */
 @Document
 @ApiModel(value = "Operation", description = "Operation occured on an account")
-public class Operation {
+public class Operation extends ResourceSupport {
 
     @Transient
     private DateTools dateTools;
@@ -31,6 +36,14 @@ public class Operation {
     @TrimNotEmpty
     @ApiModelProperty(value = "description of the operation", required = true)
     private String label;
+
+    @Override
+    @JsonProperty("links")
+    @ApiModelProperty(value = "links", notes = "the list of links to relations object")
+    public List<Link> getLinks() {
+        removeLinks();
+        return super.getLinks();
+    }
 
     /**
      * use by mongo to load
@@ -74,7 +87,8 @@ public class Operation {
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("label", String.valueOf(label))
-                .append("date", dateTools.getFormatterDatetimeWithzone().print(date)).toString();
+                .append("date", dateTools.getFormatterDatetimeWithzone().print(date))
+                .toString();
     }
 
 }
