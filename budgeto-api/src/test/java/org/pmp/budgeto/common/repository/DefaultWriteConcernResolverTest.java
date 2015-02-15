@@ -20,8 +20,9 @@ public class DefaultWriteConcernResolverTest {
     @Test
     public void springConf() throws Exception {
 
-        Assertions.assertThat(DefaultWriteConcernResolver.class.getAnnotations()).hasSize(1);
-        Assertions.assertThat(DefaultWriteConcernResolver.class.isAnnotationPresent(Component.class)).isTrue();
+        Class<?> clazz = defaultWriteConcernResolver.getClass();
+        Assertions.assertThat(clazz.getAnnotations()).hasSize(1);
+        Assertions.assertThat(clazz.isAnnotationPresent(Component.class)).isTrue();
     }
 
     @Test

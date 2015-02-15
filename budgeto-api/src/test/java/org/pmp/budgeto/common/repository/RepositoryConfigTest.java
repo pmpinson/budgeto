@@ -19,6 +19,9 @@ import org.springframework.data.mongodb.core.MongoFactoryBean;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteConcernResolver;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
 
 @RunWith(MockitoJUnitRunner.class)
 public class RepositoryConfigTest {
@@ -38,24 +41,31 @@ public class RepositoryConfigTest {
     @Test
     public void springConf() throws Exception {
 
-        Assertions.assertThat(RepositoryConfig.class.getAnnotations()).hasSize(2);
-        Assertions.assertThat(RepositoryConfig.class.isAnnotationPresent(Configuration.class)).isTrue();
-        Assertions.assertThat(RepositoryConfig.class.isAnnotationPresent(ComponentScan.class)).isTrue();
-        Assertions.assertThat(RepositoryConfig.class.getAnnotation(ComponentScan.class).basePackages()).containsExactly("org.pmp.budgeto.common.repository");
+        Class<?> clazz = repositoryConfig.getClass();
+        Assertions.assertThat(clazz.getAnnotations()).hasSize(2);
+        Assertions.assertThat(clazz.isAnnotationPresent(Configuration.class)).isTrue();
+        Assertions.assertThat(clazz.isAnnotationPresent(ComponentScan.class)).isTrue();
+        Assertions.assertThat(clazz.getAnnotation(ComponentScan.class).basePackages()).containsExactly("org.pmp.budgeto.common.repository");
 
-        Assertions.assertThat(RepositoryConfig.class.getDeclaredField("environment").getAnnotations()).hasSize(1);
-        Assertions.assertThat(RepositoryConfig.class.getDeclaredField("environment").isAnnotationPresent(Autowired.class)).isTrue();
-        Assertions.assertThat(RepositoryConfig.class.getDeclaredField("writeConcernResolver").getAnnotations()).hasSize(1);
-        Assertions.assertThat(RepositoryConfig.class.getDeclaredField("writeConcernResolver").isAnnotationPresent(Autowired.class)).isTrue();
-        Assertions.assertThat(RepositoryConfig.class.getDeclaredField("mongoTools").getAnnotations()).hasSize(1);
-        Assertions.assertThat(RepositoryConfig.class.getDeclaredField("mongoTools").isAnnotationPresent(Autowired.class)).isTrue();
+        Field fEnvironment = clazz.getDeclaredField("environment");
+        Assertions.assertThat(fEnvironment.getAnnotations()).hasSize(1);
+        Assertions.assertThat(fEnvironment.isAnnotationPresent(Autowired.class)).isTrue();
+        Field fWriteConcernResolver = clazz.getDeclaredField("writeConcernResolver");
+        Assertions.assertThat(fWriteConcernResolver .getAnnotations()).hasSize(1);
+        Assertions.assertThat(fWriteConcernResolver .isAnnotationPresent(Autowired.class)).isTrue();
+        Field fMongoTools = clazz.getDeclaredField("mongoTools");
+        Assertions.assertThat(fMongoTools.getAnnotations()).hasSize(1);
+        Assertions.assertThat(fMongoTools.isAnnotationPresent(Autowired.class)).isTrue();
 
-        Assertions.assertThat(RepositoryConfig.class.getDeclaredMethod("mongoTemplate", new Class[]{}).getAnnotations()).hasSize(1);
-        Assertions.assertThat(RepositoryConfig.class.getDeclaredMethod("mongoTemplate", new Class[]{}).getAnnotation(Bean.class)).isNotNull();
-        Assertions.assertThat(RepositoryConfig.class.getDeclaredMethod("mongoFactoryBean", new Class[]{}).getAnnotations()).hasSize(1);
-        Assertions.assertThat(RepositoryConfig.class.getDeclaredMethod("mongoFactoryBean", new Class[]{}).getAnnotation(Bean.class)).isNotNull();
-        Assertions.assertThat(RepositoryConfig.class.getDeclaredMethod("mongoDbFactory", new Class[]{}).getAnnotations()).hasSize(1);
-        Assertions.assertThat(RepositoryConfig.class.getDeclaredMethod("mongoDbFactory", new Class[]{}).getAnnotation(Bean.class)).isNotNull();
+        Method mMongoTemplate = clazz.getDeclaredMethod("mongoTemplate", new Class[]{});
+        Assertions.assertThat(mMongoTemplate.getAnnotations()).hasSize(1);
+        Assertions.assertThat(mMongoTemplate.getAnnotation(Bean.class)).isNotNull();
+        Method mMongoFactoryBean = clazz.getDeclaredMethod("mongoFactoryBean", new Class[]{});
+        Assertions.assertThat(mMongoFactoryBean.getAnnotations()).hasSize(1);
+        Assertions.assertThat(mMongoFactoryBean.getAnnotation(Bean.class)).isNotNull();
+        Method mMongoDbFactory = clazz.getDeclaredMethod("mongoDbFactory", new Class[]{});
+        Assertions.assertThat(mMongoDbFactory.getAnnotations()).hasSize(1);
+        Assertions.assertThat(mMongoDbFactory.getAnnotation(Bean.class)).isNotNull();
     }
 
     @Test

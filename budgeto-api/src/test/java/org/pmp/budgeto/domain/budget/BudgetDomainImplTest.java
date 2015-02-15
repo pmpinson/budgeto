@@ -39,11 +39,13 @@ public class BudgetDomainImplTest {
 
     @Test
     public void springConf() throws Exception {
-        Assertions.assertThat(BudgetDomainImpl.class.getAnnotations()).hasSize(1);
-        Assertions.assertThat(BudgetDomainImpl.class.isAnnotationPresent(Service.class)).isTrue();
 
-        Assertions.assertThat(BudgetDomainImpl.class.getConstructors()).hasSize(1);
-        Assertions.assertThat(BudgetDomainImpl.class.getConstructors()[0].isAnnotationPresent(Autowired.class)).isTrue();
+        Class<?> clazz = budgetDomain.getClass();
+        Assertions.assertThat(clazz.getAnnotations()).hasSize(1);
+        Assertions.assertThat(clazz.isAnnotationPresent(Service.class)).isTrue();
+
+        Assertions.assertThat(clazz.getConstructors()).hasSize(1);
+        Assertions.assertThat(clazz.getConstructors()[0].isAnnotationPresent(Autowired.class)).isTrue();
     }
 
     @Test

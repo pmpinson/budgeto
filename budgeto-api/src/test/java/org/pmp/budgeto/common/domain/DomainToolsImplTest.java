@@ -47,8 +47,10 @@ public class DomainToolsImplTest {
 
     @Test
     public void springConf() throws Exception {
-        Assertions.assertThat(ValidatorToolsImpl.class.getAnnotations()).hasSize(1);
-        Assertions.assertThat(ValidatorToolsImpl.class.isAnnotationPresent(Component.class)).isTrue();
+
+        Class<?> clazz = domainTools.getClass();
+        Assertions.assertThat(clazz.getAnnotations()).hasSize(1);
+        Assertions.assertThat(clazz.isAnnotationPresent(Component.class)).isTrue();
     }
 
     @Test

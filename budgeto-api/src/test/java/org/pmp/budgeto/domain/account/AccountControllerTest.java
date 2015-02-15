@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.lang.reflect.Method;
 import java.util.Set;
 
 
@@ -48,62 +49,68 @@ public class AccountControllerTest {
 
     @Test
     public void springConf() throws Exception {
-        Assertions.assertThat(AccountController.class.getAnnotations()).hasSize(3);
-        Assertions.assertThat(AccountController.class.isAnnotationPresent(RestController.class)).isTrue();
-        Assertions.assertThat(AccountController.class.isAnnotationPresent(Api.class)).isTrue();
-        Assertions.assertThat(AccountController.class.isAnnotationPresent(RequestMapping.class)).isTrue();
-        Assertions.assertThat(AccountController.class.getAnnotation(RequestMapping.class).value()).containsOnly("account");
-        Assertions.assertThat(AccountController.class.getAnnotation(RequestMapping.class).consumes()).isEmpty();
-        Assertions.assertThat(AccountController.class.getAnnotation(RequestMapping.class).produces()).containsOnly(DefaultControllerAdvice.JSON_CONTENT_TYPE);
 
-        Assertions.assertThat(AccountController.class.getConstructors()).hasSize(1);
-        Assertions.assertThat(AccountController.class.getConstructors()[0].isAnnotationPresent(Autowired.class)).isTrue();
+        Class<?> clazz = accountController.getClass();
+        Assertions.assertThat(clazz.getAnnotations()).hasSize(3);
+        Assertions.assertThat(clazz.isAnnotationPresent(RestController.class)).isTrue();
+        Assertions.assertThat(clazz.isAnnotationPresent(Api.class)).isTrue();
+        Assertions.assertThat(clazz.isAnnotationPresent(RequestMapping.class)).isTrue();
+        Assertions.assertThat(clazz.getAnnotation(RequestMapping.class).value()).containsOnly("account");
+        Assertions.assertThat(clazz.getAnnotation(RequestMapping.class).consumes()).isEmpty();
+        Assertions.assertThat(clazz.getAnnotation(RequestMapping.class).produces()).containsOnly(DefaultControllerAdvice.JSON_CONTENT_TYPE);
 
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("findAll").getAnnotations()).hasSize(4);
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("findAll").getAnnotation(ApiOperation.class)).isNotNull();
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("findAll").getAnnotation(ApiResponses.class)).isNotNull();
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("findAll").getAnnotation(RequestMapping.class)).isNotNull();
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("findAll").getAnnotation(RequestMapping.class).consumes()).isEmpty();
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("findAll").getAnnotation(RequestMapping.class).produces()).isEmpty();
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("findAll").getAnnotation(RequestMapping.class).value()).containsOnly("");
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("findAll").getAnnotation(RequestMapping.class).method()).containsOnly(RequestMethod.GET);
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("findAll").getAnnotation(ResponseStatus.class)).isNotNull();
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("findAll").getAnnotation(ResponseStatus.class).value()).isEqualTo(HttpStatus.OK);
+        Assertions.assertThat(clazz.getConstructors()).hasSize(1);
+        Assertions.assertThat(clazz.getConstructors()[0].isAnnotationPresent(Autowired.class)).isTrue();
 
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("add", new Class[]{Account.class}).getAnnotations()).hasSize(4);
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("add", new Class[]{Account.class}).getAnnotation(ApiOperation.class)).isNotNull();
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("add", new Class[]{Account.class}).getAnnotation(ApiResponses.class)).isNotNull();
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("add", new Class[]{Account.class}).getAnnotation(RequestMapping.class)).isNotNull();
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("add", new Class[]{Account.class}).getAnnotation(RequestMapping.class).consumes()).contains(DefaultControllerAdvice.JSON_CONTENT_TYPE);
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("add", new Class[]{Account.class}).getAnnotation(RequestMapping.class).produces()).isEmpty();
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("add", new Class[]{Account.class}).getAnnotation(RequestMapping.class).value()).containsOnly("");
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("add", new Class[]{Account.class}).getAnnotation(RequestMapping.class).method()).containsOnly(RequestMethod.POST);
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("add", new Class[]{Account.class}).getAnnotation(ResponseStatus.class)).isNotNull();
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("add", new Class[]{Account.class}).getAnnotation(ResponseStatus.class).value()).isEqualTo(HttpStatus.CREATED);
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("add", new Class[]{Account.class}).getParameterAnnotations()[0]).hasSize(1);
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("add", new Class[]{Account.class}).getParameterAnnotations()[0][0].annotationType()).isEqualTo(RequestBody.class);
+        Method mFindAll = clazz.getDeclaredMethod("findAll");
+        Assertions.assertThat(mFindAll.getAnnotations()).hasSize(4);
+        Assertions.assertThat(mFindAll.getAnnotation(ApiOperation.class)).isNotNull();
+        Assertions.assertThat(mFindAll.getAnnotation(ApiResponses.class)).isNotNull();
+        Assertions.assertThat(mFindAll.getAnnotation(RequestMapping.class)).isNotNull();
+        Assertions.assertThat(mFindAll.getAnnotation(RequestMapping.class).consumes()).isEmpty();
+        Assertions.assertThat(mFindAll.getAnnotation(RequestMapping.class).produces()).isEmpty();
+        Assertions.assertThat(mFindAll.getAnnotation(RequestMapping.class).value()).containsOnly("");
+        Assertions.assertThat(mFindAll.getAnnotation(RequestMapping.class).method()).containsOnly(RequestMethod.GET);
+        Assertions.assertThat(mFindAll.getAnnotation(ResponseStatus.class)).isNotNull();
+        Assertions.assertThat(mFindAll.getAnnotation(ResponseStatus.class).value()).isEqualTo(HttpStatus.OK);
 
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("find", String.class).getAnnotations()).hasSize(4);
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("find", String.class).getAnnotation(ApiOperation.class)).isNotNull();
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("find", String.class).getAnnotation(ApiResponses.class)).isNotNull();
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("find", String.class).getAnnotation(RequestMapping.class)).isNotNull();
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("find", String.class).getAnnotation(RequestMapping.class).consumes()).isEmpty();
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("find", String.class).getAnnotation(RequestMapping.class).produces()).isEmpty();
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("find", String.class).getAnnotation(RequestMapping.class).value()).containsOnly("{name}");
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("find", String.class).getAnnotation(RequestMapping.class).method()).containsOnly(RequestMethod.GET);
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("find", String.class).getAnnotation(ResponseStatus.class)).isNotNull();
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("find", String.class).getAnnotation(ResponseStatus.class).value()).isEqualTo(HttpStatus.OK);
+        Method mAdd = clazz.getDeclaredMethod("add", new Class[]{Account.class});
+        Assertions.assertThat(mAdd.getAnnotations()).hasSize(4);
+        Assertions.assertThat(mAdd.getAnnotation(ApiOperation.class)).isNotNull();
+        Assertions.assertThat(mAdd.getAnnotation(ApiResponses.class)).isNotNull();
+        Assertions.assertThat(mAdd.getAnnotation(RequestMapping.class)).isNotNull();
+        Assertions.assertThat(mAdd.getAnnotation(RequestMapping.class).consumes()).contains(DefaultControllerAdvice.JSON_CONTENT_TYPE);
+        Assertions.assertThat(mAdd.getAnnotation(RequestMapping.class).produces()).isEmpty();
+        Assertions.assertThat(mAdd.getAnnotation(RequestMapping.class).value()).containsOnly("");
+        Assertions.assertThat(mAdd.getAnnotation(RequestMapping.class).method()).containsOnly(RequestMethod.POST);
+        Assertions.assertThat(mAdd.getAnnotation(ResponseStatus.class)).isNotNull();
+        Assertions.assertThat(mAdd.getAnnotation(ResponseStatus.class).value()).isEqualTo(HttpStatus.CREATED);
+        Assertions.assertThat(mAdd.getParameterAnnotations()[0]).hasSize(1);
+        Assertions.assertThat(mAdd.getParameterAnnotations()[0][0].annotationType()).isEqualTo(RequestBody.class);
 
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("operations", String.class).getAnnotations()).hasSize(4);
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("operations", String.class).getAnnotation(ApiOperation.class)).isNotNull();
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("operations", String.class).getAnnotation(ApiResponses.class)).isNotNull();
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("operations", String.class).getAnnotation(RequestMapping.class)).isNotNull();
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("operations", String.class).getAnnotation(RequestMapping.class).consumes()).isEmpty();
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("operations", String.class).getAnnotation(RequestMapping.class).produces()).isEmpty();
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("operations", String.class).getAnnotation(RequestMapping.class).value()).containsOnly("{name}/operations");
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("operations", String.class).getAnnotation(RequestMapping.class).method()).containsOnly(RequestMethod.GET);
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("operations", String.class).getAnnotation(ResponseStatus.class)).isNotNull();
-        Assertions.assertThat(AccountController.class.getDeclaredMethod("operations", String.class).getAnnotation(ResponseStatus.class).value()).isEqualTo(HttpStatus.OK);
+        Method mFind = clazz.getDeclaredMethod("find", String.class);
+        Assertions.assertThat(mFind.getAnnotations()).hasSize(4);
+        Assertions.assertThat(mFind.getAnnotation(ApiOperation.class)).isNotNull();
+        Assertions.assertThat(mFind.getAnnotation(ApiResponses.class)).isNotNull();
+        Assertions.assertThat(mFind.getAnnotation(RequestMapping.class)).isNotNull();
+        Assertions.assertThat(mFind.getAnnotation(RequestMapping.class).consumes()).isEmpty();
+        Assertions.assertThat(mFind.getAnnotation(RequestMapping.class).produces()).isEmpty();
+        Assertions.assertThat(mFind.getAnnotation(RequestMapping.class).value()).containsOnly("{name}");
+        Assertions.assertThat(mFind.getAnnotation(RequestMapping.class).method()).containsOnly(RequestMethod.GET);
+        Assertions.assertThat(mFind.getAnnotation(ResponseStatus.class)).isNotNull();
+        Assertions.assertThat(mFind.getAnnotation(ResponseStatus.class).value()).isEqualTo(HttpStatus.OK);
+
+        Method mOperations = clazz.getDeclaredMethod("operations", String.class);
+        Assertions.assertThat(mOperations.getAnnotations()).hasSize(4);
+        Assertions.assertThat(mOperations.getAnnotation(ApiOperation.class)).isNotNull();
+        Assertions.assertThat(mOperations.getAnnotation(ApiResponses.class)).isNotNull();
+        Assertions.assertThat(mOperations.getAnnotation(RequestMapping.class)).isNotNull();
+        Assertions.assertThat(mOperations.getAnnotation(RequestMapping.class).consumes()).isEmpty();
+        Assertions.assertThat(mOperations.getAnnotation(RequestMapping.class).produces()).isEmpty();
+        Assertions.assertThat(mOperations.getAnnotation(RequestMapping.class).value()).containsOnly("{name}/operations");
+        Assertions.assertThat(mOperations.getAnnotation(RequestMapping.class).method()).containsOnly(RequestMethod.GET);
+        Assertions.assertThat(mOperations.getAnnotation(ResponseStatus.class)).isNotNull();
+        Assertions.assertThat(mOperations.getAnnotation(ResponseStatus.class).value()).isEqualTo(HttpStatus.OK);
     }
 
     @Test

@@ -40,11 +40,13 @@ public class AccountDomainImplTest {
 
     @Test
     public void springConf() throws Exception {
-        Assertions.assertThat(AccountDomainImpl.class.getAnnotations()).hasSize(1);
-        Assertions.assertThat(AccountDomainImpl.class.isAnnotationPresent(Service.class)).isTrue();
 
-        Assertions.assertThat(AccountDomainImpl.class.getConstructors()).hasSize(1);
-        Assertions.assertThat(AccountDomainImpl.class.getConstructors()[0].isAnnotationPresent(Autowired.class)).isTrue();
+        Class<?> clazz = accountDomain.getClass();
+        Assertions.assertThat(clazz.getAnnotations()).hasSize(1);
+        Assertions.assertThat(clazz.isAnnotationPresent(Service.class)).isTrue();
+
+        Assertions.assertThat(clazz.getConstructors()).hasSize(1);
+        Assertions.assertThat(clazz.getConstructors()[0].isAnnotationPresent(Autowired.class)).isTrue();
     }
 
     @Test

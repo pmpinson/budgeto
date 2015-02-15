@@ -21,10 +21,10 @@ import org.springframework.web.servlet.config.annotation.DefaultServletHandlerCo
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistration;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -44,24 +44,27 @@ public class SwaggerDispatcherConfigTest {
     @Test
     public void structure() throws Exception {
 
-        Assertions.assertThat(SwaggerDispatcherConfig.class.getSuperclass()).isEqualTo(WebMvcConfigurerAdapter.class);
+        Assertions.assertThat(swaggerDispatcherConfig.getClass().getSuperclass()).isEqualTo(WebMvcConfigurerAdapter.class);
     }
 
     @Test
     public void springConf() throws Exception {
 
-        Assertions.assertThat(SwaggerDispatcherConfig.class.getAnnotations()).hasSize(4);
-        Assertions.assertThat(SwaggerDispatcherConfig.class.isAnnotationPresent(Configuration.class)).isTrue();
-        Assertions.assertThat(SwaggerDispatcherConfig.class.isAnnotationPresent(EnableWebMvc.class)).isTrue();
-        Assertions.assertThat(SwaggerDispatcherConfig.class.isAnnotationPresent(EnableSwagger.class)).isTrue();
-        Assertions.assertThat(SwaggerDispatcherConfig.class.isAnnotationPresent(ComponentScan.class)).isTrue();
-        Assertions.assertThat(SwaggerDispatcherConfig.class.getAnnotation(ComponentScan.class).basePackages()).containsExactly("com.ak.swaggerspringmvc.shared.app", "com.ak.spring3.music");
+        Class<?> clazz = swaggerDispatcherConfig.getClass();
+        Assertions.assertThat(clazz.getAnnotations()).hasSize(4);
+        Assertions.assertThat(clazz.isAnnotationPresent(Configuration.class)).isTrue();
+        Assertions.assertThat(clazz.isAnnotationPresent(EnableWebMvc.class)).isTrue();
+        Assertions.assertThat(clazz.isAnnotationPresent(EnableSwagger.class)).isTrue();
+        Assertions.assertThat(clazz.isAnnotationPresent(ComponentScan.class)).isTrue();
+        Assertions.assertThat(clazz.getAnnotation(ComponentScan.class).basePackages()).containsExactly("com.ak.swaggerspringmvc.shared.app", "com.ak.spring3.music");
 
-        Assertions.assertThat(SwaggerDispatcherConfig.class.getDeclaredField("springSwaggerConfig").getAnnotations()).hasSize(1);
-        Assertions.assertThat(SwaggerDispatcherConfig.class.getDeclaredField("springSwaggerConfig").isAnnotationPresent(Autowired.class)).isTrue();
+        Field fSpringSwaggerConfig = clazz.getDeclaredField("springSwaggerConfig");
+        Assertions.assertThat(fSpringSwaggerConfig.getAnnotations()).hasSize(1);
+        Assertions.assertThat(fSpringSwaggerConfig.isAnnotationPresent(Autowired.class)).isTrue();
 
-        Assertions.assertThat(SwaggerDispatcherConfig.class.getDeclaredMethod("customImplementation", new Class[]{}).getAnnotations()).hasSize(1);
-        Assertions.assertThat(SwaggerDispatcherConfig.class.getDeclaredMethod("customImplementation", new Class[]{}).getAnnotation(Bean.class)).isNotNull();
+        Method mCustomImplementation = clazz.getDeclaredMethod("customImplementation", new Class[]{});
+        Assertions.assertThat(mCustomImplementation.getAnnotations()).hasSize(1);
+        Assertions.assertThat(mCustomImplementation.getAnnotation(Bean.class)).isNotNull();
     }
 
     @Test

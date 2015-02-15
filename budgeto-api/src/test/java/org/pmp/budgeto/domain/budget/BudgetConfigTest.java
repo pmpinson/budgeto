@@ -14,17 +14,18 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 public class BudgetConfigTest {
 
     @InjectMocks
-    private org.pmp.budgeto.domain.budget.BudgetConfig BudgetConfig;
+    private BudgetConfig budgetConfig;
 
     @Test
     public void springConf() throws Exception {
 
-        Assertions.assertThat(BudgetConfig.class.getAnnotations()).hasSize(3);
-        Assertions.assertThat(BudgetConfig.class.isAnnotationPresent(Configuration.class)).isTrue();
-        Assertions.assertThat(BudgetConfig.class.isAnnotationPresent(EnableMongoRepositories.class)).isTrue();
-        Assertions.assertThat(BudgetConfig.class.getAnnotation(EnableMongoRepositories.class).basePackages()).containsExactly("org.pmp.budgeto.domain.budget");
-        Assertions.assertThat(BudgetConfig.class.isAnnotationPresent(ComponentScan.class)).isTrue();
-        Assertions.assertThat(BudgetConfig.class.getAnnotation(ComponentScan.class).basePackages()).containsExactly("org.pmp.budgeto.domain.budget");
+        Class<?> clazz = budgetConfig.getClass();
+        Assertions.assertThat(clazz.getAnnotations()).hasSize(3);
+        Assertions.assertThat(clazz.isAnnotationPresent(Configuration.class)).isTrue();
+        Assertions.assertThat(clazz.isAnnotationPresent(EnableMongoRepositories.class)).isTrue();
+        Assertions.assertThat(clazz.getAnnotation(EnableMongoRepositories.class).basePackages()).containsExactly("org.pmp.budgeto.domain.budget");
+        Assertions.assertThat(clazz.isAnnotationPresent(ComponentScan.class)).isTrue();
+        Assertions.assertThat(clazz.getAnnotation(ComponentScan.class).basePackages()).containsExactly("org.pmp.budgeto.domain.budget");
     }
 
 }
