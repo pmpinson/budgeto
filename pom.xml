@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.pmp.budgeto</groupId>
-    <artifactId>budgeto-parent</artifactId>
+    <artifactId>budgeto</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
 
     <modules>
-        <module>budgeto-service</module>
+        <module>budgeto-api</module>
     </modules>
 
     <!-- Define some java properties -->
