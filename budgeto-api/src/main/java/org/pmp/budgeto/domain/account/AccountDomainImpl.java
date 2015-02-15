@@ -1,5 +1,6 @@
 package org.pmp.budgeto.domain.account;
 
+import com.google.common.collect.Sets;
 import org.apache.commons.lang3.Validate;
 import org.pmp.budgeto.common.domain.DomainConflictException;
 import org.pmp.budgeto.common.domain.DomainException;
@@ -12,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Set;
 
 
 @Service
@@ -34,9 +35,9 @@ public class AccountDomainImpl implements AccountDomain {
     }
 
     @Override
-    public List<Account> findAll() {
+    public Set<Account> findAll() {
         LOGGER.info("ask for all account");
-        return accountRepository.findAll();
+        return Sets.newHashSet(accountRepository.findAll());
     }
 
     @Override

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -37,7 +38,7 @@ public class AccountHelper {
         accountRepository.save(object);
     }
 
-    public Account findByName(List<Account> objects, String name) {
+    public Account findByName(Set<Account> objects, String name) {
         for (Account object : objects) {
             if (object.getName().equals(name)) {
                 return object;

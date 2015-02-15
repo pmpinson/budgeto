@@ -22,10 +22,10 @@ public class Budget {
 
     @TrimNotEmpty
     @Indexed(unique = true, name = UNIQUE_IDX_NAME)
-    @ApiModelProperty(value = "name", notes = "unique name of a budget", required = true)
+    @ApiModelProperty(value = "unique name of a budget", required = true)
     private String name;
 
-    @ApiModelProperty(value = "note", notes = "description of the budget")
+    @ApiModelProperty(value = "description of the budget")
     private String note;
 
     public String getName() {

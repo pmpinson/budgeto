@@ -20,6 +20,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -54,7 +55,7 @@ public class AccountDomainImplTest {
         Account object2 = new Account().setName("account2");
         Mockito.when(accountRepository.findAll()).thenReturn(Lists.newArrayList(object1, object2));
 
-        List<Account> objects = accountDomain.findAll();
+        Set<Account> objects = accountDomain.findAll();
 
         Assertions.assertThat(objects).hasSize(2);
 

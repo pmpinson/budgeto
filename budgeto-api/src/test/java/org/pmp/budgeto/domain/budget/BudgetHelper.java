@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -28,7 +29,7 @@ public class BudgetHelper {
         budgetRepository.save(object);
     }
 
-    public Budget findByName(List<Budget> objects, String name) {
+    public Budget findByName(Set<Budget> objects, String name) {
         for (Budget object : objects) {
             if (object.getName().equals(name)) {
                 return object;

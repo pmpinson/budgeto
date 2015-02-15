@@ -28,10 +28,10 @@ public class Account {
 
     @TrimNotEmpty
     @Indexed(unique = true, name = UNIQUE_IDX_NAME)
-    @ApiModelProperty(value = "name", notes = "unique name of an account", required = true)
+    @ApiModelProperty(value = "unique name of an account", required = true)
     private String name;
 
-    @ApiModelProperty(value = "note", notes = "description of the account")
+    @ApiModelProperty(value = "description of the account")
     private String note;
 
     @Valid

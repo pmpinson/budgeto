@@ -18,18 +18,18 @@ import javax.validation.constraints.NotNull;
  * domain object representing a account
  */
 @Document
-@ApiModel(value = "Account", description = "Object describing an account")
+@ApiModel(value = "Operation", description = "Operation occured on an account")
 public class Operation {
 
     @Transient
     private DateTools dateTools;
 
     @NotNull
-    @ApiModelProperty(value = "date", notes = "date of the operation, format [yyyy-MM-dd'T'HH:mm:ssZ]", required = true)
+    @ApiModelProperty(value = "date of the operation, format [yyyy-MM-dd'T'HH:mm:ssZ]", required = true)
     private DateTime date;
 
     @TrimNotEmpty
-    @ApiModelProperty(value = "label", notes = "description of the operation", required = true)
+    @ApiModelProperty(value = "description of the operation", required = true)
     private String label;
 
     /**

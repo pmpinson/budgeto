@@ -2,7 +2,7 @@ package org.pmp.budgeto.domain.budget;
 
 import org.pmp.budgeto.common.domain.DomainException;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * manager of budget
@@ -12,9 +12,9 @@ public interface BudgetDomain {
     /**
      * find all budgets
      *
-     * @return a list of budgets
+     * @return a set of budgets
      */
-    List<Budget> findAll();
+    Set<Budget> findAll();
 
     /**
      * add a new budget

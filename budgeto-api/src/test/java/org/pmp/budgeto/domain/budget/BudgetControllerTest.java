@@ -1,6 +1,6 @@
 package org.pmp.budgeto.domain.budget;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiResponses;
@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.util.Set;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -79,9 +79,9 @@ public class BudgetControllerTest {
 
         Budget object1 = new Budget().setName("budget1");
         Budget object2 = new Budget().setName("budget2");
-        Mockito.when(budgetDomain.findAll()).thenReturn(Lists.newArrayList(object1, object2));
+        Mockito.when(budgetDomain.findAll()).thenReturn(Sets.newHashSet(object1, object2));
 
-        List<Budget> objects = budgetController.findAll();
+        Set<Budget> objects = budgetController.findAll();
 
         Assertions.assertThat(objects).hasSize(2);
         Mockito.verify(budgetDomain).findAll();

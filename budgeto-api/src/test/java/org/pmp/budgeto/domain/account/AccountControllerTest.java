@@ -1,6 +1,6 @@
 package org.pmp.budgeto.domain.account;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiResponses;
@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.Set;
 
 
@@ -101,9 +100,9 @@ public class AccountControllerTest {
 
         Account object1 = new Account().setName("account1");
         Account object2 = new Account().setName("account2");
-        Mockito.when(accountDomain.findAll()).thenReturn(Lists.newArrayList(object1, object2));
+        Mockito.when(accountDomain.findAll()).thenReturn(Sets.newHashSet(object1, object2));
 
-        List<Account> objects = accountController.findAll();
+        Set<Account> objects = accountController.findAll();
 
         Assertions.assertThat(objects).hasSize(2);
 

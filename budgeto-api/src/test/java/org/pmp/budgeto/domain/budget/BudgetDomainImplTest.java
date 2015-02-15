@@ -19,6 +19,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -53,7 +54,7 @@ public class BudgetDomainImplTest {
         Budget object2 = new Budget().setName("budget2");
         Mockito.when(budgetRepository.findAll()).thenReturn(Lists.newArrayList(object1, object2));
 
-        List<Budget> objects = budgetDomain.findAll();
+        Set<Budget> objects = budgetDomain.findAll();
 
         Assertions.assertThat(objects).hasSize(2);
         Mockito.verify(budgetRepository).findAll();

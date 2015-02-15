@@ -17,6 +17,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
+import java.util.Set;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -42,7 +43,7 @@ public class BudgetDomainImplIT {
     @Test
     public void findAll() throws Exception {
 
-        List<Budget> objects = budgetDomain.findAll();
+        Set<Budget> objects = budgetDomain.findAll();
 
         Assertions.assertThat(objects).hasSize(2);
         budgetHelper.controlBudget1(budgetHelper.findByName(objects, "budget1"));

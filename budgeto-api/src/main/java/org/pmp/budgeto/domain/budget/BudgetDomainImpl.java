@@ -1,5 +1,6 @@
 package org.pmp.budgeto.domain.budget;
 
+import com.google.common.collect.Sets;
 import org.apache.commons.lang3.Validate;
 import org.pmp.budgeto.common.domain.DomainConflictException;
 import org.pmp.budgeto.common.domain.DomainException;
@@ -12,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Set;
 
 @Service
 public class BudgetDomainImpl implements BudgetDomain {
@@ -33,9 +34,9 @@ public class BudgetDomainImpl implements BudgetDomain {
     }
 
     @Override
-    public List<Budget> findAll() {
+    public Set<Budget> findAll() {
         LOGGER.info("ask for all budget");
-        return budgetRepository.findAll();
+        return Sets.newHashSet(budgetRepository.findAll());
     }
 
     @Override
