@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 /**
@@ -60,19 +57,14 @@ public class SwaggerDispatcherConfig extends WebMvcConfigurerAdapter {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler(SwaggerSpringMvcUi.WEB_JAR_RESOURCE_PATTERNS)
                 .addResourceLocations(SwaggerSpringMvcUi.WEB_JAR_RESOURCE_LOCATION).setCachePeriod(0);
+
+        registry.addResourceHandler("index.html")
+                .addResourceLocations("classpath:swagger/").setCachePeriod(0);
     }
 
-    /**
-     * configure spring view resolver on classpath resource for *.jsp files
-     *
-     * @return
-     */
-    @Bean
-    public InternalResourceViewResolver getInternalResourceViewResolver() {
-        final InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-        resolver.setPrefix(SwaggerSpringMvcUi.WEB_JAR_VIEW_RESOLVER_PREFIX);
-        resolver.setSuffix(SwaggerSpringMvcUi.WEB_JAR_VIEW_RESOLVER_SUFFIX);
-        return resolver;
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/").setViewName("redirect:index.html");
     }
 
     @Override
