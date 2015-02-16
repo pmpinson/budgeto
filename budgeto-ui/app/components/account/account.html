@@ -5,8 +5,7 @@
 <p>{{account.note}}</p>
 <table data-ng-model="operations" border="1">
     <tr data-ng-repeat="operation in operations">
+        <td>{{operation.date | amDateFormat:'dddd Do MMMM'}}</td>
         <td>{{operation.label}}</td>
-        <td>{{operation.date}}</td>
-        <td>{{moment(operation.date).format("ddd, hA")}}</td>
     </tr>
 </table>

@@ -50,6 +50,10 @@ function AccountCtrl($scope, AccountResource, OperationsResource) {
     };
   });
 
+  $scope.formatDate = function(date) {
+    return moment(date).format("ddd, hA");
+  }
+
   $scope.$watch(
       function($scope) {
         return $scope.account
@@ -57,15 +61,7 @@ function AccountCtrl($scope, AccountResource, OperationsResource) {
       , function() {
         if ($scope.account !== undefined) {
           console.log("update account");
-          OperationsResource.get($scope.account).query({}, null, function(data) {
-            $scope.operations = data;
-          for (var key in $scope.operations) {
-            var ope = $scope.operations[key];
-            console.log($scope.operations[key].date);
-            console.log(moment($scope.operations[key].date));
-            ope['mdate'] = moment($scope.operations[key].date);
-          }
-          });
+          $scope.operations = OperationsResource.get($scope.account).query({}, null);
         }
       }
   );

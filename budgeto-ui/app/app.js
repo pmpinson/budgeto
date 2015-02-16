@@ -8,6 +8,10 @@ angular.module('budgeto', [
   'budgeto.account'
 ])
 
+.constant('angularMomentConfig', {
+    timezone: 'UTC'
+})
+
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.otherwise({redirectTo: '/home'});
 }]);
