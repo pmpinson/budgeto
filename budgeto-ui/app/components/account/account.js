@@ -3,7 +3,9 @@
 // Declare module
 angular.module('budgeto.account', [
   'ngRoute',
-  'ngResource'
+  'ngResource',
+  'budgeto.common',
+  'angularMoment'
 ])
 
 .config(['$routeProvider', function($routeProvider) {
@@ -15,16 +17,23 @@ angular.module('budgeto.account', [
 
 .controller('AccountCtrl', ['$scope', 'AccountResource', 'OperationsResource', AccountCtrl])
 
-.factory('AccountResource', [ '$resource', AccountResourceFactory ])
+.constant('AccountApi', 'account')
+
+.factory('AccountResource', [ '$resource', 'AccountApi', 'ApiService', AccountResourceFactory ])
 
 .factory('OperationsResource', [ '$resource', OperationsResourceFactory ]);
 
-function AccountResourceFactory($resource) {
-  return $resource('http://localhost:9001/budgeto-api/account', {}, {});
+function AccountResourceFactory($resource, AccountApi, ApiService) {
+    var api = ApiService.find(AccountApi);
+    return $resource(api.href, {}, {});
 }
 
-function OperationsResourceFactory(resource) {
-  return resource('http://localhost:9001/budgeto-api/account/:name/operations', {}, {});
+function OperationsResourceFactory($resource) {
+    return {
+        get: function(account) {
+            return $resource(getLink('operations', account.links).href, {}, {});
+        }
+    }
 }
 
 /**
@@ -48,7 +57,15 @@ function AccountCtrl($scope, AccountResource, OperationsResource) {
       , function() {
         if ($scope.account !== undefined) {
           console.log("update account");
-          $scope.operations = OperationsResource.query({name:$scope.account.name}, null);
+          OperationsResource.get($scope.account).query({}, null, function(data) {
+            $scope.operations = data;
+          for (var key in $scope.operations) {
+            var ope = $scope.operations[key];
+            console.log($scope.operations[key].date);
+            console.log(moment($scope.operations[key].date));
+            ope['mdate'] = moment($scope.operations[key].date);
+          }
+          });
         }
       }
   );

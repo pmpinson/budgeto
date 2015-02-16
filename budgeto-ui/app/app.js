@@ -3,6 +3,7 @@
 // Declare app level module which depends on views, and components
 angular.module('budgeto', [
   'ngRoute',
+  'budgeto.common',
   'budgeto.home',
   'budgeto.account'
 ])

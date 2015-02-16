@@ -2,7 +2,9 @@
 
 // Declare module
 angular.module('budgeto.home', [
-  'ngRoute'
+  'ngRoute',
+  'ngResource',
+  'budgeto.common'
 ])
 
 .config(['$routeProvider', function($routeProvider) {
@@ -12,16 +14,18 @@ angular.module('budgeto.home', [
   });
 }])
 
-.controller('HomeCtrl', ['$scope', '$location', HomeCtrl]);
+.controller('HomeCtrl', ['$scope', '$location', 'ApiService', HomeCtrl]);
 
 /**
  * controller to manage home controoler
  * @param $scope current scope
  * @param $location location service
  */
-function HomeCtrl($scope, $location) {
+function HomeCtrl($scope, $location, ApiService) {
 
-  $scope.account = function() {
-    $location.path('/account');
+  $scope.apis = ApiService.findAll();
+
+  $scope.changePath = function(path) {
+    $location.path('/' + path);
   }
 };
