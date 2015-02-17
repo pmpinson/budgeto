@@ -8,6 +8,8 @@ angular.module('budgeto.home', [
 ])
 
 .config(['$routeProvider', function($routeProvider) {
+    console.info("home : load $routeProvider");
+
   $routeProvider.when('/home', {
     templateUrl: 'components/home/home.html',
     controller: 'HomeCtrl'
@@ -22,8 +24,12 @@ angular.module('budgeto.home', [
  * @param $location location service
  */
 function HomeCtrl($scope, $location, ApiService) {
+    console.info("home : load HomeCtrl");
 
-  $scope.apis = ApiService.findAll();
+  ApiService.findAll().then(function(result){$scope.apis = result;});
+//  ApiService.findAll2().then(function(result){$scope.lst = result;});
+  $scope.lst = ApiService.findAll2();
+  ApiService.find('account').then(function(result){console.log('account api ', result)});
 
   $scope.changePath = function(path) {
     $location.path('/' + path);
