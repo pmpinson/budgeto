@@ -2,42 +2,48 @@
 
 // Declare module
 angular.module('budgeto.account', [
-  'ngRoute',
-  'ngResource',
-  'budgeto.common',
-  'angularMoment'
+    'ngRoute',
+    'ngResource',
+    'budgeto.common',
+    'angularMoment'
 ])
 
-.config(['$routeProvider', function($routeProvider) {
-    console.info("account : load $routeProvider");
+    .config(['$routeProvider', function ($routeProvider) {
+        console.info("account : load $routeProvider");
 
-  $routeProvider.when('/account', {
-    templateUrl: 'components/account/account.html',
-    controller: 'AccountCtrl'
-  });
-}])
+        $routeProvider.when('/account', {
+            templateUrl: 'components/account/account.html',
+            controller: 'AccountCtrl'
+        });
+    }])
 
-.controller('AccountCtrl', ['$scope', '$location', 'AccountResource', 'OperationsResource', AccountCtrl])
+    .controller('AccountCtrl', ['$scope', '$location', 'ApiService', 'AccountResource', 'OperationsResource', AccountCtrl])
 
-.constant('AccountApiName', 'account')
+    .factory('AccountResource', ['$resource', 'ApiService', AccountResource])
 
-.factory('AccountResource', [ '$resource', 'AccountApiName', 'ApiService', AccountResource ])
+    .factory('OperationsResource', ['$resource', OperationsResource]);
 
-.factory('OperationsResource', [ '$resource', OperationsResource ]);
-
-function AccountResource($resource, AccountApiName, ApiService) {
+function AccountResource($resource, ApiService) {
     console.info("account : load AccountResource");
 
-    var api = ApiService.find(AccountApiName);
-    return $resource("", {}, {});
+    return {
+        all: function (AccountApi, success) {
+            return $resource(AccountApi.href, {}, {}).query({}, null, success);
+        },
+
+        operations: function(Account, success){
+            return $resource(getLink('operations', account.links).href, {}, {});
+        }
+    };
 }
 
 function OperationsResource($resource) {
     console.info("account : load OperationsResource");
 
     return {
-        get: function(account) {
+        get: function (account) {
             return $resource(getLink('operations', account.links).href, {}, {});
+            OperationsResource.get($scope.account).query({}, null);
         }
     }
 }
@@ -46,34 +52,41 @@ function OperationsResource($resource) {
  * controller to manage account
  * @param $scope current scope
  */
-function AccountCtrl($scope, $location, AccountResource, OperationsResource) {
+function AccountCtrl($scope, $location, ApiService, AccountResource, OperationsResource) {
     console.info("account : load AccountCtrl");
 
-//  $scope.operations = [];
-//  $scope.accounts = AccountResource.query({}, null, function(data) {
-//    console.debug("get all account");
-//    if (data.length != 0) {
-//      $scope.account = data[0];
-//    };
-//  });
-//
-//  $scope.formatDate = function(date) {
-//    return moment(date).format("ddd, hA");
-//  }
-//
-//  $scope.$watch(
-//      function($scope) {
-//        return $scope.account
-//      }
-//      , function() {
-//        if ($scope.account !== undefined) {
-//          console.log("update account");
-//          $scope.operations = OperationsResource.get($scope.account).query({}, null);
-//        }
-//      }
-//  );
+    var AccountApi = ApiService.find('account');
 
-  $scope.home = function() {
-    $location.path('/');
-  }
+
+    $scope.operations = [];
+    AccountResource.all(AccountApi, function (data) {
+        console.debug("get all accounts ", data);
+
+        $scope.accounts = data;
+
+        if (data.length != 0) {
+            $scope.account = data[0];
+        }
+    });
+
+    $scope.formatDate = function (date) {
+        return moment(date).format("ddd, hA");
+    }
+
+    $scope.$watch(
+        function ($scope) {
+            return $scope.account
+        }
+        , function () {
+            if ($scope.account !== undefined) {
+                console.debug("select account ", $scope.account);
+
+                $scope.operations = OperationsResource.get($scope.account).query({}, null);
+            }
+        }
+    );
+
+    $scope.home = function () {
+        $location.path('/');
+    }
 };

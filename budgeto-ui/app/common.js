@@ -2,78 +2,61 @@
 
 // Declare module
 angular.module('budgeto.common', [
-  'ngResource'
+    'ngResource'
 ])
 
-.constant('BudgetoApi', 'http://localhost:9001/budgeto-api')
+    .constant('BudgetoApi', 'http://localhost:9001/budgeto-api')
 
-.factory('ApiResource', [ '$resource', 'BudgetoApi', ApiResource ])
+    .factory('ProgressLoader', [ProgressLoader])
+
+    .factory('ApiResource', ['$resource', 'BudgetoApi', ApiResource])
 
 //.service('ApiService', [ 'ApiResource', '$rootScope', '$q', ApiService ]);
 
-.factory('ApiService', [ 'ApiResource', '$rootScope', '$q', ApiService ]);
+    .factory('ApiService', ['ApiResource', '$rootScope', '$q', ApiService]);
+
+function ProgressLoader() {
+    console.info('common : load ProgressLoader');
+
+    var loader = angular.element(document.getElementsByTagName("body"));
+
+    var cpt = 0;
+
+    return {
+        setVisible: function (visible) {
+            if (visible) {
+                this.show();
+            } else {
+                this.hide();
+            }
+        },
+
+        show: function () {
+            cpt++;
+            loader.addClass("progressdialog-loader");
+        },
+
+        hide: function () {
+            cpt--;
+            if (cpt < 0) {
+                cpt = 0;
+            }
+            if (cpt == 0) {
+                loader.removeClass("progressdialog-loader");
+            }
+        }
+    };
+}
 
 function ApiResource($resource, BudgetoApi) {
     console.info('common : load ApiResource');
 
-  return $resource(BudgetoApi, {}, {});
-}
-
-function ApiServiceGood(ApiResource, $rootScope, $q) {
-    console.info('common : load ApiService');
-
-    this.promise = undefined;
-
-    this.load = function() {
-        if (this.promise === undefined) {
-            var deferred = $q.defer();
-
-            ApiResource.get({}, null, function(data) {
-                console.debug('common : call api to get all available apis');
-                var apis = [];
-                for (var key in data.links) {
-                    if (data.links[key].rel !== 'self') {
-                        apis.push(data.links[key]);
-                    }
-                }
-                console.debug('common : available apis ', apis);
-                deferred.resolve(apis);
-            });
-
-            this.promise = deferred.promise;
+    return {
+        get: function(success) {
+            return $resource(BudgetoApi, {}, {}).get({}, null, success);
         }
-        return this.promise;
     };
-
-    this.findAll = function() {
-        return this.load();
-    };
-
-    this.findAll2 = function() {
-        var deferred=$q.defer();
-        this.load().then(function(data) {
-            deferred.resolve(data);
-        });
-        return deferred.promise;
-    };
-
-    this.find = function(rel) {
-        var that = this;
-        this.load().then(function(result){
-            return that.getLink(rel, result);
-        });
-    };
-
-    this.getLink = function(rel, links) {
-        for (var key in links) {
-            if (links[key].rel === rel) {
-                return links[key];
-            }
-        }
-        return undefined;
-    }
 }
-
 
 
 function ApiService(ApiResource, $rootScope, $q) {
@@ -81,13 +64,16 @@ function ApiService(ApiResource, $rootScope, $q) {
 
     this.promise = undefined;
 
+    this.apis = undefined;
+
     return {
-        load: function() {
+        load: function () {
             if (this.promise === undefined) {
                 var deferred = $q.defer();
-
-                ApiResource.get({}, null, function(data) {
+                var that = this;
+                ApiResource.get(function (data) {
                     console.debug('common : call api to get all available apis');
+
                     var apis = [];
                     for (var key in data.links) {
                         if (data.links[key].rel !== 'self') {
@@ -98,31 +84,23 @@ function ApiService(ApiResource, $rootScope, $q) {
                     deferred.resolve(apis);
                 });
 
-                this.promise = deferred.promise;
+                this.promise = deferred.promise.then(function(result){
+                    that.apis = result;
+                    return result;
+                });
             }
             return this.promise;
         },
 
-        findAll: function() {
-            return this.load();
+        findAll: function () {
+            return this.apis;
         },
 
-        findAll2: function() {
-            var result = function(data) {
-                 return data;
-             };
-            this.load().then(result);
-            return result;
+        find: function (rel) {
+            return this.getLink(rel, this.apis);
         },
 
-        find: function(rel) {
-            var that = this;
-            this.load().then(function(result){
-                return that.getLink(rel, result);
-            });
-        },
-
-        getLink: function(rel, links) {
+        getLink: function (rel, links) {
             for (var key in links) {
                 if (links[key].rel === rel) {
                     return links[key];
