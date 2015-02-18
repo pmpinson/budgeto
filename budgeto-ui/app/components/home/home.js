@@ -1,35 +1,34 @@
 'use strict';
 
 // Declare module
-angular.module('budgeto.home', [
+var budgetoHome = angular.module('budgeto.home', [
     'ngRoute',
     'ngResource',
-    'budgeto.common'
-])
+    'budgeto.apis'
+]);
 
-    .config(['$routeProvider', function ($routeProvider) {
-        console.info("home : load $routeProvider");
+budgetoHome.config(['$routeProvider', function ($routeProvider) {
+    console.info("budgeto.home : load $routeProvider");
 
-        $routeProvider.when('/home', {
+    $routeProvider.when('/home', {
+            resolve:{apis:'Apis'},
             templateUrl: 'components/home/home.html',
             controller: 'HomeCtrl'
-        });
-    }])
+        })
+        .otherwise({redirectTo: '/home'});
+}]);
 
-    .controller('HomeCtrl', ['$scope', '$location', 'ApiService', 'ProgressLoader', HomeCtrl]);
+budgetoHome.controller('HomeCtrl', ['$scope', '$location', 'ApisService', 'ProgressLoader', HomeCtrl]);
 
 /**
  * controller to manage home controoler
  * @param $scope current scope
  * @param $location location service
  */
-function HomeCtrl($scope, $location, ApiService, ProgressLoader) {
-    console.info("home : load HomeCtrl");
+function HomeCtrl($scope, $location, ApisService, ProgressLoader) {
+    console.info("budgeto.home : load HomeCtrl");
 
-    //ApiService.load().then(function (result) {
-        $scope.apis = ApiService.findAll();
-    //    ProgressLoader.hide();
-    //});
+    $scope.apis = ApisService.findAll();
 
     $scope.changePath = function (path) {
         $location.path('/' + path);

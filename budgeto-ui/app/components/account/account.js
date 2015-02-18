@@ -4,12 +4,12 @@
 angular.module('budgeto.account', [
     'ngRoute',
     'ngResource',
-    'budgeto.common',
+    'budgeto.apis',
     'angularMoment'
 ])
 
     .config(['$routeProvider', function ($routeProvider) {
-        console.info("account : load $routeProvider");
+        console.info("budgeto.account : load $routeProvider");
 
         $routeProvider.when('/account', {
             templateUrl: 'components/account/account.html',
@@ -17,14 +17,14 @@ angular.module('budgeto.account', [
         });
     }])
 
-    .controller('AccountCtrl', ['$scope', '$location', 'ApiService', 'AccountResource', 'OperationsResource', AccountCtrl])
+    .controller('AccountCtrl', ['$scope', '$location', 'ApisService', 'AccountResource', 'OperationsResource', AccountCtrl])
 
-    .factory('AccountResource', ['$resource', 'ApiService', AccountResource])
+    .factory('AccountResource', ['$resource', 'ApisService', AccountResource])
 
     .factory('OperationsResource', ['$resource', OperationsResource]);
 
-function AccountResource($resource, ApiService) {
-    console.info("account : load AccountResource");
+function AccountResource($resource, ApisService) {
+    console.info("budgeto.account : load AccountResource");
 
     return {
         all: function (AccountApi, success) {
@@ -38,7 +38,7 @@ function AccountResource($resource, ApiService) {
 }
 
 function OperationsResource($resource) {
-    console.info("account : load OperationsResource");
+    console.info("account : budgeto.account OperationsResource");
 
     return {
         get: function (account) {
@@ -52,15 +52,15 @@ function OperationsResource($resource) {
  * controller to manage account
  * @param $scope current scope
  */
-function AccountCtrl($scope, $location, ApiService, AccountResource, OperationsResource) {
-    console.info("account : load AccountCtrl");
+function AccountCtrl($scope, $location, ApisService, AccountResource, OperationsResource) {
+    console.info("budgeto.account : load AccountCtrl");
 
-    var AccountApi = ApiService.find('account');
+    var AccountApi = ApisService.find('account');
 
 
     $scope.operations = [];
     AccountResource.all(AccountApi, function (data) {
-        console.debug("get all accounts ", data);
+        console.debug("budgeto.account : get all accounts ", data);
 
         $scope.accounts = data;
 
@@ -79,7 +79,7 @@ function AccountCtrl($scope, $location, ApiService, AccountResource, OperationsR
         }
         , function () {
             if ($scope.account !== undefined) {
-                console.debug("select account ", $scope.account);
+                console.debug("budgeto.account : select account ", $scope.account);
 
                 $scope.operations = OperationsResource.get($scope.account).query({}, null);
             }
