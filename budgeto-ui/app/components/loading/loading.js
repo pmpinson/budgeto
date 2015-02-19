@@ -20,9 +20,13 @@ budgetoLoading.config(['$routeProvider', function ($routeProvider) {
 budgetoLoading.controller('WaitCtrl', ['$scope', '$location', '$timeout', 'ApisLoader', 'ProgressLoader', LoadingCtrl]);
 
 /**
- * controller to manage wait page
- * @param $scope current scope
- * @param $location location service
+ * controller to manage loading page
+ * @param $scope
+ * @param $location
+ * @param $timeout
+ * @param ApisLoader
+ * @param ProgressLoader
+ * @constructor
  */
 function LoadingCtrl($scope, $location, $timeout, ApisLoader, ProgressLoader) {
     console.info('budgeto.loading : load LoadingCtrl');

@@ -22,8 +22,11 @@ budgetoHome.controller('HomeCtrl', ['$scope', '$location', 'ApisService', 'Progr
 
 /**
  * controller to manage home page
- * @param $scope current scope
- * @param $location location service
+ * @param $scope
+ * @param $location
+ * @param ApisService
+ * @param ProgressLoader
+ * @constructor
  */
 function HomeCtrl($scope, $location, ApisService, ProgressLoader) {
     console.info('budgeto.home : load HomeCtrl');

@@ -20,6 +20,11 @@ budgeto.constant('angularMomentConfig', {
 
 budgeto.run(['$location', BudgetoRun]);
 
+/**
+ * BudgetoRun : call to the init app page
+ * @param $location
+ * @constructor
+ */
 function BudgetoRun($location) {
     console.info('budgeto : run');
 

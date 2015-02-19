@@ -15,28 +15,40 @@ budgetoApis.factory('ApisLoader', ['$q', '$rootScope', 'ApisResource', ApisLoade
 budgetoApis.factory('ApisService', ['$rootScope', ApisService]);
 
 /**
+ */
+/**
  * Resource http to cal apis endpoint
+ * @param $resource
+ * @param BudgetoApi
+ * @returns {{all: to get all apis from rest endpoint, returning an array of apis in a promise}}
+ * @constructor
  */
 function ApisResource($resource, BudgetoApi) {
     console.info('budgeto.apis : load ApiResource');
 
     return {
-        get: function(success) {
-            return $resource(BudgetoApi, {}, {}).get({}, null, success);
+        all: function () {
+            return $resource(BudgetoApi, {}, {}).get({}).$promise;
         }
     };
 }
 
 /**
  * init of module to get all available apis
+ * @param $q
+ * @param $rootScope
+ * @param ApisResource
+ * @param ProgressLoader
+ * @returns {{load: promise to load the availables api from server, returning a promise on the result}}
+ * @constructor
  */
 function ApisLoader($q, $rootScope, ApisResource, ProgressLoader) {
     console.info('budgeto.apis : load ApisLoader');
 
     return {
-        load: function() {
+        load: function () {
             var deferred = $q.defer();
-            ApisResource.get(function (data) {
+            ApisResource.all().then(function (data) {
                 console.debug('budgeto.apis : call api to get all available apis');
 
                 $rootScope.apis = [];
@@ -56,6 +68,12 @@ function ApisLoader($q, $rootScope, ApisResource, ProgressLoader) {
 
 /**
  * apis service to get api data
+ */
+/**
+ *
+ * @param $rootScope
+ * @returns {{findAll: to gell an array of all apis, returning an array, find: to get one api by name, getLink: to find a href in array of link, return a string}}
+ * @constructor
  */
 function ApisService($rootScope) {
     console.info('budgeto.apis : load ApiService');

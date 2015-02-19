@@ -7,6 +7,9 @@ budgetoProgress.factory('ProgressLoader', [ProgressLoader]);
 
 /**
  * progress factory
+ * keep progress open if for exemple 2 call of show and 1 call hide seems there is another call to hide
+ * @returns {{show: Function to show the progress, hide: Function to hide the progress}}
+ * @constructor
  */
 function ProgressLoader() {
     console.info('budgeto.progress : load ProgressLoader');

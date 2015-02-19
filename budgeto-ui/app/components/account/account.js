@@ -17,14 +17,19 @@ budgetoAccount.config(['$routeProvider', function ($routeProvider) {
         });
     }]);
 
-budgetoAccount.controller('AccountCtrl', ['$scope', '$location', 'ApisService', 'AccountResource', 'OperationsResource', AccountCtrl]);
+budgetoAccount.controller('AccountCtrl', ['$scope', '$location', 'ApisService', 'AccountResource', AccountCtrl]);
 
 budgetoAccount.factory('AccountApi', ['$resource', 'ApisService', AccountApi]);
 
 budgetoAccount.factory('AccountResource', ['$resource', 'AccountApi', 'ApisService', AccountResource]);
 
-budgetoAccount.factory('OperationsResource', ['$resource', 'ApisService', OperationsResource]);
-
+/**
+ * account api to store the api definition for account
+ * @param $resource
+ * @param ApisService
+ * @returns the api
+ * @constructor
+ */
 function AccountApi($resource, ApisService) {
     console.info('budgeto.account : load AccountApi');
 
@@ -34,40 +39,47 @@ function AccountApi($resource, ApisService) {
     return api;
 }
 
+/**
+ * account ressource
+ * @param $resource
+ * @param AccountApi
+ * @param ApisService
+ * @returns {{all: get all accounts, returning an array in a promise, operations: get all operation of an account, returning an array of operation in a promise}}
+ * @constructor
+ */
 function AccountResource($resource, AccountApi, ApisService) {
     console.info('budgeto.account : load AccountResource');
 
     return {
-        all: function (success) {
-            return $resource(AccountApi.href, {}, {}).query({}, null, success);
+        all: function () {
+            var url = AccountApi.href;
+            return $resource(url, {}, {}).query({}).$promise;
         },
 
-        operations: function (Account, success) {
-            return $resource(ApisService.getLink('operations', account.links).href, {}, {});
+        operations: function (account) {
+            var url = ApisService.getLink('operations', account.links).href;
+            return $resource(url, {}, {}).query({}).$promise;
         }
     };
 }
 
-function OperationsResource($resource, ApisService) {
-    console.info('account : budgeto.account OperationsResource');
-
-    return {
-        get: function (account) {
-            return $resource(ApisService.getLink('operations', account.links).href, {}, {});
-            OperationsResource.get($scope.account).query({}, null);
-        }
-    }
-}
-
 /**
  * controller to manage account
- * @param $scope current scope
+ * @param $scope
+ * @param $location
+ * @param ApisService
+ * @param AccountResource
+ * @param OperationsResource
+ * @constructor
  */
-function AccountCtrl($scope, $location, ApisService, AccountResource, OperationsResource) {
+function AccountCtrl($scope, $location, ApisService, AccountResource) {
     console.info('budgeto.account : load AccountCtrl');
 
+    $scope.accounts = [];
     $scope.operations = [];
-    AccountResource.all(function (data) {
+    $scope.account = undefined;
+
+    AccountResource.all().then(function (data) {
         console.debug('budgeto.account : get all accounts ', data);
 
         $scope.accounts = data;
@@ -86,10 +98,15 @@ function AccountCtrl($scope, $location, ApisService, AccountResource, Operations
             return $scope.account
         }
         , function () {
+            $scope.operations = [];
             if ($scope.account !== undefined) {
                 console.debug('budgeto.account : select account ', $scope.account);
 
-                $scope.operations = OperationsResource.get($scope.account).query({}, null);
+                 AccountResource.operations($scope.account).then(function (data) {
+                    console.debug('budgeto.account : get all operation ', data);
+
+                    $scope.operations = data;
+                });
             }
         }
     );
