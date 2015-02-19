@@ -6,6 +6,7 @@ console.info('budgeto : load');
 var budgeto = angular.module('budgeto', [
     'ngRoute',
     'budgeto.apis',
+    'budgeto.loading',
     'budgeto.home',
     'budgeto.account'
 ]);
@@ -16,3 +17,11 @@ var budgeto = angular.module('budgeto', [
 budgeto.constant('angularMomentConfig', {
     timezone: 'UTC'
 });
+
+budgeto.run(['$location', BudgetoRun]);
+
+function BudgetoRun($location) {
+    console.info('budgeto : run');
+
+    $location.path('/loading');
+}

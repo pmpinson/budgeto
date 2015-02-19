@@ -10,9 +10,9 @@ budgetoApis.constant('BudgetoApi', 'http://localhost:9001/budgeto-api');
 
 budgetoApis.factory('ApisResource', ['$resource', 'BudgetoApi', ApisResource]);
 
-budgetoApis.factory('Apis', ['$q', 'ApisResource', 'ProgressLoader', Apis]);
+budgetoApis.factory('ApisLoader', ['$q', '$rootScope', 'ApisResource', ApisLoader]);
 
-budgetoApis.factory('ApisService', ['Apis', ApisService]);
+budgetoApis.factory('ApisService', ['$rootScope', ApisService]);
 
 /**
  * Resource http to cal apis endpoint
@@ -30,44 +30,44 @@ function ApisResource($resource, BudgetoApi) {
 /**
  * init of module to get all available apis
  */
-function Apis($q, ApisResource, ProgressLoader) {
-    console.info('budgeto.apis : load Apis');
+function ApisLoader($q, $rootScope, ApisResource, ProgressLoader) {
+    console.info('budgeto.apis : load ApisLoader');
 
-    ProgressLoader.hide();
+    return {
+        load: function() {
+            var deferred = $q.defer();
+            ApisResource.get(function (data) {
+                console.debug('budgeto.apis : call api to get all available apis');
 
-    var deferred = $q.defer();
-    ApisResource.get(function (data) {
-        console.debug('budgeto.apis : call api to get all available apis');
+                $rootScope.apis = [];
+                for (var key in data.links) {
+                    if (data.links[key].rel !== 'self') {
+                        $rootScope.apis.push(data.links[key]);
+                    }
+                }
+                console.debug('budgeto.apis : available apis ', $rootScope.apis);
+                deferred.resolve($rootScope.apis);
+            });
 
-        var apis = [];
-        for (var key in data.links) {
-            if (data.links[key].rel !== 'self') {
-                apis.push(data.links[key]);
-            }
+            return deferred.promise;
         }
-        console.debug('budgeto.apis : available apis ', apis);
-        deferred.resolve(apis);
-
-        ProgressLoader.hide();
-    });
-
-    return deferred.promise;
+    };
 }
 
 /**
  * apis service to get api data
  */
-function ApisService(Apis) {
+function ApisService($rootScope) {
     console.info('budgeto.apis : load ApiService');
 
     return {
 
         findAll: function () {
-            return Apis.then(function(data){return data;});
+            return $rootScope.apis;
         },
 
         find: function (rel) {
-            return this.getLink(rel, Apis);
+            return this.getLink(rel, $rootScope.apis);
         },
 
         getLink: function (rel, links) {

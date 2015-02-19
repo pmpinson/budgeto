@@ -1,48 +1,59 @@
 'use strict';
 
 // Declare module
-angular.module('budgeto.account', [
+var budgetoAccount = angular.module('budgeto.account', [
     'ngRoute',
     'ngResource',
     'budgeto.apis',
     'angularMoment'
-])
+]);
 
-    .config(['$routeProvider', function ($routeProvider) {
-        console.info("budgeto.account : load $routeProvider");
+budgetoAccount.config(['$routeProvider', function ($routeProvider) {
+        console.info('budgeto.account : load $routeProvider');
 
         $routeProvider.when('/account', {
             templateUrl: 'components/account/account.html',
             controller: 'AccountCtrl'
         });
-    }])
+    }]);
 
-    .controller('AccountCtrl', ['$scope', '$location', 'ApisService', 'AccountResource', 'OperationsResource', AccountCtrl])
+budgetoAccount.controller('AccountCtrl', ['$scope', '$location', 'ApisService', 'AccountResource', 'OperationsResource', AccountCtrl]);
 
-    .factory('AccountResource', ['$resource', 'ApisService', AccountResource])
+budgetoAccount.factory('AccountApi', ['$resource', 'ApisService', AccountApi]);
 
-    .factory('OperationsResource', ['$resource', OperationsResource]);
+budgetoAccount.factory('AccountResource', ['$resource', 'AccountApi', 'ApisService', AccountResource]);
 
-function AccountResource($resource, ApisService) {
-    console.info("budgeto.account : load AccountResource");
+budgetoAccount.factory('OperationsResource', ['$resource', 'ApisService', OperationsResource]);
+
+function AccountApi($resource, ApisService) {
+    console.info('budgeto.account : load AccountApi');
+
+    var api = ApisService.find('account');
+    console.debug('budgeto.account : api ', api);
+
+    return api;
+}
+
+function AccountResource($resource, AccountApi, ApisService) {
+    console.info('budgeto.account : load AccountResource');
 
     return {
-        all: function (AccountApi, success) {
+        all: function (success) {
             return $resource(AccountApi.href, {}, {}).query({}, null, success);
         },
 
-        operations: function(Account, success){
-            return $resource(getLink('operations', account.links).href, {}, {});
+        operations: function (Account, success) {
+            return $resource(ApisService.getLink('operations', account.links).href, {}, {});
         }
     };
 }
 
-function OperationsResource($resource) {
-    console.info("account : budgeto.account OperationsResource");
+function OperationsResource($resource, ApisService) {
+    console.info('account : budgeto.account OperationsResource');
 
     return {
         get: function (account) {
-            return $resource(getLink('operations', account.links).href, {}, {});
+            return $resource(ApisService.getLink('operations', account.links).href, {}, {});
             OperationsResource.get($scope.account).query({}, null);
         }
     }
@@ -53,14 +64,11 @@ function OperationsResource($resource) {
  * @param $scope current scope
  */
 function AccountCtrl($scope, $location, ApisService, AccountResource, OperationsResource) {
-    console.info("budgeto.account : load AccountCtrl");
-
-    var AccountApi = ApisService.find('account');
-
+    console.info('budgeto.account : load AccountCtrl');
 
     $scope.operations = [];
-    AccountResource.all(AccountApi, function (data) {
-        console.debug("budgeto.account : get all accounts ", data);
+    AccountResource.all(function (data) {
+        console.debug('budgeto.account : get all accounts ', data);
 
         $scope.accounts = data;
 
@@ -70,7 +78,7 @@ function AccountCtrl($scope, $location, ApisService, AccountResource, Operations
     });
 
     $scope.formatDate = function (date) {
-        return moment(date).format("ddd, hA");
+        return moment(date).format('ddd, hA');
     }
 
     $scope.$watch(
@@ -79,7 +87,7 @@ function AccountCtrl($scope, $location, ApisService, AccountResource, Operations
         }
         , function () {
             if ($scope.account !== undefined) {
-                console.debug("budgeto.account : select account ", $scope.account);
+                console.debug('budgeto.account : select account ', $scope.account);
 
                 $scope.operations = OperationsResource.get($scope.account).query({}, null);
             }

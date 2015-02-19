@@ -11,14 +11,14 @@ budgetoProgress.factory('ProgressLoader', [ProgressLoader]);
 function ProgressLoader() {
     console.info('budgeto.progress : load ProgressLoader');
 
-    var loader = angular.element(document.getElementsByTagName("body"));
+    var loader = angular.element(document.getElementsByTagName('body'));
 
     var cpt = 0;
 
     return {
         show: function () {
             cpt++;
-            loader.addClass("progressdialog-loader");
+            loader.addClass('progressdialog-loader');
         },
 
         hide: function () {
@@ -27,7 +27,7 @@ function ProgressLoader() {
                 cpt = 0;
             }
             if (cpt == 0) {
-                loader.removeClass("progressdialog-loader");
+                loader.removeClass('progressdialog-loader');
             }
         }
     };
