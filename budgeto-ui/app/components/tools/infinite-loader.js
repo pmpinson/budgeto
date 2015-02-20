@@ -7,12 +7,14 @@ budgetoInfiniteLoader.factory('InfiniteLoader', [InfiniteLoader]);
 
 //budgetoInfiniteLoader.directive('infinite-loader', [InfiniteLoaderDirective]);
 
-budgetoInfiniteLoader.directive('dinfiniteloader', function(){
+budgetoInfiniteLoader.directive('infinite-loader', function(){
     return {
+        restrict: 'AEC',
         scope: {
             msg: '='
+            //'loader-class': '@'
         },
-        template: '<div class="infinite-loader infinite-loader-default"><p>{{msg}}</p></div>'
+        template: '<div class="infinite-loader infinite-loader-default {{loaderClass}}"><p>{{msg}}</p></div>'
     }
 
 });
@@ -46,13 +48,4 @@ function InfiniteLoader() {
             }
         }
     };
-}
-
-function InfiniteLoaderDirective() {
-    return {
-        scope: {
-            msg: '=msg'
-        },
-        template: '<div class="infinite-loader infinite-loader-default"><p>{{msg}}</p></div>'
-    }
 }
