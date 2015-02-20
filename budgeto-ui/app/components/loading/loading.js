@@ -40,6 +40,6 @@ function LoadingCtrl($scope, $location, ApisLoader, InfiniteLoader, $timeout) {
             InfiniteLoader.hide();
             $location.path('/home');
 
-        } , 5000);
+        } , 1000);
     });
 };

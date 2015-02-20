@@ -19,14 +19,14 @@ budgeto.constant('angularMomentConfig', {
     timezone: 'UTC'
 });
 
-budgeto.run(['$location', BudgetoRun]);
+budgeto.run(['$location', '$rootScope', BudgetoRun]);
 
 /**
  * BudgetoRun : call to the init app page
  * @param $location
  * @constructor
  */
-function BudgetoRun($location) {
+function BudgetoRun($location, $rootScope) {
     console.info('budgeto : run');
 
     $location.path('/loading');

@@ -5,6 +5,17 @@ var budgetoInfiniteLoader= angular.module('budgeto.infiniteLoader', []);
 
 budgetoInfiniteLoader.factory('InfiniteLoader', [InfiniteLoader]);
 
+//budgetoInfiniteLoader.directive('infinite-loader', [InfiniteLoaderDirective]);
+
+budgetoInfiniteLoader.directive('dinfiniteloader', function(){
+    return {
+        scope: {
+            msg: '='
+        },
+        template: '<div class="infinite-loader infinite-loader-default"><p>{{msg}}</p></div>'
+    }
+
+});
 /**
  * infinite loader factory
  * keep progress open if for exemple 2 call of show and 1 call hide seems there is another call to hide
@@ -35,4 +46,13 @@ function InfiniteLoader() {
             }
         }
     };
+}
+
+function InfiniteLoaderDirective() {
+    return {
+        scope: {
+            msg: '=msg'
+        },
+        template: '<div class="infinite-loader infinite-loader-default"><p>{{msg}}</p></div>'
+    }
 }
