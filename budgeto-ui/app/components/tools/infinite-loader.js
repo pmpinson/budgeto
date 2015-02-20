@@ -5,11 +5,9 @@ var budgetoInfiniteLoader= angular.module('budgeto.infiniteLoader', []);
 
 budgetoInfiniteLoader.factory('InfiniteLoader', [InfiniteLoader]);
 
-//budgetoInfiniteLoader.directive('infinite-loader', [InfiniteLoaderDirective]);
-
-budgetoInfiniteLoader.directive('infinite-loader', function(){
+budgetoInfiniteLoader.directive('infiniteloader', function() {
     return {
-        restrict: 'AEC',
+        restrict: 'A',
         scope: {
             msg: '='
             //'loader-class': '@'
