@@ -5,6 +5,7 @@ console.info('budgeto : load');
 // Budgeto app
 var budgeto = angular.module('budgeto', [
     'ngRoute',
+    'budgeto.infiniteLoader',
     'budgeto.apis',
     'budgeto.loading',
     'budgeto.home',

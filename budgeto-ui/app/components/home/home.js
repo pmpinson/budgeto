@@ -18,7 +18,7 @@ budgetoHome.config(['$routeProvider', function ($routeProvider) {
         .otherwise({redirectTo: '/home'});
 }]);
 
-budgetoHome.controller('HomeCtrl', ['$scope', '$location', 'ApisService', 'ProgressLoader', HomeCtrl]);
+budgetoHome.controller('HomeCtrl', ['$scope', '$location', 'ApisService', HomeCtrl]);
 
 /**
  * controller to manage home page
@@ -28,7 +28,7 @@ budgetoHome.controller('HomeCtrl', ['$scope', '$location', 'ApisService', 'Progr
  * @param ProgressLoader
  * @constructor
  */
-function HomeCtrl($scope, $location, ApisService, ProgressLoader) {
+function HomeCtrl($scope, $location, ApisService) {
     console.info('budgeto.home : load HomeCtrl');
 
     $scope.apis = ApisService.findAll();
