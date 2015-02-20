@@ -10,19 +10,33 @@ module.exports = function(grunt) {
           optimization: 2
         },
         files: {
-          "css/main.css": "less/main.less" // destination file and source file
+          "app/styles/styles.css": "app/less/styles.less" // destination file and source file
         }
       }
     },
     watch: {
-      styles: {
-        files: ['less/**/*.less'], // which files to watch
-        tasks: ['less'],
-        options: {
-          nospawn: true
+       less: {
+         files: ['app/less/*.less'], // which files to watch
+         tasks: ['less'],
+         options: {
+           nospawn: true
+         }
+       }
+     },
+    bgShell: {
+        _defaults: {
+        },
+        server: {
+            cmd: 'npm start'
         }
-      }
     }
   });
 
-  grunt.registerTask('default', ['less', 'watch']);
+
+    grunt.loadNpmTasks('grunt-bg-shell');
+
+  grunt.registerTask('compile', ['less']);
+  grunt.registerTask('server', ['compile','bgShell:server']);
+
+//  grunt.registerTask('server', 'install the backend and frontend dependencies', startServer);
+};
