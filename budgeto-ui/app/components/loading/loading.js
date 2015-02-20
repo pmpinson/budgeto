@@ -17,7 +17,7 @@ budgetoLoading.config(['$routeProvider', function ($routeProvider) {
         });
 }]);
 
-budgetoLoading.controller('WaitCtrl', ['$scope', '$location', '$timeout', 'ApisLoader', 'ProgressLoader', LoadingCtrl]);
+budgetoLoading.controller('WaitCtrl', ['$scope', '$location', 'ApisLoader', 'ProgressLoader', LoadingCtrl]);
 
 /**
  * controller to manage loading page
@@ -28,16 +28,14 @@ budgetoLoading.controller('WaitCtrl', ['$scope', '$location', '$timeout', 'ApisL
  * @param ProgressLoader
  * @constructor
  */
-function LoadingCtrl($scope, $location, $timeout, ApisLoader, ProgressLoader) {
+function LoadingCtrl($scope, $location, ApisLoader, ProgressLoader) {
     console.info('budgeto.loading : load LoadingCtrl');
 
     ProgressLoader.show();
 
     ApisLoader.load().then(function(data){
-        $timeout(function(){
-            console.info('budgeto.loading : loadging done');
-            ProgressLoader.hide();
-            $location.path('/home');
-        }, 500);
+        console.info('budgeto.loading : loadging done');
+        ProgressLoader.hide();
+        $location.path('/home');
     });
 };

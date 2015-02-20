@@ -1,3 +1,6 @@
+@loader-image: data-uri('../images/loading.gif');
+@color-transparent-grey: rgba(255, 255, 255, .8);
+
 /**
  * style for infinite progress dialog
  */
@@ -31,6 +34,5 @@ body.progressdialog-loader .progressdialog-loader-content {
 }
 
 .progressdialog-loader-image {
-    background: rgba(255, 255, 255, .8) url('../images/loading.gif') 50% 50%
-    no-repeat;
+    background: @color-transparent-grey @loader-image 50% 50% no-repeat;
 }
