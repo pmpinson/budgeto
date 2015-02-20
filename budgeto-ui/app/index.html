@@ -14,26 +14,20 @@
     your browser</a> to improve your experience.</p>
 <![endif]-->
 
-<div class="progressdialog-loader-content progressdialog-loader-image">
-    <p>Work in progress. Pleas wait...</p>
-</div>
+<div data-infiniteloader data-msg="'Work in progress. Pleas wait...'"></div>
 
 <div data-ng-view></div>
 
-<!-- In production use:
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
--->
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular-route.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular-resource.min.js"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-moment/0.9.0/angular-moment.min.js"></script>
-<!--<script src="http://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.3.0/moment-timezone.min.js"></script>-->
 <script src="http://momentjs.com/downloads/moment-timezone-with-data-2010-2020.min.js"></script>
 <script src="lib/bootstrap-ui/ui-bootstrap-0.12.0.min.js"></script>
 <script src="app.js"></script>
-<script src="progress.js"></script>
-<script src="apis.js"></script>
+<script src="components/tools/infinite-loader.js"></script>
+<script src="components/apis/apis.js"></script>
 <script src="components/loading/loading.js"></script>
 <script src="components/home/home.js"></script>
 <script src="components/account/account.js"></script>

@@ -4,6 +4,7 @@
 var budgetoLoading= angular.module('budgeto.loading', [
     'ngRoute',
     'ngResource',
+    'budgeto.infiniteLoader',
     'budgeto.apis'
 ]);
 
@@ -17,7 +18,7 @@ budgetoLoading.config(['$routeProvider', function ($routeProvider) {
         });
 }]);
 
-budgetoLoading.controller('WaitCtrl', ['$scope', '$location', '$timeout', 'ApisLoader', 'ProgressLoader', LoadingCtrl]);
+budgetoLoading.controller('WaitCtrl', ['$scope', '$location', 'ApisLoader', 'InfiniteLoader', '$timeout', LoadingCtrl]);
 
 /**
  * controller to manage loading page
@@ -25,19 +26,20 @@ budgetoLoading.controller('WaitCtrl', ['$scope', '$location', '$timeout', 'ApisL
  * @param $location
  * @param $timeout
  * @param ApisLoader
- * @param ProgressLoader
+ * @param InfiniteLoader
  * @constructor
  */
-function LoadingCtrl($scope, $location, $timeout, ApisLoader, ProgressLoader) {
+function LoadingCtrl($scope, $location, ApisLoader, InfiniteLoader, $timeout) {
     console.info('budgeto.loading : load LoadingCtrl');
 
-    ProgressLoader.show();
+    InfiniteLoader.show();
 
     ApisLoader.load().then(function(data){
         $timeout(function(){
             console.info('budgeto.loading : loadging done');
-            ProgressLoader.hide();
+            InfiniteLoader.hide();
             $location.path('/home');
-        }, 500);
+
+        } , 1000);
     });
 };

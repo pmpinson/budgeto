@@ -4,8 +4,8 @@
 var budgetoAccount = angular.module('budgeto.account', [
     'ngRoute',
     'ngResource',
-    'budgeto.apis',
-    'angularMoment'
+    'angularMoment',
+    'budgeto.apis'
 ]);
 
 budgetoAccount.config(['$routeProvider', function ($routeProvider) {

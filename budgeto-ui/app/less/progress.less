@@ -1,0 +1,28 @@
+@infinite-loader-default-image: data-uri('../images/loading.gif');
+@infinite-loader-default-backcolor: rgba(255, 255, 255, .8);
+
+/**
+ * style for infinite progress dialog
+ */
+.infinite-loader {
+    text-align: center;
+    position: fixed;
+    z-index: 1000;
+    display: block;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.infinite-loader>p {
+    left: 30%;
+    top: 50%;
+    height: 100%;
+    width: 40%;
+    position: fixed;
+}
+
+.infinite-loader-default {
+    background: @infinite-loader-default-backcolor @infinite-loader-default-image 50% 50% no-repeat;
+}

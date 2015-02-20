@@ -2,8 +2,7 @@
 
 // Declare apis module
 var budgetoApis = angular.module('budgeto.apis', [
-    'ngResource',
-    'budgeto.progress'
+    'ngResource'
 ])
 
 budgetoApis.constant('BudgetoApi', 'http://localhost:9001/budgeto-api');
@@ -38,11 +37,10 @@ function ApisResource($resource, BudgetoApi) {
  * @param $q
  * @param $rootScope
  * @param ApisResource
- * @param ProgressLoader
  * @returns {{load: promise to load the availables api from server, returning a promise on the result}}
  * @constructor
  */
-function ApisLoader($q, $rootScope, ApisResource, ProgressLoader) {
+function ApisLoader($q, $rootScope, ApisResource) {
     console.info('budgeto.apis : load ApisLoader');
 
     return {
