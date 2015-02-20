@@ -1,27 +1,39 @@
 'use strict';
 
 // Declare module
-angular.module('budgeto.home', [
-  'ngRoute'
-])
+var budgetoHome = angular.module('budgeto.home', [
+    'ngRoute',
+    'ngResource',
+    'budgeto.apis'
+]);
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/home', {
-    templateUrl: 'components/home/home.html',
-    controller: 'HomeCtrl'
-  });
-}])
+budgetoHome.config(['$routeProvider', function ($routeProvider) {
+    console.info('budgeto.home : load $routeProvider');
 
-.controller('HomeCtrl', ['$scope', '$location', HomeCtrl]);
+    $routeProvider
+        .when('/home', {
+            templateUrl: 'components/home/home.html',
+            controller: 'HomeCtrl'
+        })
+        .otherwise({redirectTo: '/home'});
+}]);
+
+budgetoHome.controller('HomeCtrl', ['$scope', '$location', 'ApisService', 'ProgressLoader', HomeCtrl]);
 
 /**
- * controller to manage home controoler
- * @param $scope current scope
- * @param $location location service
+ * controller to manage home page
+ * @param $scope
+ * @param $location
+ * @param ApisService
+ * @param ProgressLoader
+ * @constructor
  */
-function HomeCtrl($scope, $location) {
+function HomeCtrl($scope, $location, ApisService, ProgressLoader) {
+    console.info('budgeto.home : load HomeCtrl');
 
-  $scope.account = function() {
-    $location.path('/account');
-  }
+    $scope.apis = ApisService.findAll();
+
+    $scope.changePath = function (path) {
+        $location.path('/' + path);
+    }
 };

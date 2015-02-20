@@ -1,12 +1,32 @@
 'use strict';
 
-// Declare app level module which depends on views, and components
-angular.module('budgeto', [
-  'ngRoute',
-  'budgeto.home',
-  'budgeto.account'
-])
+console.info('budgeto : load');
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.otherwise({redirectTo: '/home'});
-}]);
+// Budgeto app
+var budgeto = angular.module('budgeto', [
+    'ngRoute',
+    'budgeto.apis',
+    'budgeto.loading',
+    'budgeto.home',
+    'budgeto.account'
+]);
+
+/**
+ * configuration of moment timezone
+ */
+budgeto.constant('angularMomentConfig', {
+    timezone: 'UTC'
+});
+
+budgeto.run(['$location', BudgetoRun]);
+
+/**
+ * BudgetoRun : call to the init app page
+ * @param $location
+ * @constructor
+ */
+function BudgetoRun($location) {
+    console.info('budgeto : run');
+
+    $location.path('/loading');
+}

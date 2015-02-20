@@ -3,9 +3,12 @@
 </select>
 <h2>{{account.name}}</h2>
 <p>{{account.note}}</p>
-<table data-ng-model="operations">
+<table data-ng-model="operations" border="1">
     <tr data-ng-repeat="operation in operations">
+        <td>{{operation.date | amDateFormat:'dddd Do MMMM'}}</td>
         <td>{{operation.label}}</td>
-        <td>{{operation.date[0]}}/{{operation.date.monthOfYear}}/{{operation.date.dayOfMonth}}</td>
     </tr>
 </table>
+<br/>
+<br/>
+<a data-ng-click="home()">go back</a>

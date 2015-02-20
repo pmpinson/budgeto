@@ -14,7 +14,7 @@ docker inspect --format '{{ .NetworkSettings.IPAddress }}' budgeto-mongo-testser
 if [ $? -ne 0 ]; then
 
     echo 'container not started, start it'
-    docker run -d --name budgeto-mongo-testserver -p 192.168.59.103:27018:27017 mongo
+    docker run -d --name budgeto-mongo-testserver -p 27018:27017 mongo
     touch target/docker.started
 fi;
 

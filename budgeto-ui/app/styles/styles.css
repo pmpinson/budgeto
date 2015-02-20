@@ -1,0 +1,36 @@
+/**
+ * style for infinite progress dialog
+ */
+.progressdialog-loader-content {
+    text-align: center;
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: none;
+}
+
+.progressdialog-loader-content>p {
+    text-align: center;
+    left: 30%;
+    top: 65%;
+    height: 100%;
+    width: 40%;
+    position: fixed;
+}
+
+body.progressdialog-loader {
+    overflow: hidden;
+}
+
+body.progressdialog-loader .progressdialog-loader-content {
+    display: block;
+}
+
+.progressdialog-loader-image {
+    background: rgba(255, 255, 255, .8) url('../images/loading.gif') 50% 50%
+    no-repeat;
+}

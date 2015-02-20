@@ -1,2 +1,4 @@
 <h1>Welcome to budgeto</h1>
-<a data-ng-click="account()">to account</a>
+<div data-ng-repeat="api in apis">
+    <a data-ng-click="changePath(api.rel)">manage {{api.rel}}</a>
+</div>
