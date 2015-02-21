@@ -33,7 +33,10 @@ budgeto.constant('MessageService', {
             budget: 'Prepare your budget'
         },
         homeTitle: 'Welcome to budgeto',
-        homeLink: 'Go back to home'
+        homeLink: 'Go back to home',
+        errorTitle: 'Error',
+        error: 'An error occured, please advice us.',
+        closeTitle: 'Close'
     });
 
 /**

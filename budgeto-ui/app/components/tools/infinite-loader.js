@@ -5,17 +5,16 @@ var budgetoInfiniteLoader= angular.module('budgeto.infiniteLoader', []);
 
 budgetoInfiniteLoader.factory('InfiniteLoader', [InfiniteLoader]);
 
-budgetoInfiniteLoader.directive('infiniteloader', function() {
+budgetoInfiniteLoader.directive('infiniteloader', [function() {
     return {
         restrict: 'A',
         scope: {
             msg: '='
-            //'loader-class': '@'
         },
-        template: '<div class="infinite-loader infinite-loader-default {{loaderClass}}"><p>{{msg}}</p></div>'
+        template: '<div class="infinite-loader infinite-loader-default"><p>{{msg}}</p></div>'
     }
 
-});
+}]);
 /**
  * infinite loader factory
  * keep progress open if for exemple 2 call of show and 1 call hide seems there is another call to hide
@@ -23,7 +22,7 @@ budgetoInfiniteLoader.directive('infiniteloader', function() {
  * @constructor
  */
 function InfiniteLoader() {
-    console.info('budgeto.progress : load InfiniteLoader');
+    console.info('budgeto.infiniteLoader : load InfiniteLoader');
 
     var loader = angular.element(document.getElementsByClassName('infinite-loader'));
     loader.addClass('hidden');

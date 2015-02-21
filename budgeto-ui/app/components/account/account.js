@@ -5,6 +5,7 @@ var budgetoAccount = angular.module('budgeto.account', [
     'ngRoute',
     'ngResource',
     'angularMoment',
+    'budgeto.modalError',
     'budgeto.apis'
 ]);
 
@@ -17,7 +18,7 @@ budgetoAccount.config(['$routeProvider', function ($routeProvider) {
         });
     }]);
 
-budgetoAccount.controller('AccountCtrl', ['$scope', '$location', 'ApisService', 'AccountResource', AccountCtrl]);
+budgetoAccount.controller('AccountCtrl', ['$scope', '$location', 'ApisService', 'AccountResource', 'ModalError', AccountCtrl]);
 
 budgetoAccount.factory('AccountApi', ['$resource', 'ApisService', AccountApi]);
 
@@ -72,7 +73,7 @@ function AccountResource($resource, AccountApi, ApisService) {
  * @param OperationsResource
  * @constructor
  */
-function AccountCtrl($scope, $location, ApisService, AccountResource) {
+function AccountCtrl($scope, $location, ApisService, AccountResource, ModalError) {
     console.info('budgeto.account : load AccountCtrl');
 
     $scope.accounts = [];
@@ -87,6 +88,8 @@ function AccountCtrl($scope, $location, ApisService, AccountResource) {
         if (data.length != 0) {
             $scope.account = data[0];
         }
+    }).catch(function(reason){
+        ModalError.open();
     });
 
     $scope.formatDate = function (date) {
@@ -106,6 +109,8 @@ function AccountCtrl($scope, $location, ApisService, AccountResource) {
                     console.debug('budgeto.account : get all operation ', data);
 
                     $scope.operations = data;
+                }).catch(function(reason){
+                    ModalError.open();
                 });
             }
         }
