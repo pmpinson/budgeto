@@ -4,6 +4,7 @@
 var budgetoLoading= angular.module('budgeto.loading', [
     'ngRoute',
     'ngResource',
+    'ui.bootstrap',
     'budgeto.infiniteLoader',
     'budgeto.apis'
 ]);
@@ -32,7 +33,11 @@ budgetoLoading.controller('WaitCtrl', ['$scope', '$location', 'ApisLoader', 'Inf
 function LoadingCtrl($scope, $location, ApisLoader, InfiniteLoader, $timeout) {
     console.info('budgeto.loading : load LoadingCtrl');
 
+    $scope.loadFail = false;
     var sourcePage = $location.search().sourcePage;
+    if (sourcePage !== undefined && sourcePage !== null && sourcePage.indexOf('/loading') !== -1) {
+        sourcePage = '/';
+    }
     $location.search('sourcePage', null);
 
     InfiniteLoader.show();
@@ -44,5 +49,8 @@ function LoadingCtrl($scope, $location, ApisLoader, InfiniteLoader, $timeout) {
             $location.path(sourcePage);
 
         } , 1000);
+    }).catch(function(error){
+        $scope.loadFail = true;
+        InfiniteLoader.hide();
     });
 };

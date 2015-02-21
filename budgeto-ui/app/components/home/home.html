@@ -1,4 +1,6 @@
-<h1>Welcome to budgeto</h1>
+<div class="page-header">
+    <h1>{{MessageService.homeTitle}}</h1>
+</div>
 <div data-ng-repeat="api in apis">
-    <a data-ng-click="changePath(api.rel)">manage {{api.rel}}</a>
+    <a data-ng-click="changePath(api.rel)">{{MessageService.apisLinks[api.rel]}}</a>
 </div>

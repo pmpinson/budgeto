@@ -1,4 +1,6 @@
-<h1>account</h1>
+<div class="page-header">
+    <h1>{{MessageService.apisTitles['account']}}</h1>
+</div>
 <select data-ng-model="account" data-ng-options="account as account.name for account in accounts">
 </select>
 <h2>{{account.name}}</h2>
@@ -11,4 +13,4 @@
 </table>
 <br/>
 <br/>
-<a data-ng-click="home()">go back</a>
+<a data-ng-click="home()">{{MessageService.homeLink}}</a>

@@ -1,1 +1,6 @@
-<h1>Wait for application loading</h1>
+<div class="page-header">
+    <h1>{{MessageService.applicationInit}}</h1>
+</div>
+<alert data-ng-show="loadFail" type="danger">
+    <h2>{{MessageService.applicationInitFail}}</h2>
+</alert>

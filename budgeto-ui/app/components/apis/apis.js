@@ -5,9 +5,7 @@ var budgetoApis = angular.module('budgeto.apis', [
     'ngResource'
 ])
 
-budgetoApis.constant('BudgetoApi', 'http://localhost:9001/budgeto-api');
-
-budgetoApis.factory('ApisResource', ['$resource', 'BudgetoApi', ApisResource]);
+budgetoApis.factory('ApisResource', ['$resource', 'BudgetoRestApiURL', ApisResource]);
 
 budgetoApis.factory('ApisLoader', ['$q', '$rootScope', 'ApisResource', ApisLoader]);
 
@@ -18,16 +16,16 @@ budgetoApis.factory('ApisService', ['$rootScope', ApisService]);
 /**
  * Resource http to cal apis endpoint
  * @param $resource
- * @param BudgetoApi
+ * @param BudgetoRestApiURL
  * @returns {{all: to get all apis from rest endpoint, returning an array of apis in a promise}}
  * @constructor
  */
-function ApisResource($resource, BudgetoApi) {
+function ApisResource($resource, BudgetoRestApiURL) {
     console.info('budgeto.apis : load ApiResource');
 
     return {
         all: function () {
-            return $resource(BudgetoApi, {}, {}).get({}).$promise;
+            return $resource(BudgetoRestApiURL, {}, {}).get({}).$promise;
         }
     };
 }
@@ -45,8 +43,7 @@ function ApisLoader($q, $rootScope, ApisResource) {
 
     return {
         load: function () {
-            var deferred = $q.defer();
-            ApisResource.all().then(function (data) {
+            return ApisResource.all().then(function (data) {
                 console.debug('budgeto.apis : call api to get all available apis');
 
                 $rootScope.apis = [];
@@ -56,10 +53,7 @@ function ApisLoader($q, $rootScope, ApisResource) {
                     }
                 }
                 console.debug('budgeto.apis : available apis ', $rootScope.apis);
-                deferred.resolve($rootScope.apis);
             });
-
-            return deferred.promise;
         }
     };
 }

@@ -25,7 +25,7 @@ budgetoHome.controller('HomeCtrl', ['$scope', '$location', 'ApisService', HomeCt
  * @param $scope
  * @param $location
  * @param ApisService
- * @param ProgressLoader
+ * @param BudgetoMessages
  * @constructor
  */
 function HomeCtrl($scope, $location, ApisService) {
