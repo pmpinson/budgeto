@@ -1,4 +1,7 @@
 .idea/
 *.iml
 target/
-override.properties
+budgeto-api/etc/override.properties
+budgeto-ui/lib/
+budgeto-ui/bower_components/
+budgeto-ui/node_modules/
