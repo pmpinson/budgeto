@@ -1,2 +1,4 @@
+app/styles/styles.css
+lib/
+bower_components/
 node_modules/
-app/styles/
