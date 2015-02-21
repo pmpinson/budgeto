@@ -32,13 +32,16 @@ budgetoLoading.controller('WaitCtrl', ['$scope', '$location', 'ApisLoader', 'Inf
 function LoadingCtrl($scope, $location, ApisLoader, InfiniteLoader, $timeout) {
     console.info('budgeto.loading : load LoadingCtrl');
 
+    var sourcePage = $location.search().sourcePage;
+    $location.search('sourcePage', null);
+
     InfiniteLoader.show();
 
     ApisLoader.load().then(function(data){
         $timeout(function(){
-            console.info('budgeto.loading : loadging done');
+            console.info('budgeto.loading : loading done');
             InfiniteLoader.hide();
-            $location.path('/home');
+            $location.path(sourcePage);
 
         } , 1000);
     });
