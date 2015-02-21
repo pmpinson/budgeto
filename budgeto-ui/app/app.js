@@ -29,5 +29,7 @@ budgeto.run(['$location', '$rootScope', BudgetoRun]);
 function BudgetoRun($location, $rootScope) {
     console.info('budgeto : run');
 
+    $location.search('sourcePage', $location.path());
+
     $location.path('/loading');
 }
