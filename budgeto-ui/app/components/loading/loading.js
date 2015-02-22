@@ -13,7 +13,8 @@ budgetoLoading.config(['$routeProvider', function ($routeProvider) {
     $routeProvider
         .when('/loading', {
             templateUrl: 'components/loading/loading.html',
-            controller: 'LoadingCtrl'
+            controller: 'LoadingCtrl',
+            reloadOnSearch: false
         });
 }]);
 
