@@ -88,11 +88,11 @@ budgetoAccount.controller('AccountCtrl', ['$scope', '$location', '$log', 'Accoun
                 $log.debug('budgeto.account : select account ', $scope.account);
 
                  AccountResource.operations($scope.account).then(function (data) {
-                    $log.debug('budgeto.account : get all operation ', data);
+                    $log.debug('budgeto.account : get all operations ', data);
 
                     $scope.operations = data;
                 }).catch(function(reason){
-                    $log.error('error getting operation for ', $scope.account, ' / ', reason);
+                    $log.error('error getting operations for ', $scope.account, ' / ', reason);
                     $modalError.open();
                 });
             }

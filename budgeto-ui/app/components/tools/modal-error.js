@@ -8,12 +8,11 @@ var budgetoModalError = angular.module('budgeto.modalError', [
 /**
  * controller for modal of global error message
  */
-budgetoModalError.controller('ModalErrorInstanceCtrl', ['$scope', '$log', '$modalInstance', '$location', function($scope, $log, $modalInstance, $location) {
+budgetoModalError.controller('ModalErrorInstanceCtrl', ['$scope', '$log', '$modalError', function($scope, $log, $modalError) {
  $log.debug('budgeto.modalError : load ModalErrorInstanceCtrl');
 
   $scope.close = function () {
-    $modalInstance.dismiss('close');
-    $location.path("/");
+    $modalError.close();
   };
 }]);
 
@@ -22,13 +21,14 @@ budgetoModalError.controller('ModalErrorInstanceCtrl', ['$scope', '$log', '$moda
  */
 budgetoModalError.provider('$modalError', function() {
     var $modalErrorProvider = {
-      $get: ['$log', '$modal', function ($log, $modal) {
+      $get: ['$log', '$modal', '$location', function ($log, $modal, $location) {
           $log.debug('budgeto.modalError : load $modalError');
 
+           var modalInstance;
           var $modalError = {};
 
             $modalError.open = function() {
-              $modal.open({
+              modalInstance = $modal.open({
                     controller: 'ModalErrorInstanceCtrl',
                     template: '<div>'
                          + '<div class="modal-header"><h3 class="modal-title">{{MessageService.errorTitle}}</h3></div>'
@@ -37,6 +37,11 @@ budgetoModalError.provider('$modalError', function() {
                      + '</div>'
               });
             };
+
+            $modalError.close = function() {
+                modalInstance.dismiss('close');
+                $location.path("/");
+            }
 
           return $modalError;
         }]
