@@ -9,47 +9,33 @@ var budgetoAccount = angular.module('budgeto.account', [
     'budgeto.apis'
 ]);
 
-budgetoAccount.config(['$routeProvider', function ($routeProvider) {
-        console.info('budgeto.account : load $routeProvider');
-
-        $routeProvider.when('/account', {
-            templateUrl: 'components/account/account.html',
-            controller: 'AccountCtrl'
-        });
-    }]);
-
-budgetoAccount.controller('AccountCtrl', ['$scope', '$location', 'ApisService', 'AccountResource', '$modalError', AccountCtrl]);
-
-budgetoAccount.factory('AccountApi', ['$resource', 'ApisService', AccountApi]);
-
-budgetoAccount.factory('AccountResource', ['$resource', 'AccountApi', 'ApisService', AccountResource]);
+budgetoAccount.config(['$routeProvider', function($routeProvider) {
+    $routeProvider.when('/account', {
+        templateUrl: 'components/account/account.html',
+        controller: 'AccountCtrl'
+    });
+}]);
 
 /**
  * account api to store the api definition for account
- * @param $resource
- * @param ApisService
  * @returns the api
- * @constructor
  */
-function AccountApi($resource, ApisService) {
-    console.info('budgeto.account : load AccountApi');
+budgetoAccount.factory('AccountApi', ['$resource', '$log', 'ApisService', function($resource, $log, ApisService) {
+    $log.debug('budgeto.account : load AccountApi');
 
     var api = ApisService.find('account');
-    console.debug('budgeto.account : api ', api);
+    $log.debug('budgeto.account : api ', api);
 
     return api;
-}
+}]);
 
 /**
  * account ressource
- * @param $resource
- * @param AccountApi
- * @param ApisService
  * @returns {{all: get all accounts, returning an array in a promise, operations: get all operation of an account, returning an array of operation in a promise}}
- * @constructor
  */
-function AccountResource($resource, AccountApi, ApisService) {
-    console.info('budgeto.account : load AccountResource');
+
+budgetoAccount.factory('AccountResource', ['$resource', '$log', 'AccountApi', 'ApisService', function($resource, $log, AccountApi, ApisService) {
+    $log.debug('budgeto.account : load AccountResource');
 
     return {
         all: function () {
@@ -62,26 +48,21 @@ function AccountResource($resource, AccountApi, ApisService) {
             return $resource(url, {}, {}).query({}).$promise;
         }
     };
-}
+}]);
 
 /**
  * controller to manage account
- * @param $scope
- * @param $location
- * @param ApisService
- * @param AccountResource
- * @param OperationsResource
- * @constructor
  */
-function AccountCtrl($scope, $location, ApisService, AccountResource, $modalError) {
-    console.info('budgeto.account : load AccountCtrl');
+
+budgetoAccount.controller('AccountCtrl', ['$scope', '$location', '$log', 'ApisService', 'AccountResource', '$modalError', function($scope, $location, $log, ApisService, AccountResource, $modalError) {
+    $log.debug('budgeto.account : load AccountCtrl');
 
     $scope.accounts = [];
     $scope.operations = [];
     $scope.account = undefined;
 
     AccountResource.all().then(function (data) {
-        console.debug('budgeto.account : get all accounts ', data);
+        $log.debug('budgeto.account : get all accounts ', data);
 
         $scope.accounts = data;
 
@@ -89,6 +70,7 @@ function AccountCtrl($scope, $location, ApisService, AccountResource, $modalErro
             $scope.account = data[0];
         }
     }).catch(function(reason){
+        $log.error('error getting accounts / ', reason);
         $modalError.open();
     });
 
@@ -103,13 +85,14 @@ function AccountCtrl($scope, $location, ApisService, AccountResource, $modalErro
         , function () {
             $scope.operations = [];
             if ($scope.account !== undefined) {
-                console.debug('budgeto.account : select account ', $scope.account);
+                $log.debug('budgeto.account : select account ', $scope.account);
 
                  AccountResource.operations($scope.account).then(function (data) {
-                    console.debug('budgeto.account : get all operation ', data);
+                    $log.debug('budgeto.account : get all operation ', data);
 
                     $scope.operations = data;
                 }).catch(function(reason){
+                    $log.error('error getting operation for ', $scope.account, ' / ', reason);
                     $modalError.open();
                 });
             }
@@ -119,4 +102,4 @@ function AccountCtrl($scope, $location, ApisService, AccountResource, $modalErro
     $scope.home = function () {
         $location.path('/');
     }
-};
+}]);

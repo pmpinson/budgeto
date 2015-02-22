@@ -10,8 +10,6 @@ var budgetoLoading= angular.module('budgeto.loading', [
 ]);
 
 budgetoLoading.config(['$routeProvider', function ($routeProvider) {
-    console.info('budgeto.loading : load $routeProvider');
-
     $routeProvider
         .when('/loading', {
             templateUrl: 'components/loading/loading.html',
@@ -19,19 +17,11 @@ budgetoLoading.config(['$routeProvider', function ($routeProvider) {
         });
 }]);
 
-budgetoLoading.controller('WaitCtrl', ['$scope', '$location', 'ApisLoader', '$infiniteLoader', '$timeout', LoadingCtrl]);
-
 /**
  * controller to manage loading page
- * @param $scope
- * @param $location
- * @param $timeout
- * @param ApisLoader
- * @param $infiniteLoader
- * @constructor
  */
-function LoadingCtrl($scope, $location, ApisLoader, $infiniteLoader, $timeout) {
-    console.info('budgeto.loading : load LoadingCtrl');
+budgetoLoading.controller('WaitCtrl', ['$scope', '$location', '$log', 'ApisLoader', '$infiniteLoader', '$timeout', function($scope, $location, $log, ApisLoader, $infiniteLoader, $timeout) {
+    $log.debug('budgeto.loading : load LoadingCtrl');
 
     $scope.loadFail = false;
     var sourcePage = $location.search().sourcePage;
@@ -44,13 +34,14 @@ function LoadingCtrl($scope, $location, ApisLoader, $infiniteLoader, $timeout) {
 
     ApisLoader.load().then(function(data){
         $timeout(function(){
-            console.info('budgeto.loading : loading done');
+            $log.debug('budgeto.loading : loading done');
             $infiniteLoader.hide();
             $location.path(sourcePage);
 
         } , 1000);
     }).catch(function(error){
+        $log.error('error getting apis / ', reason);
         $scope.loadFail = true;
         $infiniteLoader.hide();
     });
-};
+}]);

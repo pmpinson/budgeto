@@ -5,24 +5,25 @@ var budgetoModalError = angular.module('budgeto.modalError', [
     'ui.bootstrap'
 ]);
 
-budgetoModalError.provider('$modalError', ModalErrorProvider);
-
-budgetoModalError.controller('ModalErrorInstanceCtrl', ['$scope', '$modalInstance', '$location', ModalErrorInstanceCtrl]);
-
-function ModalErrorInstanceCtrl($scope, $modalInstance, $location) {
+/**
+ * controller for modal of global error message
+ */
+budgetoModalError.controller('ModalErrorInstanceCtrl', ['$scope', '$log', '$modalInstance', '$location', function($scope, $log, $modalInstance, $location) {
+ $log.debug('budgeto.modalError : load ModalErrorInstanceCtrl');
 
   $scope.close = function () {
     $modalInstance.dismiss('close');
     $location.path("/");
   };
-}
+}]);
 
-function ModalErrorProvider() {
-    console.info('budgeto.modalError : load $modalErrorProvider');
-
+/**
+ * provider to manage modalError
+ */
+budgetoModalError.provider('$modalError', function() {
     var $modalErrorProvider = {
-      $get: ['$modal', function ($modal) {
-          console.info('budgeto.modalError : load $modalError');
+      $get: ['$log', '$modal', function ($log, $modal) {
+          $log.debug('budgeto.modalError : load $modalError');
 
           var $modalError = {};
 
@@ -42,4 +43,4 @@ function ModalErrorProvider() {
     };
 
     return $modalErrorProvider;
-}
+});

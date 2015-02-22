@@ -3,41 +3,27 @@
 // Declare progress module
 var budgetoInfiniteLoader= angular.module('budgeto.infiniteLoader', []);
 
-budgetoInfiniteLoader.provider('$infiniteLoader', InfiniteLoaderProvider);
-
-budgetoInfiniteLoader.directive('infiniteloader', [function() {
-    return {
-        restrict: 'EA',
-        scope: {
-            message: '=msg'
-        },
-        template: '<div class="infinite-loader infinite-loader-default hidden"><p>{{message}}</p></div>'
-    }
-
-}]);
-
-function InfiniteLoaderProvider() {
-    console.info('budgeto.infiniteLoader : load $infiniteLoaderProvider');
+budgetoInfiniteLoader.provider('$infiniteLoader', function() {
+    var message = 'Wait';
 
     var $infiniteLoaderProvider = {
-      $get: [function () {
-          console.info('budgeto.infiniteLoader : load $infiniteLoader');
+
+      setMessage: function(value) {
+        message = value;
+      },
+
+      $get: ['$document', '$log', function ($document, $log) {
+          $log.debug('budgeto.infiniteLoader : load $infiniteLoader');
 
           var cpt = 0;
           var $infiniteLoader = {};
-
-          function getLoader() {
-//            $document to use
-              var loader = angular.element(document.getElementsByClassName('infinite-loader'));
-              if (loader.length === 0) {
-                    console.error('have you setup the infiniteLoader directive');
-              }
-              return loader;
-          }
+          var body = $document.find('body').eq(0);
+          var element = angular.element('<div class="infinite-loader infinite-loader-default hidden"><p>' + message + '</p></div>');
+          body.append(element);
 
           $infiniteLoader.show = function () {
               cpt++;
-              getLoader().removeClass('hidden');
+              element.removeClass('hidden');
           };
 
           $infiniteLoader.hide = function () {
@@ -46,7 +32,7 @@ function InfiniteLoaderProvider() {
                   cpt = 0;
               }
               if (cpt == 0) {
-                  getLoader().addClass('hidden');
+                  element.addClass('hidden');
               }
           };
 
@@ -55,4 +41,4 @@ function InfiniteLoaderProvider() {
     };
 
     return $infiniteLoaderProvider;
-}
+});

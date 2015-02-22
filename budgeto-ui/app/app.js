@@ -1,7 +1,5 @@
 'use strict';
 
-console.info('budgeto : load');
-
 // Budgeto app
 var budgeto = angular.module('budgeto', [
     'ngRoute',
@@ -46,19 +44,19 @@ budgeto.constant('angularMomentConfig', {
     timezone: 'UTC'
 });
 
-budgeto.run(['$location', '$rootScope', 'MessageService', BudgetoRun]);
+budgeto.config(['$infiniteLoaderProvider', 'MessageService', function($infiniteLoaderProvider, MessageService) {
+  $infiniteLoaderProvider.setMessage(MessageService.infiniteLoaderMsg);
+}]);
 
 /**
  * BudgetoRun : call to the init app page
- * @param $location
- * @constructor
  */
-function BudgetoRun($location, $rootScope, MessageService) {
-    console.info('budgeto : run');
+budgeto.run(['$location', '$rootScope', '$log', 'MessageService', function($location, $rootScope, $log, MessageService) {
+    $log.debug('budgeto : run');
 
     $location.search('sourcePage', $location.path());
 
     $location.path('/loading');
 
     $rootScope.MessageService = MessageService;
-}
+}]);
