@@ -80,7 +80,7 @@ budgetoLoading.controller('LoadingCtrl', ['$scope', '$location', '$log', 'Loadin
             $infiniteLoader.hide();
             $location.path(sourcePage);
         } , 1000);
-    }).catch(function(error){
+    }).catch(function(reason){
         $log.error('error getting apis / ', reason);
         $scope.loadFail = true;
         $infiniteLoader.hide();
