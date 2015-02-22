@@ -3,46 +3,56 @@
 // Declare progress module
 var budgetoInfiniteLoader= angular.module('budgeto.infiniteLoader', []);
 
-budgetoInfiniteLoader.factory('InfiniteLoader', [InfiniteLoader]);
+budgetoInfiniteLoader.provider('$infiniteLoader', InfiniteLoaderProvider);
 
 budgetoInfiniteLoader.directive('infiniteloader', [function() {
     return {
-        restrict: 'A',
+        restrict: 'EA',
         scope: {
-            msg: '='
+            message: '=msg'
         },
-        template: '<div class="infinite-loader infinite-loader-default"><p>{{msg}}</p></div>'
+        template: '<div class="infinite-loader infinite-loader-default hidden"><p>{{message}}</p></div>'
     }
 
 }]);
-/**
- * infinite loader factory
- * keep progress open if for exemple 2 call of show and 1 call hide seems there is another call to hide
- * @returns {{show: Function to show the infinite loader, hide: Function to hide the infinite loader}}
- * @constructor
- */
-function InfiniteLoader() {
-    console.info('budgeto.infiniteLoader : load InfiniteLoader');
 
-    var loader = angular.element(document.getElementsByClassName('infinite-loader'));
-    loader.addClass('hidden');
+function InfiniteLoaderProvider() {
+    console.info('budgeto.infiniteLoader : load $infiniteLoaderProvider');
 
-    var cpt = 0;
+    var $infiniteLoaderProvider = {
+      $get: [function () {
+          console.info('budgeto.infiniteLoader : load $infiniteLoader');
 
-    return {
-        show: function () {
-            cpt++;
-            loader.removeClass('hidden');
-        },
+          var cpt = 0;
+          var $infiniteLoader = {};
 
-        hide: function () {
-            cpt--;
-            if (cpt < 0) {
-                cpt = 0;
-            }
-            if (cpt == 0) {
-                loader.addClass('hidden');
-            }
-        }
+          function getLoader() {
+//            $document to use
+              var loader = angular.element(document.getElementsByClassName('infinite-loader'));
+              if (loader.length === 0) {
+                    console.error('have you setup the infiniteLoader directive');
+              }
+              return loader;
+          }
+
+          $infiniteLoader.show = function () {
+              cpt++;
+              getLoader().removeClass('hidden');
+          };
+
+          $infiniteLoader.hide = function () {
+              cpt--;
+              if (cpt < 0) {
+                  cpt = 0;
+              }
+              if (cpt == 0) {
+                  getLoader().addClass('hidden');
+              }
+          };
+
+          return $infiniteLoader;
+        }]
     };
+
+    return $infiniteLoaderProvider;
 }

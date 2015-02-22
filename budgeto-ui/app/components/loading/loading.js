@@ -19,7 +19,7 @@ budgetoLoading.config(['$routeProvider', function ($routeProvider) {
         });
 }]);
 
-budgetoLoading.controller('WaitCtrl', ['$scope', '$location', 'ApisLoader', 'InfiniteLoader', '$timeout', LoadingCtrl]);
+budgetoLoading.controller('WaitCtrl', ['$scope', '$location', 'ApisLoader', '$infiniteLoader', '$timeout', LoadingCtrl]);
 
 /**
  * controller to manage loading page
@@ -27,10 +27,10 @@ budgetoLoading.controller('WaitCtrl', ['$scope', '$location', 'ApisLoader', 'Inf
  * @param $location
  * @param $timeout
  * @param ApisLoader
- * @param InfiniteLoader
+ * @param $infiniteLoader
  * @constructor
  */
-function LoadingCtrl($scope, $location, ApisLoader, InfiniteLoader, $timeout) {
+function LoadingCtrl($scope, $location, ApisLoader, $infiniteLoader, $timeout) {
     console.info('budgeto.loading : load LoadingCtrl');
 
     $scope.loadFail = false;
@@ -40,17 +40,17 @@ function LoadingCtrl($scope, $location, ApisLoader, InfiniteLoader, $timeout) {
     }
     $location.search('sourcePage', null);
 
-    InfiniteLoader.show();
+    $infiniteLoader.show();
 
     ApisLoader.load().then(function(data){
         $timeout(function(){
             console.info('budgeto.loading : loading done');
-            InfiniteLoader.hide();
+            $infiniteLoader.hide();
             $location.path(sourcePage);
 
         } , 1000);
     }).catch(function(error){
         $scope.loadFail = true;
-        InfiniteLoader.hide();
+        $infiniteLoader.hide();
     });
 };
