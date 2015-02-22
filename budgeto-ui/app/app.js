@@ -44,6 +44,16 @@ budgeto.constant('angularMomentConfig', {
     timezone: 'UTC'
 });
 
+/**
+ * config of apis provider
+ */
+budgeto.config(['ApiServiceProvider', 'BudgetoRestApiURL', function(ApiServiceProvider, BudgetoRestApiURL) {
+  ApiServiceProvider.setUrl(BudgetoRestApiURL);
+}]);
+
+/**
+ * config message for infinite loader
+ */
 budgeto.config(['$infiniteLoaderProvider', 'MessageService', function($infiniteLoaderProvider, MessageService) {
   $infiniteLoaderProvider.setMessage(MessageService.infiniteLoaderMsg);
 }]);

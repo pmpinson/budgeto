@@ -25,19 +25,18 @@ budgetoLoading.controller('LoadingCtrl', ['$scope', '$location', '$log', 'ApiSer
 
     $scope.loadFail = false;
     var sourcePage = $location.search().sourcePage;
-    if (sourcePage !== undefined && sourcePage !== null && sourcePage.indexOf('/loading') !== -1) {
+    if (sourcePage === undefined || sourcePage === null || sourcePage.indexOf('/loading') !== -1) {
         sourcePage = '/';
     }
     $location.search('sourcePage', null);
 
     $infiniteLoader.show();
 
-    ApiService.load().then(function(data){
+    ApiService.loaded().then(function(data){
         $timeout(function(){
             $log.debug('budgeto.loading : loading done');
             $infiniteLoader.hide();
             $location.path(sourcePage);
-
         } , 1000);
     }).catch(function(error){
         $log.error('error getting apis / ', reason);
