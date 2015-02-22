@@ -20,10 +20,10 @@ budgetoAccount.config(['$routeProvider', function($routeProvider) {
  * account api to store the api definition for account
  * @returns the api
  */
-budgetoAccount.factory('AccountApi', ['$resource', '$log', 'ApisService', function($resource, $log, ApisService) {
+budgetoAccount.factory('AccountApi', ['$resource', '$log', 'ApiService', function($resource, $log, ApiService) {
     $log.debug('budgeto.account : load AccountApi');
 
-    var api = ApisService.find('account');
+    var api = ApiService.find('account');
     $log.debug('budgeto.account : api ', api);
 
     return api;
@@ -34,7 +34,7 @@ budgetoAccount.factory('AccountApi', ['$resource', '$log', 'ApisService', functi
  * @returns {{all: get all accounts, returning an array in a promise, operations: get all operation of an account, returning an array of operation in a promise}}
  */
 
-budgetoAccount.factory('AccountResource', ['$resource', '$log', 'AccountApi', 'ApisService', function($resource, $log, AccountApi, ApisService) {
+budgetoAccount.factory('AccountResource', ['$resource', '$log', 'AccountApi', 'ApiService', function($resource, $log, AccountApi, ApiService) {
     $log.debug('budgeto.account : load AccountResource');
 
     return {
@@ -44,7 +44,7 @@ budgetoAccount.factory('AccountResource', ['$resource', '$log', 'AccountApi', 'A
         },
 
         operations: function (account) {
-            var url = ApisService.getLink('operations', account.links).href;
+            var url = ApiService.getLink('operations', account.links).href;
             return $resource(url, {}, {}).query({}).$promise;
         }
     };
@@ -54,7 +54,7 @@ budgetoAccount.factory('AccountResource', ['$resource', '$log', 'AccountApi', 'A
  * controller to manage account
  */
 
-budgetoAccount.controller('AccountCtrl', ['$scope', '$location', '$log', 'ApisService', 'AccountResource', '$modalError', function($scope, $location, $log, ApisService, AccountResource, $modalError) {
+budgetoAccount.controller('AccountCtrl', ['$scope', '$location', '$log', 'AccountResource', '$modalError', function($scope, $location, $log, AccountResource, $modalError) {
     $log.debug('budgeto.account : load AccountCtrl');
 
     $scope.accounts = [];

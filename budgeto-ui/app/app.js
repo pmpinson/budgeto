@@ -54,9 +54,8 @@ budgeto.config(['$infiniteLoaderProvider', 'MessageService', function($infiniteL
 budgeto.run(['$location', '$rootScope', '$log', 'MessageService', function($location, $rootScope, $log, MessageService) {
     $log.debug('budgeto : run');
 
-    $location.search('sourcePage', $location.path());
-
-    $location.path('/loading');
-
     $rootScope.MessageService = MessageService;
+
+    $location.search('sourcePage', $location.path());
+    $location.path('/loading');
 }]);

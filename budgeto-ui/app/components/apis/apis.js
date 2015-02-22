@@ -20,53 +20,49 @@ budgetoApis.factory('ApisResource', ['$resource', '$log', 'BudgetoRestApiURL', f
 }]);
 
 /**
- * init of module to get all available apis
- * @returns {{load: promise to load the availables api from server, returning a promise on the result}}
+ * provider to manage apis
  */
-budgetoApis.factory('ApisLoader', ['$q', '$rootScope', '$log', 'ApisResource', function($q, $rootScope, $log, ApisResource) {
-    $log.debug('budgeto.apis : load ApisLoader');
+budgetoApis.provider('ApiService', function() {
+    var $apiServiceProvider = {
+      $get: ['$log', 'ApisResource', function ($log, ApisResource) {
+          $log.debug('budgeto.apis : load ApiService');
 
-    return {
-        load: function () {
-            return ApisResource.all().then(function (data) {
-                $log.debug('budgeto.apis : call api to get all available apis');
+            var apis = [];
+          var $apiService = {};
 
-                $rootScope.apis = [];
-                for (var key in data.links) {
-                    if (data.links[key].rel !== 'self') {
-                        $rootScope.apis.push(data.links[key]);
+            $apiService.load = function() {
+                return ApisResource.all().then(function (data) {
+                    $log.debug('budgeto.apis : call api to get all available apis');
+
+                    for (var key in data.links) {
+                        if (data.links[key].rel !== 'self') {
+                            apis.push(data.links[key]);
+                        }
+                    }
+                    $log.debug('budgeto.apis : available apis ', apis);
+                });
+            };
+
+            $apiService.findAll = function () {
+                return apis;
+            };
+
+            $apiService.find = function (rel) {
+                return this.getLink(rel, apis);
+            };
+
+            $apiService.getLink = function (rel, links) {
+                for (var key in links) {
+                    if (links[key].rel === rel) {
+                        return links[key];
                     }
                 }
-                $log.debug('budgeto.apis : available apis ', $rootScope.apis);
-            });
-        }
+                return undefined;
+            };
+
+          return $apiService;
+        }]
     };
-}]);
 
-/**
- * apis service to get api data
- * @returns {{findAll: to gell an array of all apis, returning an array, find: to get one api by name, getLink: to find a href in array of link, return a string}}
- */
-budgetoApis.factory('ApisService', ['$rootScope', '$log', function($rootScope, $log) {
-    $log.debug('budgeto.apis : load ApiService');
-
-    return {
-
-        findAll: function () {
-            return $rootScope.apis;
-        },
-
-        find: function (rel) {
-            return this.getLink(rel, $rootScope.apis);
-        },
-
-        getLink: function (rel, links) {
-            for (var key in links) {
-                if (links[key].rel === rel) {
-                    return links[key];
-                }
-            }
-            return undefined;
-        }
-    }
-}]);
+    return $apiServiceProvider;
+});

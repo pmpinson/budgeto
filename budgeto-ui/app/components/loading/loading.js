@@ -13,14 +13,14 @@ budgetoLoading.config(['$routeProvider', function ($routeProvider) {
     $routeProvider
         .when('/loading', {
             templateUrl: 'components/loading/loading.html',
-            controller: 'WaitCtrl'
+            controller: 'LoadingCtrl'
         });
 }]);
 
 /**
  * controller to manage loading page
  */
-budgetoLoading.controller('WaitCtrl', ['$scope', '$location', '$log', 'ApisLoader', '$infiniteLoader', '$timeout', function($scope, $location, $log, ApisLoader, $infiniteLoader, $timeout) {
+budgetoLoading.controller('LoadingCtrl', ['$scope', '$location', '$log', 'ApiService', '$infiniteLoader', '$timeout', function($scope, $location, $log, ApiService, $infiniteLoader, $timeout) {
     $log.debug('budgeto.loading : load LoadingCtrl');
 
     $scope.loadFail = false;
@@ -32,7 +32,7 @@ budgetoLoading.controller('WaitCtrl', ['$scope', '$location', '$log', 'ApisLoade
 
     $infiniteLoader.show();
 
-    ApisLoader.load().then(function(data){
+    ApiService.load().then(function(data){
         $timeout(function(){
             $log.debug('budgeto.loading : loading done');
             $infiniteLoader.hide();
