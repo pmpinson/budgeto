@@ -5,8 +5,7 @@ var budgetoLoading= angular.module('budgeto.loading', [
     'ngRoute',
     'ngResource',
     'ui.bootstrap',
-    'budgeto.infiniteLoader',
-    'budgeto.apis'
+    'budgeto.infiniteLoader'
 ]);
 
 budgetoLoading.config(['$routeProvider', function ($routeProvider) {
@@ -19,9 +18,51 @@ budgetoLoading.config(['$routeProvider', function ($routeProvider) {
 }]);
 
 /**
+ * provider to manage loading of application
+ */
+budgetoApis.provider('LoadingService', function() {
+    var servicesNames = [];
+
+    var $loadingServiceProvider = {
+
+      add: function(value) {
+        servicesNames.push(value);
+      },
+
+      $get: ['$log', '$q', '$injector', function ($log, $q, $injector) {
+          $log.debug('budgeto.loading : load LoadingService');
+
+          var $loadingService = {};
+          var promise;
+
+          if (servicesNames.length !== 0) {
+
+              var servicesPromises = [];
+              for (var key in servicesNames) {
+                servicesPromises.push($injector.get(servicesNames[key]).$loaded());
+              }
+              promise = $q.all(servicesPromises);
+          } else {
+              var deferred = $q.defer();
+              promise = deferred.promise;
+              deferred.resolve(true);
+          }
+
+            $loadingService.$loaded = function() {
+                return promise;
+            };
+
+          return $loadingService;
+        }]
+    };
+
+    return $loadingServiceProvider;
+});
+
+/**
  * controller to manage loading page
  */
-budgetoLoading.controller('LoadingCtrl', ['$scope', '$location', '$log', 'ApiService', '$infiniteLoader', '$timeout', function($scope, $location, $log, ApiService, $infiniteLoader, $timeout) {
+budgetoLoading.controller('LoadingCtrl', ['$scope', '$location', '$log', 'LoadingService', '$infiniteLoader', '$timeout', function($scope, $location, $log, LoadingService, $infiniteLoader, $timeout) {
     $log.debug('budgeto.loading : load LoadingCtrl');
 
     $scope.loadFail = false;
@@ -33,7 +74,7 @@ budgetoLoading.controller('LoadingCtrl', ['$scope', '$location', '$log', 'ApiSer
 
     $infiniteLoader.show();
 
-    ApiService.loaded().then(function(data){
+    LoadingService.$loaded().then(function(data){
         $timeout(function(){
             $log.debug('budgeto.loading : loading done');
             $infiniteLoader.hide();

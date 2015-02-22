@@ -4,7 +4,6 @@
 var budgeto = angular.module('budgeto', [
     'ngRoute',
     'budgeto.infiniteLoader',
-    'budgeto.apis',
     'budgeto.loading',
     'budgeto.home',
     'budgeto.account'
@@ -56,6 +55,13 @@ budgeto.config(['ApiServiceProvider', 'BudgetoRestApiURL', function(ApiServicePr
  */
 budgeto.config(['$infiniteLoaderProvider', 'MessageService', function($infiniteLoaderProvider, MessageService) {
   $infiniteLoaderProvider.setMessage(MessageService.infiniteLoaderMsg);
+}]);
+
+/**
+ * config service to have been loaded
+ */
+budgeto.config(['LoadingServiceProvider', function(LoadingServiceProvider) {
+  LoadingServiceProvider.add('ApiService');
 }]);
 
 /**
