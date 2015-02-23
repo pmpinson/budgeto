@@ -1,0 +1,6 @@
+[
+  {'date':'monday', 'url': '/realtime', 'user': 'admin', 'count':10},
+  {'date':'monday', 'url': '/audience', 'user': 'admin', 'count':12},
+  {'date':'monday', 'url': '/realtime', 'user': 'user1', 'count':20},
+  {'date':'monday', 'url': '/audience', 'user': 'user1', 'count':15}
+]
