@@ -36,11 +36,15 @@ budgetoModalError.provider('$modalError', function() {
                          + '<div class="modal-footer"><button class="btn btn-primary" ng-click="close()">{{MessageService.closeTitle}}</button></div>'
                      + '</div>'
               });
+               return modalInstance;
             };
 
             $modalError.close = function() {
-                modalInstance.dismiss('close');
-                $location.path("/");
+                if (modalInstance !== undefined) {
+                    modalInstance.dismiss('close');
+                    $location.path("/");
+                    modalInstance = undefined;
+                }
             }
 
           return $modalError;

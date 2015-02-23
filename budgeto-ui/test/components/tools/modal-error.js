@@ -1,89 +1,72 @@
 'use strict';
 
-describe("Budgeto infiniteLoader module", function() {
-    beforeEach(module('budgeto.modalError'));
-
-    var $location;
+describe("Budgeto modalError module", function() {
     var $rootScope;
-    var $controller;
     var scope;
-    var element;
+    var $log;
+    var $location;
+    var $controller;
+    var $modal;
+    var $document;
+    var body;
 
-    beforeEach(inject(function(_$location_, _$rootScope_, _$controller_){
-        $location = _$location_;
-        $rootScope = _$rootScope_;
-        $controller = _$controller_;
+    beforeEach(function() {
+        module('budgeto.modalError');
 
-        scope = _$rootScope_.$new();
-      }));
+        $document = angular.element(document);
+        module(function($provide) {
+            $provide.value('$document', $document);
+        });
+        body = $document.find('body').eq(0);
 
-//      function getGoodDirective(body, asElement=false) {
-//        if (asElement) {
-//             element = $compile('<div data-modalerror></div>')($scope);
-//        } else {
-//            element = $compile('<modalerror></modalerror>')($scope);
-//        }
-//        body.appendChild(element[0]);
-//      }
-//
-//      function removeDirective(body) {
-//        body.removeChild(element[0]);
-//      }
+        inject(function(_$rootScope_, _$log_, _$location_, _$controller_, _$modal_){
+                $rootScope = _$rootScope_;
+                scope = _$rootScope_.$new();
+                $log = _$log_;
+                $location = _$location_;
+                $controller= _$controller_;
+                $modal = _$modal_;
+              });
+    });
 
-  it('directive present and call to hide ok do nothing', inject(function($modalError, $modal) {
-        spyOn($modal, 'open');
+  it('controller ModalErrorInstanceCtrl on close, call close on $modalError provider to close the modal', inject(function($modalError) {
+        spyOn($modalError, 'close');
 
-        $modalError.open();
-
-        expect($modal.open).toHaveBeenCalledWith({controller: 'ModalErrorInstanceCtrl', template: '<div><div class="modal-header"><h3 class="modal-title">{{MessageService.errorTitle}}</h3></div><div class="modal-body"><p>{{MessageService.error}}</p></div><div class="modal-footer"><button class="btn btn-primary" ng-click="close()">{{MessageService.closeTitle}}</button></div></div>'});
-      }));
-
-  it('directive present and call to show ok', inject(function($modal) {
-        var modalInstance = $modal.open({template: '<div></div>'});
-        spyOn($location, 'path');
-        spyOn(modalInstance, 'dismiss');
-
-        var ctrl = $controller('ModalErrorInstanceCtrl', {$scope: scope, '$modalInstance':modalInstance, '$location':$location});
+        var ctrl = $controller('ModalErrorInstanceCtrl', {$scope: scope, '$log':$log, '$modalError':$modalError});
 
         scope.close();
+        expect($modalError.close).toHaveBeenCalledWith();
+      }));
+
+  it('provider $modalError initialised', inject(function($modalError) {
+        expect($modalError).not.toBeNull();
+      }));
+
+  it('provider $modalError open method open a modal', inject(function($modalError) {
+        spyOn($location, 'path');
+        spyOn($modal, 'open');
+
+        var modalInstance = $modalError.open();
+        console.log(body);
+        expect(modalInstance).not.toBeNull();
+        expect($modal.open).toHaveBeenCalledWith({ controller: 'ModalErrorInstanceCtrl', template: jasmine.any(String)});
+      }));
+
+  it('provider $modalError closed method redirect to /', inject(function($modalError) {
+        spyOn($location, 'path');
+
+        var modalInstance = $modalError.open();
+        spyOn(modalInstance, 'dismiss');
+
+        $modalError.close();
         expect($location.path).toHaveBeenCalledWith('/');
         expect(modalInstance.dismiss).toHaveBeenCalledWith('close');
       }));
-//
-//  it('directive present and call to show and hide ok', inject(function($infiniteLoader) {
-//        getGoodDirective(document.body);
-//
-//        $infiniteLoader.show();
-//        expect(element.html()).toContain('<div class="infinite-loader infinite-loader-default"><p class="ng-binding">themessage</p></div>');
-//        $infiniteLoader.hide();
-//        expect(element.html()).toContain('<div class="infinite-loader infinite-loader-default hidden"><p class="ng-binding">themessage</p></div>');
-//
-//        removeDirective(document.body);
-//      }));
-//
-//  it('directive present and call to show 2 times and hide ok', inject(function($infiniteLoader) {
-//        getGoodDirective(document.body);
-//
-//        $infiniteLoader.show();
-//        $infiniteLoader.show();
-//        expect(element.html()).toContain('<div class="infinite-loader infinite-loader-default"><p class="ng-binding">themessage</p></div>');
-//        $infiniteLoader.hide();
-//        expect(element.html()).toContain('<div class="infinite-loader infinite-loader-default"><p class="ng-binding">themessage</p></div>');
-//
-//        removeDirective(document.body);
-//      }));
-//
-//  it('directive no tpresent and call to show', inject(function($infiniteLoader) {
-//        spyOn(console, 'error');
-//
-//        $infiniteLoader.show();
-//        expect(console.error).toHaveBeenCalledWith('have you setup the infiniteLoader directive');
-//      }));
-//
-//  it('directive no tpresent and call to hide', inject(function($infiniteLoader) {
-//        spyOn(console, 'error');
-//
-//        $infiniteLoader.hide();
-//        expect(console.error).toHaveBeenCalledWith('have you setup the infiniteLoader directive');
-//      }));
+
+  it('provider $modalError but no call open before closed method no redirect to /', inject(function($modalError) {
+        spyOn($location, 'path');
+
+        $modalError.close();
+        expect($location.path).not.toHaveBeenCalledWith('/');
+      }));
 });

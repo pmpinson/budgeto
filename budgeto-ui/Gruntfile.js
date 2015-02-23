@@ -27,6 +27,7 @@ module.exports = function(grunt) {
           all: {
               dest: 'lib/libs.js',
               cssDest: 'lib/libs.css',
+              exclude: ['angular-mocks'],
               bowerOptions: {
                 relative: true
               }
