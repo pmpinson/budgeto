@@ -1,17 +1,19 @@
 'use strict';
 
 describe("Budgeto module", function() {
-    beforeEach(module('budgeto'));
-
     var $log;
     var $location;
     var $rootScope;
 
-    beforeEach(inject(function(_$log_, _$location_, _$rootScope_){
-        $log = _$log_;
-        $location = _$location_;
-        $rootScope = _$rootScope_;
-      }));
+    beforeEach(function() {
+        module('budgeto');
+
+        inject(function(_$log_, _$location_, _$rootScope_){
+            $log = _$log_;
+            $location = _$location_;
+            $rootScope = _$rootScope_;
+        });
+    });
 
   it('constant BudgetoRestApiURL must be correct', inject(function(BudgetoRestApiURL) {
         expect(BudgetoRestApiURL).toEqual('http://localhost:9001/budgeto-api');
@@ -48,4 +50,27 @@ describe("Budgeto module", function() {
 
         expect($rootScope.MessageService).toBe(MessageService);
       }));
+});
+
+describe("Budgeto module configuration providers configuration", function() {
+    beforeEach(function() {
+        module('budgeto');
+
+
+        inject(function(){
+        });
+    });
+
+    it('$infiniteLoader take wait message', inject(function($infiniteLoader) {
+        expect($infiniteLoader.config().getMessage()).toBe('Work in progress. Pleas wait...');
+    }));
+
+    it('ApiServiceProvider take url', inject(function($infiniteLoader, ApiService) {
+        expect(ApiService.config().getUrl()).toBe('http://localhost:9001/budgeto-api');
+    }));
+
+    it('LoadingService take services', inject(function(LoadingService) {
+        expect(LoadingService.config().getServicesNames().length).toBe(1);
+        expect(LoadingService.config().getServicesNames()).toContain('ApiService');
+    }));
 });

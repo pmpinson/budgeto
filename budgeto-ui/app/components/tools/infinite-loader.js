@@ -21,6 +21,14 @@ budgetoInfiniteLoader.provider('$infiniteLoader', function() {
           var element = angular.element('<div class="infinite-loader infinite-loader-default hidden"><p>' + message + '</p></div>');
           body.append(element);
 
+          $infiniteLoader.config = function () {
+            return {
+              getMessage: function() {
+                return message;
+              }
+            };
+          };
+
           $infiniteLoader.show = function () {
               cpt++;
               element.removeClass('hidden');

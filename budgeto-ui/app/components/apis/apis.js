@@ -37,6 +37,14 @@ budgetoApis.provider('ApiService', function() {
           var apis = [];
           var $apiService = {};
 
+              $apiService.config = function () {
+                return {
+                  getUrl: function() {
+                    return url;
+                  }
+                };
+              };
+
             $apiService.$loaded = function() {
                 return ApisResource.all(url).then(function (data) {
                    $log.debug('budgeto.apis : call api to get all available apis');

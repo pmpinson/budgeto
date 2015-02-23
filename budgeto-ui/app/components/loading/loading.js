@@ -48,6 +48,14 @@ budgetoApis.provider('LoadingService', function() {
               deferred.resolve(true);
           }
 
+              $loadingService.config = function () {
+                return {
+                  getServicesNames: function() {
+                    return servicesNames;
+                  }
+                };
+              };
+
             $loadingService.$loaded = function() {
                 return promise;
             };
