@@ -15,32 +15,32 @@ var budgeto = angular.module('budgeto', [
 budgeto.constant('BudgetoRestApiURL', 'http://localhost:9001/budgeto-api');
 
 /**
- * message
- */
-budgeto.constant('MessageService', {
-        applicationInit : 'Wait for application loading',
-        applicationInitFail: 'Erreur during initialisation. Come back later. So Sorry...',
-        infiniteLoaderMsg: 'Work in progress. Pleas wait...',
-        apisLinks: {
-            account : 'Go manage your accounts',
-            budget: 'Go to prepare your budget'
-        },
-        apisTitles: {
-            account : 'Manage your accounts',
-            budget: 'Prepare your budget'
-        },
-        homeTitle: 'Welcome to budgeto',
-        homeLink: 'Go back to home',
-        errorTitle: 'Error',
-        error: 'An error occured, please advice us.',
-        closeTitle: 'Close'
-    });
-
-/**
  * configuration of moment timezone
  */
 budgeto.constant('angularMomentConfig', {
     timezone: 'UTC'
+});
+
+/**
+ * message
+ */
+budgeto.constant('MessageService', {
+    applicationInit : 'Wait for application loading',
+    applicationInitFail: 'Erreur during initialisation. Come back later. So Sorry...',
+    infiniteLoaderMsg: 'Work in progress. Pleas wait...',
+    apisLinks: {
+        account : 'Go manage your accounts',
+        budget: 'Go to prepare your budget'
+    },
+    apisTitles: {
+        account : 'Manage your accounts',
+        budget: 'Prepare your budget'
+    },
+    homeTitle: 'Welcome to budgeto',
+    homeLink: 'Go back to home',
+    errorTitle: 'Error',
+    error: 'An error occured, please advice us.',
+    closeTitle: 'Close'
 });
 
 /**

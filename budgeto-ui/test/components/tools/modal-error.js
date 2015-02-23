@@ -47,7 +47,6 @@ describe("Budgeto modalError module", function() {
         spyOn($modal, 'open');
 
         var modalInstance = $modalError.open();
-        console.log(body);
         expect(modalInstance).not.toBeNull();
         expect($modal.open).toHaveBeenCalledWith({ controller: 'ModalErrorInstanceCtrl', template: jasmine.any(String)});
       }));

@@ -3,10 +3,12 @@
 describe("Budgeto module", function() {
     beforeEach(module('budgeto'));
 
+    var $log;
     var $location;
     var $rootScope;
 
-    beforeEach(inject(function(_$location_, _$rootScope_){
+    beforeEach(inject(function(_$log_, _$location_, _$rootScope_){
+        $log = _$log_;
         $location = _$location_;
         $rootScope = _$rootScope_;
       }));
@@ -31,7 +33,7 @@ describe("Budgeto module", function() {
 
         // call run
         var myModule = angular.module('budgeto');
-        myModule._runBlocks[0][3]($location, $rootScope, MessageService);
+        myModule._runBlocks[0][4]($location, $rootScope, $log, MessageService);
 
         expect($location.path).toHaveBeenCalledWith();
         expect($location.search).toHaveBeenCalledWith('sourcePage', $location.path());
@@ -42,7 +44,7 @@ describe("Budgeto module", function() {
 
         // call run
         var myModule = angular.module('budgeto');
-        myModule._runBlocks[0][3]($location, $rootScope, MessageService);
+        myModule._runBlocks[0][4]($location, $rootScope, $log, MessageService);
 
         expect($rootScope.MessageService).toBe(MessageService);
       }));

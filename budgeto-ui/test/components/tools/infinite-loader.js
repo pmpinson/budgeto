@@ -85,7 +85,7 @@ describe("Budgeto infiniteLoader module configuration", function() {
         expect($infiniteLoaderProviderMock).not.toBeNull();
     }));
 
-    it('take the message', inject(function() {
+    it('take a config message', inject(function() {
         $infiniteLoaderProviderMock.setMessage('the new wait message');
 
         var $infiniteLoader = $infiniteLoaderProviderMock.$get[2]($document, $log).show();
