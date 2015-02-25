@@ -19,7 +19,7 @@ budgetoHome.config(['$routeProvider', function ($routeProvider) {
 /**
  * controller to manage home page
  */
-budgetoHome.controller('HomeCtrl', ['$scope', '$location', '$log', 'ApiService', function($scope, $location, $log, ApiService) {
+budgetoHome.controller('HomeCtrl', ['$scope', '$location', '$log', 'ApiService', function ($scope, $location, $log, ApiService) {
     $log.debug('budgeto.home : load HomeCtrl');
 
     $scope.apis = ApiService.findAll();

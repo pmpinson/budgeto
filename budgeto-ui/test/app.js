@@ -88,7 +88,7 @@ describe("Budgeto module", function () {
                 $rootScope = _$rootScope_;
                 $httpBackend = _$httpBackend_;
 
-                $httpBackend.whenGET('http://localhost:9001/budgeto-api').respond(function(method,url,data) {
+                $httpBackend.whenGET('http://localhost:9001/budgeto-api').respond(function (method, url, data) {
                     return [];
                 });
             });
@@ -106,7 +106,7 @@ describe("Budgeto module", function () {
             expect(ApiService.config().getUrl()).toBe('http://localhost:9001/budgeto-api');
         }));
 
-        it('LoadingService take services', inject(function ( LoadingService) {
+        it('LoadingService take services', inject(function (LoadingService) {
             $rootScope.$apply();
 
             expect(LoadingService.config().getServicesNames().length).toBe(1);

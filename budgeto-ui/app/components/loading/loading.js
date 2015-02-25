@@ -83,9 +83,9 @@ budgetoLoading.controller('LoadingCtrl', ['$scope', '$location', '$log', 'Loadin
     $location.search('sourcePage', null);
 
     LoadingService.loaded().then(function (data) {
-            $log.debug('budgeto.loading : loading done');
-            $infiniteLoader.hide();
-            $location.path(sourcePage);
+        $log.debug('budgeto.loading : loading done');
+        $infiniteLoader.hide();
+        $location.path(sourcePage);
     }).catch(function (reason) {
         $log.error('error getting apis / ', reason);
         $scope.loadFail = true;
