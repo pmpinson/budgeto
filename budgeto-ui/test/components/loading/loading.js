@@ -181,7 +181,6 @@ describe("Budgeto loading module", function () {
 
         it('take 0 services names', inject(function () {
             var LoadingService = LoadingServiceProviderMock.$get[3]($log, $q, $injector);
-            var prom = LoadingService.loaded();
             $rootScope.$apply();
 
             LoadingService.loaded().then(function (data) {

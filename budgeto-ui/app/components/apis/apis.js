@@ -9,7 +9,7 @@ var budgetoApis = angular.module('budgeto.apis', [
  * Resource http to cal apis endpoint
  * @returns {{all: to get all apis from rest endpoint, returning an array of apis in a promise}}
  */
-budgetoApis.factory('ApisResource', ['$resource', '$log', function($resource, $log) {
+budgetoApis.factory('ApisResource', ['$resource', '$log', function ($resource, $log) {
     $log.debug('budgeto.apis : load ApiResource');
 
     return {
@@ -22,40 +22,41 @@ budgetoApis.factory('ApisResource', ['$resource', '$log', function($resource, $l
 /**
  * provider to manage apis
  */
-budgetoApis.provider('ApiService', function() {
-    var url;
+budgetoApis.provider('ApiService', function () {
+    var url = "noUrlSet";
 
     var $apiServiceProvider = {
 
-      setUrl: function(value) {
-        url = value;
-      },
+        setUrl: function (value) {
+            url = value;
+        },
 
-      $get: ['$log', 'ApisResource', function ($log, ApisResource) {
-          $log.debug('budgeto.apis : load ApiService');
+        $get: ['$log', 'ApisResource', function ($log, ApisResource) {
+            $log.debug('budgeto.apis : load ApiService');
 
-          var apis = [];
-          var $apiService = {};
+            var apis = [];
+            var $apiService = {};
 
-              $apiService.config = function () {
+            $apiService.config = function () {
                 return {
-                  getUrl: function() {
-                    return url;
-                  }
+                    getUrl: function () {
+                        return url;
+                    }
                 };
-              };
+            };
 
-            $apiService.loaded = function() {
+            $apiService.loaded = function () {
                 return ApisResource.all(url).then(function (data) {
-                   $log.debug('budgeto.apis : call api to get all available apis');
+                    $log.debug('budgeto.apis : call api to get all available apis');
 
-                   for (var key in data.links) {
-                       if (data.links[key].rel !== 'self') {
-                           apis.push(data.links[key]);
-                       }
-                   }
-                   $log.debug('budgeto.apis : available apis ', apis);
-               });
+                    for (var key in data.links) {
+                        if (data.links[key].rel !== 'self') {
+                            apis.push(data.links[key]);
+                        }
+                    }
+                    $log.debug('budgeto.apis : available apis ', apis);
+                    return data;
+                });
             };
 
             $apiService.findAll = function () {
@@ -72,10 +73,10 @@ budgetoApis.provider('ApiService', function() {
                         return links[key];
                     }
                 }
-                return undefined;
+                return null;
             };
 
-          return $apiService;
+            return $apiService;
         }]
     };
 

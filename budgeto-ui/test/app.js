@@ -78,7 +78,7 @@ describe("Budgeto module", function () {
 
     describe("providers configuration", function () {
         var $rootScope;
-        var $httpBackend
+        var $httpBackend;
 
         beforeEach(function () {
             module('budgeto');
