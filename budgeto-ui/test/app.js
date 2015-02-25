@@ -3,20 +3,31 @@
 describe("Budgeto module", function () {
 
     describe("constants configuration", function () {
+        var $rootScope;
 
         beforeEach(function () {
             module('budgeto');
+
+            inject(function (_$rootScope_) {
+                $rootScope = _$rootScope_;
+            });
         });
 
         it('BudgetoRestApiURL to be correct', inject(function (BudgetoRestApiURL) {
+            $rootScope.$apply();
+
             expect(BudgetoRestApiURL).toEqual('http://localhost:9001/budgeto-api');
         }));
 
         it('moment tz to be correct', inject(function (angularMomentConfig) {
+            $rootScope.$apply();
+
             expect(angularMomentConfig).toEqual({timezone: 'UTC'});
         }));
 
         it('messages defined correctly', inject(function (MessageService) {
+            $rootScope.$apply();
+
             expect(Object.keys(MessageService).length).toBe(10);
             expect(Object.keys(MessageService.apisLinks).length).toBe(2);
             expect(Object.keys(MessageService.apisTitles).length).toBe(2);
@@ -45,6 +56,7 @@ describe("Budgeto module", function () {
             // call run
             var myModule = angular.module('budgeto');
             myModule._runBlocks[0][4]($location, $rootScope, $log, MessageService);
+            $rootScope.$apply();
 
             expect($location.path.calls.count()).toBe(2);
             expect($location.path).toHaveBeenCalledWith();
@@ -58,29 +70,45 @@ describe("Budgeto module", function () {
             // call run
             var myModule = angular.module('budgeto');
             myModule._runBlocks[0][4]($location, $rootScope, $log, MessageService);
+            $rootScope.$apply();
 
             expect($rootScope.MessageService).toBe(MessageService);
         }));
     });
 
     describe("providers configuration", function () {
+        var $rootScope;
+        var $httpBackend
+
         beforeEach(function () {
             module('budgeto');
 
 
-            inject(function () {
+            inject(function (_$rootScope_, _$httpBackend_) {
+                $rootScope = _$rootScope_;
+                $httpBackend = _$httpBackend_;
+
+                $httpBackend.whenGET('http://localhost:9001/budgeto-api').respond(function(method,url,data) {
+                    return [];
+                });
             });
         });
 
         it('$infiniteLoader take wait message', inject(function ($infiniteLoader) {
+            $rootScope.$apply();
+
             expect($infiniteLoader.config().getMessage()).toBe('Work in progress. Pleas wait...');
         }));
 
-        it('ApiServiceProvider take url', inject(function ($infiniteLoader, ApiService) {
+        it('ApiServiceProvider take url', inject(function (ApiService) {
+            $rootScope.$apply();
+
             expect(ApiService.config().getUrl()).toBe('http://localhost:9001/budgeto-api');
         }));
 
-        it('LoadingService take services', inject(function (LoadingService) {
+        it('LoadingService take services', inject(function ( LoadingService) {
+            $rootScope.$apply();
+
             expect(LoadingService.config().getServicesNames().length).toBe(1);
             expect(LoadingService.config().getServicesNames()).toContain('ApiService');
         }));

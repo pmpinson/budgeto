@@ -25,6 +25,8 @@ describe("Budgeto loading module", function () {
         });
 
         it('$routeProvider add route', inject(function () {
+            $rootScope.$apply();
+
             expect($route.routes['/loading']).not.toBeNull();
             expect($route.routes['/loading'].templateUrl).toBe('components/loading/loading.html');
             expect($route.routes['/loading'].controller).toBe('LoadingCtrl');
@@ -104,10 +106,12 @@ describe("Budgeto loading module", function () {
             }));
         });
 
-        describe("provider LoadingService", function () {
-            //it('initialised', inject(function (LoadingService) {
-            //    expect(LoadingService).not.toBeNull();
-            //}));
+        describe("provider LoadingService", function (LoadingService) {
+            it('initialised', inject(function (LoadingService) {
+                $rootScope.$apply();
+
+                expect(LoadingService).not.toBeNull();
+            }));
         });
     });
 
@@ -123,32 +127,38 @@ describe("Budgeto loading module", function () {
                 LoadingServiceProviderMock = LoadingServiceProvider;
 
 
-                $provide.factory('Service1', function() {
+                $provide.factory('Service1', function () {
                     return {
-                        loaded: function() {
-                            console.log('serv1');
+                        loaded: function () {
                             var customDefer = $q.defer();
                             customDefer.resolve(true);
                             return customDefer.promise;
                         }
                     };
                 });
-                $provide.factory('Service2', function() {
+                $provide.factory('Service2', function () {
                     return {
-                        loaded: function() {
-                            console.log('serv2');
+                        loaded: function () {
                             var customDefer = $q.defer();
                             customDefer.resolve(true);
                             return customDefer.promise;
                         }
                     };
                 });
-                $provide.factory('Service3', function() {
+                $provide.factory('Service3', function () {
                     return {
-                        loaded: function() {
-                            console.log('serv3');
+                        loaded: function () {
                             var customDefer = $q.defer();
                             customDefer.resolve(true);
+                            return customDefer.promise;
+                        }
+                    };
+                });
+                $provide.factory('ServiceFail1', function () {
+                    return {
+                        loaded: function () {
+                            var customDefer = $q.defer();
+                            customDefer.reject('not available');
                             return customDefer.promise;
                         }
                     };
@@ -165,22 +175,52 @@ describe("Budgeto loading module", function () {
 
         it('have a valid provider', inject(function () {
             $rootScope.$apply();
+
             expect(LoadingServiceProviderMock).not.toBeNull();
         }));
 
         it('take 0 services names', inject(function () {
-            LoadingServiceProviderMock.add('Service1', 'Service2', 'Service3');
-
             var LoadingService = LoadingServiceProviderMock.$get[3]($log, $q, $injector);
+            var prom = LoadingService.loaded();
             $rootScope.$apply();
-            LoadingService.loaded().then(function(data){
-                expect(data).toBe(true);
+
+            LoadingService.loaded().then(function (data) {
+                expect(true).toBe(true);
+            }).catch(function (reason) {
+                expect(true).toBe(false);
             });
+            $rootScope.$apply();
 
         }));
 
-        it('take services names config', inject(function () {
+        it('take 3 services that are correct', inject(function () {
+            LoadingServiceProviderMock.add('Service1');
+            LoadingServiceProviderMock.add('Service2');
+            LoadingServiceProviderMock.add('Service3');
+
             var LoadingService = LoadingServiceProviderMock.$get[3]($log, $q, $injector);
+            $rootScope.$apply();
+
+            LoadingService.loaded().then(function (data) {
+                expect(true).toBe(true);
+            }).catch(function (reason) {
+                expect(true).toBe(false);
+            });
+            $rootScope.$apply();
+        }));
+
+        it('take 2 services and one fail', inject(function () {
+            LoadingServiceProviderMock.add('Service2');
+            LoadingServiceProviderMock.add('ServiceFail1');
+
+            var LoadingService = LoadingServiceProviderMock.$get[3]($log, $q, $injector);
+            $rootScope.$apply();
+
+            LoadingService.loaded().then(function (data) {
+                expect(true).toBe(false);
+            }).catch(function (reason) {
+                expect(true).toBe(true);
+            });
             $rootScope.$apply();
         }));
     });
