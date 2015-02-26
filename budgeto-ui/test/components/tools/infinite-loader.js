@@ -1,117 +1,124 @@
 'use strict';
 
-describe("Budgeto infiniteLoader module", function() {
-    beforeEach(module('budgeto.infiniteLoader'));
+describe("Budgeto infiniteLoader module", function () {
 
-    var $compile;
-    var $rootScope;
-    var $scope;
-    var $controller;
-    var element;
+    describe("provider $infiniteLoader", function () {
+        var $document;
+        var body;
+        var $rootScope;
 
-    beforeEach(inject(function(_$compile_, _$rootScope_, _$controller_){
-        $compile = _$compile_;
-        $rootScope = _$rootScope_;
-        $controller = _$controller_;
-        $scope = _$rootScope_.$new();
-      }));
+        beforeEach(function () {
+            module('budgeto.infiniteLoader');
 
-  it('directive infiniteloader was compiled without message attribute', inject(function() {
-        element = $compile('<div data-infiniteloader></div>')($scope);
-        $rootScope.$digest();
-        expect(element.html()).toContain('<div class="infinite-loader infinite-loader-default hidden"><p class="ng-binding"></p></div>');
-      }));
+            $document = angular.element(document);
+            module(function ($provide) {
+                $provide.value('$document', $document);
+            });
+            body = $document.find('body').eq(0);
 
-  it('directive infiniteloader was compiled with message attribute non existing', inject(function() {
-        element = $compile('<div data-infiniteloader data-msg="varmsg"></div>')($scope);
-        $rootScope.$digest();
-        expect(element.html()).toContain('<div class="infinite-loader infinite-loader-default hidden"><p class="ng-binding"></p></div>');
-      }));
+            inject(function (_$rootScope_) {
+                $rootScope = _$rootScope_;
+            });
+        });
 
-  it('directive infiniteloader was compiled with message attribute empty', inject(function() {
-        element = $compile('<div data-infiniteloader data-msg="varmsg"></div>')($scope);
-        $scope.varmsg =  '';
-        $rootScope.$digest();
-        expect(element.html()).toContain('<div class="infinite-loader infinite-loader-default hidden"><p class="ng-binding"></p></div>');
-      }));
+        afterEach(function () {
+            $document.find('body').html('');
+        });
 
-  it('directive infiniteloader was compiled with a message', inject(function() {
-        element = $compile('<div data-infiniteloader data-msg="varmsg"></div>')($scope);
-        $scope.varmsg =  'themessage';
-        $rootScope.$digest();
-        expect(element.html()).toContain('<div class="infinite-loader infinite-loader-default hidden"><p class="ng-binding">themessage</p></div>');
-      }));
+        it('initialised', inject(function ($infiniteLoader) {
+            $rootScope.$apply();
 
-  it('directive infiniteloader was compiled as element with a message', inject(function() {
-        element = $compile('<infiniteloader data-msg="varmsg"></infiniteloader>')($scope);
-        $scope.varmsg =  'themessage';
-        $rootScope.$digest();
-        expect(element.html()).toContain('<div class="infinite-loader infinite-loader-default hidden"><p class="ng-binding">themessage</p></div>');
-      }));
+            expect($infiniteLoader).not.toBeNull();
+        }));
 
-      function getGoodDirective(body) {
-        element = $compile('<div data-infiniteloader data-msg="varmsg"></div>')($scope);
-        $scope.varmsg =  'themessage';
-        $rootScope.$digest();
-        body.appendChild(element[0]);
-      }
+        it('add html to document', inject(function ($infiniteLoader) {
+            $rootScope.$apply();
 
-      function removeDirective(body) {
-        body.removeChild(element[0]);
-      }
+            expect(body.html()).toContain('<div class="infinite-loader infinite-loader-default hidden"><p>Wait</p></div>');
+        }));
 
-  it('directive present and call to hide ok do nothing', inject(function($infiniteLoader) {
-        getGoodDirective(document.body);
+        it('call to hide do nothing', inject(function ($infiniteLoader) {
+            $infiniteLoader.hide();
+            $rootScope.$apply();
 
-        $infiniteLoader.hide();
-        expect(element.html()).toContain('<div class="infinite-loader infinite-loader-default hidden"><p class="ng-binding">themessage</p></div>');
+            expect(body.html()).toContain('<div class="infinite-loader infinite-loader-default hidden"><p>Wait</p></div>');
+        }));
 
-        removeDirective(document.body);
-      }));
+        it('call to show remove the hidden class', inject(function ($infiniteLoader) {
+            $infiniteLoader.show();
+            $rootScope.$apply();
 
-  it('directive present and call to show ok', inject(function($infiniteLoader) {
-        getGoodDirective(document.body);
+            expect(body.html()).toContain('<div class="infinite-loader infinite-loader-default"><p>Wait</p></div>');
+        }));
 
-        $infiniteLoader.show();
-        expect(element.html()).toContain('<div class="infinite-loader infinite-loader-default"><p class="ng-binding">themessage</p></div>');
+        it('call show and after hide keep hidden class', inject(function ($infiniteLoader) {
+            $infiniteLoader.show();
+            $rootScope.$apply();
 
-        removeDirective(document.body);
-      }));
+            expect(body.html()).toContain('<div class="infinite-loader infinite-loader-default"><p>Wait</p></div>');
 
-  it('directive present and call to show and hide ok', inject(function($infiniteLoader) {
-        getGoodDirective(document.body);
+            $infiniteLoader.hide();
+            $rootScope.$apply();
 
-        $infiniteLoader.show();
-        expect(element.html()).toContain('<div class="infinite-loader infinite-loader-default"><p class="ng-binding">themessage</p></div>');
-        $infiniteLoader.hide();
-        expect(element.html()).toContain('<div class="infinite-loader infinite-loader-default hidden"><p class="ng-binding">themessage</p></div>');
+            expect(body.html()).toContain('<div class="infinite-loader infinite-loader-default hidden"><p>Wait</p></div>');
+        }));
 
-        removeDirective(document.body);
-      }));
+        it('call to show 2 times and after hide 1 keep the hidden class removed', inject(function ($infiniteLoader) {
+            $infiniteLoader.show();
+            $infiniteLoader.show();
+            $rootScope.$apply();
 
-  it('directive present and call to show 2 times and hide ok', inject(function($infiniteLoader) {
-        getGoodDirective(document.body);
+            expect(body.html()).toContain('<div class="infinite-loader infinite-loader-default"><p>Wait</p></div>');
 
-        $infiniteLoader.show();
-        $infiniteLoader.show();
-        expect(element.html()).toContain('<div class="infinite-loader infinite-loader-default"><p class="ng-binding">themessage</p></div>');
-        $infiniteLoader.hide();
-        expect(element.html()).toContain('<div class="infinite-loader infinite-loader-default"><p class="ng-binding">themessage</p></div>');
+            $infiniteLoader.hide();
+            $rootScope.$apply();
 
-        removeDirective(document.body);
-      }));
+            expect(body.html()).toContain('<div class="infinite-loader infinite-loader-default"><p>Wait</p></div>');
+        }));
+    });
 
-  it('directive no tpresent and call to show', inject(function($infiniteLoader) {
-        spyOn(console, 'error');
+    describe("configuration of provider $infiniteLoader", function () {
+        var $infiniteLoaderProviderMock;
+        var $log;
+        var $document;
+        var body;
+        var $rootScope;
 
-        $infiniteLoader.show();
-        expect(console.error).toHaveBeenCalledWith('have you setup the infiniteLoader directive');
-      }));
+        beforeEach(function () {
+            module('budgeto.infiniteLoader', function ($infiniteLoaderProvider) {
+                $infiniteLoaderProviderMock = $infiniteLoaderProvider;
+            });
 
-  it('directive no tpresent and call to hide', inject(function($infiniteLoader) {
-        spyOn(console, 'error');
+            $document = angular.element(document);
+            module(function ($provide) {
+                $provide.value('$document', $document);
+            });
+            body = $document.find('body').eq(0);
 
-        $infiniteLoader.hide();
-        expect(console.error).toHaveBeenCalledWith('have you setup the infiniteLoader directive');
-      }));
+            inject(function (_$log_, _$rootScope_) {
+                $log = _$log_;
+                $rootScope = _$rootScope_;
+            });
+        });
+
+        afterEach(function () {
+            $document.find('body').html('');
+        });
+
+        it('have a valid provider', inject(function () {
+            $rootScope.$apply();
+
+            expect($infiniteLoaderProviderMock).not.toBeNull();
+        }));
+
+        it('take a config message', inject(function () {
+            $infiniteLoaderProviderMock.setMessage('the new wait message');
+
+            var $infiniteLoader = $infiniteLoaderProviderMock.$get[2]($document, $log);
+            $infiniteLoader.show();
+            $rootScope.$apply();
+
+            expect(body.html()).toContain('<div class="infinite-loader infinite-loader-default"><p>the new wait message</p></div>');
+        }));
+    });
 });
