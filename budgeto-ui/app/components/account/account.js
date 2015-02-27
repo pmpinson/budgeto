@@ -66,7 +66,7 @@ budgetoAccount.controller('AccountCtrl', ['$scope', '$location', '$log', 'Accoun
 
         $scope.accounts = data;
 
-        if (data.length != 0) {
+        if (data.length !== 0) {
             $scope.account = data[0];
         }
     }).catch(function (reason) {
@@ -76,13 +76,13 @@ budgetoAccount.controller('AccountCtrl', ['$scope', '$location', '$log', 'Accoun
 
     $scope.formatDate = function (date) {
         return moment(date).format('ddd, hA');
-    }
+    };
 
     $scope.$watch(
         function ($scope) {
-            return $scope.account
-        }
-        , function () {
+            return $scope.account;
+        },
+        function () {
             $scope.operations = [];
             if ($scope.account !== undefined) {
                 $log.debug('budgeto.account : select account ', $scope.account);
@@ -101,5 +101,5 @@ budgetoAccount.controller('AccountCtrl', ['$scope', '$location', '$log', 'Accoun
 
     $scope.home = function () {
         $location.path('/');
-    }
+    };
 }]);

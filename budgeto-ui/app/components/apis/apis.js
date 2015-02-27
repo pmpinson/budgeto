@@ -3,7 +3,7 @@
 // Declare apis module
 var budgetoApis = angular.module('budgeto.apis', [
     'ngResource'
-])
+]);
 
 /**
  * Resource http to cal apis endpoint
