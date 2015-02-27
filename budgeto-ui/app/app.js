@@ -6,8 +6,7 @@ var budgeto = angular.module('budgeto', [
     'budgeto.infiniteLoader',
     'budgeto.loading',
     'budgeto.home',
-    'budgeto.account',
-    'budgeto.analytics'
+    'budgeto.account'
 ]);
 
 /**
