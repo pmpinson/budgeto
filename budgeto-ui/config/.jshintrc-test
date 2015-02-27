@@ -1,0 +1,12 @@
+{
+    "globalstrict":true,
+
+    "jasmine": true,
+    "browser": true,
+
+    "globals": {
+        "angular": true,
+        "module": true,
+        "inject": true
+    }
+}

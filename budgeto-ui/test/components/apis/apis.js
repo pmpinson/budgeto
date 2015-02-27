@@ -99,7 +99,7 @@ describe("Budgeto apis module", function () {
             beforeEach(function () {
                 inject(function () {
                     $httpBackend.whenGET('test/components/apis/apis.json').respond(function (method, url, data) {
-                        apis;
+                        return apis;
                     });
 
                     spyOn(ApisResource, 'all').and.callThrough();
