@@ -26,5 +26,5 @@ budgetoHome.controller('HomeCtrl', ['$scope', '$location', '$log', 'ApiService',
 
     $scope.changePath = function (path) {
         $location.path('/' + path);
-    }
+    };
 }]);

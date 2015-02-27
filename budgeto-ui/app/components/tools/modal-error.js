@@ -30,11 +30,11 @@ budgetoModalError.provider('$modalError', function () {
             $modalError.open = function () {
                 modalInstance = $modal.open({
                     controller: 'ModalErrorInstanceCtrl',
-                    template: '<div>'
-                    + '<div class="modal-header"><h3 class="modal-title">{{MessageService.errorTitle}}</h3></div>'
-                    + '<div class="modal-body"><p>{{MessageService.error}}</p></div>'
-                    + '<div class="modal-footer"><button class="btn btn-primary" ng-click="close()">{{MessageService.closeTitle}}</button></div>'
-                    + '</div>'
+                    template: '<div>' +
+                    '<div class="modal-header"><h3 class="modal-title">{{MessageService.errorTitle}}</h3></div>' +
+                    '<div class="modal-body"><p>{{MessageService.error}}</p></div>' +
+                    '<div class="modal-footer"><button class="btn btn-primary" ng-click="close()">{{MessageService.closeTitle}}</button></div>' +
+                    '</div>'
                 });
                 return modalInstance;
             };
@@ -45,7 +45,7 @@ budgetoModalError.provider('$modalError', function () {
                     $location.path("/");
                     modalInstance = undefined;
                 }
-            }
+            };
 
             return $modalError;
         }]

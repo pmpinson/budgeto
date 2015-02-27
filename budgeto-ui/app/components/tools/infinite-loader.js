@@ -39,7 +39,7 @@ budgetoInfiniteLoader.provider('$infiniteLoader', function () {
                 if (cpt < 0) {
                     cpt = 0;
                 }
-                if (cpt == 0) {
+                if (cpt === 0) {
                     element.addClass('hidden');
                 }
             };
