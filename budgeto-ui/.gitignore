@@ -1,6 +1,4 @@
-app/styles/styles.css
-scripts/
-bower_components/
+/app/styles/styles.css
+/app/scripts/build.js
 node_modules/
-npm-debug.log
-build/
+/npm-debug.log

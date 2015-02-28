@@ -23,7 +23,8 @@
     "less": "latest",
     "nodemon": "latest",
     "parallelshell": "latest",
-    "uglify-js": "latest"
+    "uglify-js": "latest",
+    "mkdirp":"latest"
   },
   "scripts": {
     "//": {
@@ -37,20 +38,24 @@
       "dist": "parallelshell 'npm run dist:style'"
     },
 
+    "prebuild:dep": "mkdirp target && mkdirp app/scripts",
+    "build:dep": "bower --config.directory=target/bower_components install && bowcat target -o app/scripts/",
+    "predist:dep": "mkdirp target/bowcat && mkdirp target/dist/app/scripts",
+    "dist:dep": "bower --config.directory=target/bower_components install && bowcat target -o target/bowcat && uglifyjs target/bowcat/build.js > target/dist/app/scripts/build.js",
+
     "validate:style": "lessc -l app/less/styles.less",
+    "prebuild:style": "mkdirp app/styles",
     "build:style": "lessc app/less/styles.less > app/styles/styles.css",
     "watch:style": "nodemon --watch app/less/*.less --ext less --exec \"npm run build:style\"",
-    "dist:style": "lessc app/less/styles.less | cssmin > app/styles/styles.css",
-
-    "build:dep": "bower install && bowcat -o app/scripts/",
-    "dist:dep": "bower install && bowcat -o build/ && uglifyjs build/build.js > app/scripts/build.js",
+    "predist:style": "mkdirp target/dist/app/styles",
+    "dist:style": "lessc app/less/styles.less | cssmin > target/dist/app/styles/styles.css",
 
     "validate:script": "jshint --config config/.jshintrc --exclude app/scripts/ app",
     "prebuild:script": "npm run validate:script",
     "build:script": "echo nothing for time",
     "watch:script": "nodemon --watch app/**/*.js --ext js --exec \"npm run build:script\"",
-    "predist:script":"jshint --config config/.jshintrc --exclude app/scripts/ --reporter=checkstyle app > build/jshint.xml",
-    "dist:script": "echo nothing for time",
+    "predist:script":"mkdirp target/dist/app && jshint --config config/.jshintrc --exclude app/scripts/ --reporter=checkstyle app > target/jshint.xml",
+    "dist:script": "node config/build/uglify.js",
 
     "build": "npm run build:dep && npm run build:style && npm run build:script",
     "watch": "parallelshell  \"npm run watch:style\" \"npm run watch:script\"",
@@ -58,15 +63,15 @@
 
     "test:validate": "jshint --config config/.jshintrc-test test",
     "pretest:single": "npm run test:validate",
-    "test:single": "karma start karma.conf.js  --single-run",
+    "test:single": "karma start config/karma.conf.js  --single-run",
     "pretest:watch": "npm run test:validate",
-    "test:watch": "karma start karma.conf.js",
+    "test:watch": "karma start config/karma.conf.js",
     "test": "npm run test:watch",
 
     "prebuild:serve": "npm run build",
     "build:serve": "http-server -a localhost -p 9000 -c-1",
     "predist:serve": "npm run dist",
-    "dist:serve": "http-server -a localhost -p 9000 -c-1",
+    "dist:serve": "http-server target/dist/ -a localhost -p 9000 -c-1",
     "start": "npm run dist:serve"
   }
 }
