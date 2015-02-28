@@ -29,7 +29,8 @@
     "yargs": "latest",
     "glob": "latest",
     "opener": "latest",
-    "live-reload": "latest"
+    "live-reload": "latest",
+    "karma-coverage": "0.2.5"
   },
   "scripts": {
     "//": {
