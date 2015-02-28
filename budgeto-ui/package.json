@@ -76,6 +76,7 @@
 
     "build": "npm run build:dep && npm run build:style && npm run build:script && npm run build:html && npm run build:resources",
     "watch": "parallelshell  \"npm run watch:style\" \"npm run watch:script\"",
+    "predist": "mkdirp target & rimraf target",
     "dist": "npm run dist:dep && npm run dist:style && npm run dist:script && npm run dist:html && npm run dist:resources",
 
     "test:validate": "jshint --config config/.jshintrc-test test",
