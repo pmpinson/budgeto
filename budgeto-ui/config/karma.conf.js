@@ -19,8 +19,8 @@ module.exports = function(config) {
       'app/scripts/build.js',
       'app/app.js',
       'app/components/**/*.js',
-      'test/app.js',
-      'test/components/**/*.js'
+      'test/app.spec.js',
+      'test/components/**/*.spec.js'
     ],
 
 
