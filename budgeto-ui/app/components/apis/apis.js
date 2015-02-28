@@ -46,17 +46,21 @@ budgetoApis.provider('ApiService', function () {
             };
 
             $apiService.loaded = function () {
-                return ApisResource.all(url).then(function (data) {
-                    $log.debug('budgeto.apis : call api to get all available apis');
+                $log.debug('budgeto.apis : call api to get all available apis');
 
-                    for (var key in data.links) {
-                        if (data.links[key].rel !== 'self') {
-                            apis.push(data.links[key]);
-                        }
-                    }
-                    $log.debug('budgeto.apis : available apis ', apis);
-                    return data;
+                return ApisResource.all(url).then(function(data) {
+                    return $apiService.loadApis(data);
                 });
+            };
+
+            $apiService.loadApis = function (data) {
+                for (var key in data.links) {
+                    if (data.links[key].rel !== 'self') {
+                        apis.push(data.links[key]);
+                    }
+                }
+                $log.debug('budgeto.apis : available apis ', apis);
+                return data;
             };
 
             $apiService.findAll = function () {

@@ -1,6 +1,23 @@
 'use strict';
 
 describe("Budgeto apis module", function () {
+    var apis = {
+        "links": [
+            {
+                "rel": "self",
+                "href": "test/components/apis/apis.json"
+            },
+            {
+                "rel": "api1",
+                "href": "http://api1.com"
+            },
+            {
+                "rel": "api2",
+                "href": "http://api2.com"
+            }
+        ]
+    };
+
     describe("", function () {
         var $rootScope;
         var scope;
@@ -29,6 +46,29 @@ describe("Budgeto apis module", function () {
                 $rootScope.$apply();
 
                 expect(ApiService).not.toBeNull();
+            }));
+
+            it('get result by findAll', inject(function (ApiService) {
+                ApiService.loadApis(apis);
+                expect(ApiService.findAll()).not.toBeNull();
+                expect(ApiService.findAll().length).toBe(2);
+            }));
+
+            it('get result by find api exist', inject(function (ApiService) {
+                ApiService.loadApis(apis);
+                expect(ApiService.find('api1')).not.toBeNull();
+                expect(ApiService.find('api1').rel).toBe('api1');
+                expect(ApiService.find('api1').href).toBe('http://api1.com');
+            }));
+
+            it('get result by find api not exist', inject(function (ApiService) {
+                ApiService.loadApis(apis);
+                expect(ApiService.find('api3')).toBeNull();
+            }));
+
+            it('getLink find the good link', inject(function (ApiService) {
+                expect(ApiService.getLink('api2', apis.links)).not.toBeNull();
+                expect(ApiService.getLink('api3', apis.links)).toBeNull();
             }));
         });
     });
@@ -77,89 +117,36 @@ describe("Budgeto apis module", function () {
             expect(ApisResource.all).toHaveBeenCalledWith('noUrlSet');
         }));
 
-        describe("good url configuration", function () {
-            var apis = {
-                "links": [
-                    {
-                        "rel": "self",
-                        "href": "test/components/apis/apis.json"
-                    },
-                    {
-                        "rel": "api1",
-                        "href": "http://api1.com"
-                    },
-                    {
-                        "rel": "api2",
-                        "href": "http://api2.com"
-                    }
-                ]
-            };
-            var ApiService;
+        it('get result ok', inject(function () {
 
-            beforeEach(function () {
-                inject(function () {
-                    $httpBackend.whenGET('test/components/apis/apis.json').respond(function (method, url, data) {
-                        return apis;
-                    });
-
-                    spyOn(ApisResource, 'all').and.callThrough();
-                    ApiServiceProviderMock.setUrl('test/components/apis/apis.json');
-                    ApiService = ApiServiceProviderMock.$get[2]($log, ApisResource);
-                    $rootScope.$apply();
-                });
+            $httpBackend.whenGET('test/components/apis/apis.json').respond(function (method, url, data) {
+                return apis;
             });
 
-            it('get result ok', inject(function () {
-                ApiService.loaded().then(function (data) {
-                    expect(data).not.toBeNull(true);
-                    expect(data.links.length).toBe(3);
-                }).catch(function (reason) {
-                    expect(true).toBe(false);
-                });
+            spyOn(ApisResource, 'all').and.callThrough();
+            ApiServiceProviderMock.setUrl('test/components/apis/apis.json');
+            var ApiService = ApiServiceProviderMock.$get[2]($log, ApisResource);
+            $rootScope.$apply();
+            spyOn(ApiService, 'loadApis').and.callThrough();
+            ApiService.loaded().then(function (data) {
+                expect(data).not.toBeNull(true);
+                expect(data.links.length).toBe(3);
+                expect(ApiService.loadApis).toHaveBeenCalledWith(apis);
+            }).catch(function (reason) {
+                expect(true).toBe(false);
+            });
 
-                $rootScope.$apply();
-                expect(ApisResource.all).toHaveBeenCalledWith('test/components/apis/apis.json');
-            }));
+            $rootScope.$apply();
+            expect(ApisResource.all).toHaveBeenCalledWith('test/components/apis/apis.json');
+        }));
+    });
 
-            it('get result by findAll', inject(function () {
-                ApiService.loaded().then(function (data) {
-                    expect(ApiService.findAll()).not.toBeNull();
-                    expect(ApiService.findAll().links.length).toBe(3);
-                }).catch(function (reason) {
-                    expect(true).toBe(false);
-                });
-
-                $rootScope.$apply();
-            }));
-
-            it('get result by find api exist', inject(function () {
-                ApiService.loaded().then(function (data) {
-                    expect(ApiService.find('api1')).not.toBeNull();
-                    expect(ApiService.find('api1').rel).toBe('api1');
-                    expect(ApiService.find('api1').href).toBe('http://api1.com');
-                }).catch(function (reason) {
-                    expect(true).toBe(false);
-                });
-
-                $rootScope.$apply();
-            }));
-
-            it('get result by find api not exist', inject(function () {
-                ApiService.loaded().then(function (data) {
-                    expect(ApiService.find('api3')).toBeNull();
-                }).catch(function (reason) {
-                    expect(true).toBe(false);
-                });
-
-                $rootScope.$apply();
-            }));
-
-            it('getLink find the good link', inject(function () {
-                $rootScope.$apply();
-                expect(ApiService.getLink('api2', apis.links)).not.toBeNull();
-                expect(ApiService.getLink('api3', apis.links)).toBeNull();
-            }));
-
-        });
+    describe("configuration of provider ApiService with good url configuration", function () {
+//        var ApiServiceProviderMock;
+//        var $rootScope;
+//        var $log;
+//        var $q;
+//        var $httpBackend;
+//        var ApisResource;
     });
 });

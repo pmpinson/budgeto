@@ -77,7 +77,7 @@ budgetoLoading.controller('LoadingCtrl', ['$scope', '$location', '$log', 'Loadin
     $scope.loadFail = false;
 
     var sourcePage = $location.search().sourcePage;
-    if (sourcePage === undefined || sourcePage === null || sourcePage.indexOf('/loading') !== -1) {
+    if (sourcePage === undefined || sourcePage.indexOf('/loading') !== -1) {
         sourcePage = '/';
     }
     $location.search('sourcePage', null);

@@ -55,6 +55,44 @@ describe("Budgeto loading module", function () {
                 expect($location.path()).toBe('/');
             }));
 
+            it(' clean $location.search "sourcePage" with empty value', inject(function ($infiniteLoader, LoadingService) {
+                spyOn($location, 'search').and.returnValue({});
+                spyOn($infiniteLoader, 'show').and.callThrough();
+
+                var ctrl = $controller('LoadingCtrl', {
+                    $scope: scope,
+                    '$location': $location,
+                    '$log': $log,
+                    'LoadingService': LoadingService,
+                    '$infiniteLoader': $infiniteLoader
+                });
+                $rootScope.$apply();
+
+                expect($location.search).toHaveBeenCalledWith();
+                expect($location.search).toHaveBeenCalledWith('sourcePage', null);
+                expect(scope.loadFail).toBe(false);
+                expect($location.path()).toBe('/');
+            }));
+
+            it(' clean $location.search "sourcePage" with a value', inject(function ($infiniteLoader, LoadingService) {
+                spyOn($location, 'search').and.returnValue({sourcePage:'mypage'});
+                spyOn($infiniteLoader, 'show').and.callThrough();
+
+                var ctrl = $controller('LoadingCtrl', {
+                    $scope: scope,
+                    '$location': $location,
+                    '$log': $log,
+                    'LoadingService': LoadingService,
+                    '$infiniteLoader': $infiniteLoader
+                });
+                $rootScope.$apply();
+
+                expect($location.search).toHaveBeenCalledWith();
+                expect($location.search).toHaveBeenCalledWith('sourcePage', null);
+                expect(scope.loadFail).toBe(false);
+                expect($location.path()).toBe('/mypage');
+            }));
+
             it('with LoadingService that load ok change path to /', inject(function ($infiniteLoader, LoadingService) {
                 var customDefer = $q.defer();
                 customDefer.resolve(true);
