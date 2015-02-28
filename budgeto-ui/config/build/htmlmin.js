@@ -1,38 +1,54 @@
+#! /usr/bin/env node
+// -*- js -*-
+
+"use strict";
+
+var tools = require("./tools");
 var fs = require("fs");
 var htmlmin = require('htmlmin');
-var mkdirp = require('mkdirp');
+var yArgs = require("yargs");
 
-var path = "app";
-var output = "target/dist/app";
+var ARGS = yArgs
+    .usage("$0 sourcePath1:destPath1 [sourcePath2:destPath2] [options], sourcePath must be glob pattern")
+    .describe("e", "Print version number and exit.")
+    .describe("v", "Print version number and exit.")
+    .describe("h", "Print help message.")
 
-processDir(path, output);
+    .alias("e", "exclude")
+    .alias("v", "version")
+    .alias("h", "help")
 
-function processDir(path, output) {
-    fs.readdir(path, function(arg1, files){
-        files.forEach(function(file) {
-            if (fs.lstatSync(path + "/" + file).isDirectory()) {
-                processDir(path + "/" + file, output + "/" + file);
-            } else {
-                processFile(path, output, file);
-            }
-        });
-    });
+    .string("e")
+    .boolean("v")
+    .boolean("h")
+
+    .wrap(80)
+
+    .argv;
+
+if (ARGS.noerr) {
+    throw "args no valide";
 }
 
-function processFile(path, output, file) {
-    if (includeFile(path, file)) {
-        mkdirp(output, function (err) {if (err) {throw err;}});
-        fs.readFile(path + "/" + file, {encoding:"UTF-8"}, function (err, data) {
-          if (err) {throw err;}
-          fs.writeFile(output + "/" + file, htmlmin(data), function (err) {if (err) {throw err;}});
-        });
-    }
+if (ARGS.version || ARGS.V) {
+//    var json = require("../package.json");
+//    console.log(json.name + ' ' + json.version);
+    console.log("htmlmin 0.0.1");
+    process.exit(0);
 }
 
-function includeFile(path, file) {
-    var suffix = ".html";
-    if (file.indexOf(suffix, file.length - suffix.length) === -1) {
-        return false;
-    }
-    return true;
+if (ARGS.h || ARGS.help) {
+    console.log(yArgs.help());
+    process.exit(0);
 }
+
+var directories = ARGS._.slice();
+
+if (directories === undefined || directories.length === 0) {
+    console.log("no directories defined");
+    process.exit(6);
+}
+
+tools.processDirectories(directories, ARGS.exclude, function(file) {
+    return htmlmin(fs.readFileSync(file, {encoding:"UTF-8"}));
+});

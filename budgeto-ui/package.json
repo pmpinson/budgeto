@@ -25,7 +25,9 @@
     "parallelshell": "latest",
     "uglify-js": "latest",
     "htmlmin": "latest",
-    "mkdirp":"latest"
+    "mkdirp": "latest",
+    "yargs": "latest",
+    "glob": "latest"
   },
   "scripts": {
     "//": {
@@ -56,19 +58,19 @@
     "build:script": "echo nothing",
     "watch:script": "nodemon --watch app/**/*.js --ext js --exec \"npm run build:script\"",
     "predist:script":"mkdirp target/dist/app && jshint --config config/.jshintrc --exclude app/scripts/ --reporter=checkstyle app > target/jshint.xml",
-    "dist:script": "node config/build/uglify.js",
+    "dist:script": "node config/build/uglify.js app/**/*.js:target/dist -e app/scripts/build.js",
 
     "validate:html": "echo nothing",
     "prebuild:html": "npm run validate:html",
     "build:html": "echo nothing",
     "predist:html":"mkdirp target/dist/app",
-    "dist:html": "node config/build/htmlmin.js",
+    "dist:html": "node config/build/htmlmin.js app/**/*.html:target/dist",
 
     "validate:resources": "echo nothing",
     "prebuild:resources": "npm run validate:resources",
     "build:resources": "echo nothing",
     "predist:resources":"mkdirp target/dist/app",
-    "dist:resources": "node config/build/resources.js",
+    "dist:resources": "node config/build/resources.js app/**/*.gif:target/dist",
 
     "build": "npm run build:dep && npm run build:style && npm run build:script && npm run build:html && npm run build:resources",
     "watch": "parallelshell  \"npm run watch:style\" \"npm run watch:script\"",
