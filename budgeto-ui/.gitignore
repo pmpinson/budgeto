@@ -1,5 +1,6 @@
 app/styles/styles.css
-lib/
+scripts/
 bower_components/
 node_modules/
 npm-debug.log
+build/
