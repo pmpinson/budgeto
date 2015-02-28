@@ -28,7 +28,8 @@
     "mkdirp": "latest",
     "yargs": "latest",
     "glob": "latest",
-    "opener": "latest"
+    "opener": "latest",
+    "live-reload": "latest"
   },
   "scripts": {
     "//": {
@@ -84,10 +85,13 @@
     "test:watch": "karma start config/karma.conf.js",
     "test": "npm run test:watch",
 
+    "live-reload": "live-reload --port 8999 app/",
+    "open-browser":"opener http://localhost:9000/app",
     "prebuild:serve": "npm run build",
-    "build:serve": "opener http://localhost:9000/app & http-server -a localhost -p 9000 -c-1",
+    "build:serve": "npm run open-browser & http-server -a localhost -p 9000 -c-1",
+    "dev":"parallelshell \"npm run live-reload -s\" \"npm run build:serve\" \"npm run watch\"",
     "predist:serve": "npm run dist",
-    "dist:serve": "opener http://localhost:9000/app & http-server target/dist/ -a localhost -p 9000 -c-1",
+    "dist:serve": "npm run open-browser & http-server target/dist/ -a localhost -p 9000 -c-1",
     "start": "npm run dist:serve"
   }
 }
