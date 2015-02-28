@@ -30,6 +30,8 @@
     "glob": "latest",
     "opener": "latest",
     "live-reload": "latest",
+    "karma-html-reporter": "latest",
+    "karma-junit-reporter": "latest",
     "karma-coverage": "0.2.5"
   },
   "scripts": {
