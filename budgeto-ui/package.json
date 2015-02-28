@@ -27,7 +27,8 @@
     "htmlmin": "latest",
     "mkdirp": "latest",
     "yargs": "latest",
-    "glob": "latest"
+    "glob": "latest",
+    "opener": "latest"
   },
   "scripts": {
     "//": {
@@ -84,9 +85,9 @@
     "test": "npm run test:watch",
 
     "prebuild:serve": "npm run build",
-    "build:serve": "http-server -a localhost -p 9000 -c-1",
+    "build:serve": "opener http://localhost:9000/app & http-server -a localhost -p 9000 -c-1",
     "predist:serve": "npm run dist",
-    "dist:serve": "http-server target/dist/ -a localhost -p 9000 -c-1",
+    "dist:serve": "opener http://localhost:9000/app & http-server target/dist/ -a localhost -p 9000 -c-1",
     "start": "npm run dist:serve"
   }
 }
