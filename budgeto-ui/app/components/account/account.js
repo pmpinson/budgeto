@@ -57,19 +57,20 @@ budgetoAccount.factory("AccountResource", ["$resource", "$log", "AccountApi", "A
 budgetoAccount.controller("AccountCtrl", ["$scope", "$location", "$log", "AccountResource", "$modalError", function ($scope, $location, $log, AccountResource, $modalError) {
     $log.debug("budgeto.account : load AccountCtrl");
 
-    $scope.accounts = [];
-    $scope.operations = [];
-    $scope.account = undefined;
-
     AccountResource.all().then(function (data) {
         $log.debug("budgeto.account : get all accounts", data);
 
         $scope.accounts = data;
+        $scope.operations = [];
+        $scope.account = undefined;
 
         if (data.length !== 0) {
             $scope.account = data[0];
         }
     }).catch(function (reason) {
+        $scope.accounts = [];
+        $scope.operations = [];
+        $scope.account = undefined;
         $log.error("error getting accounts :", reason);
         $modalError.open();
     });

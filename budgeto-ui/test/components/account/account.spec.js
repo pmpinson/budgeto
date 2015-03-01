@@ -54,10 +54,55 @@ describe("Budgeto account module", function () {
                 expect(scope.account).toBeUndefined();
             }));
 
-            it("function home change location to home", inject(function (AccountResource, $modalError) {
+            it("call to get all account, some results are store in scope", inject(function (AccountResource, $modalError) {
+                var accounts = [{name:"myaccount", links:[{rel:"operations", href:"/myaccount/operations"}]}, {name:"myaccount2", links:[{rel:"operations", href:"/myaccount2/operations"}]}];
                 var deferred = $q.defer();
-                deferred.resolve([]);
+                deferred.resolve(accounts);
                 spyOn(AccountResource, "all").and.returnValue(deferred.promise);
+                $controller("AccountCtrl", {
+                    $scope: scope,
+                    "$location": $location,
+                    "$log": $log,
+                    "AccountResource": AccountResource,
+                    "$modalError": $modalError
+                });
+                deferred = $q.defer();
+                deferred.resolve([]);
+                spyOn(AccountResource, "operations").and.returnValue(deferred.promise);
+                $rootScope.$apply();
+
+                expect(scope.accounts).toBe(accounts);
+                expect(scope.account).toBe(accounts[0]);
+            }));
+
+            it("call to get all account, no results are store in scope", inject(function (AccountResource, $modalError) {
+                var accounts = [];
+                var deferred = $q.defer();
+                deferred.resolve(accounts);
+                spyOn(AccountResource, "all").and.returnValue(deferred.promise);
+                $controller("AccountCtrl", {
+                    $scope: scope,
+                    "$location": $location,
+                    "$log": $log,
+                    "AccountResource": AccountResource,
+                    "$modalError": $modalError
+                });
+                deferred = $q.defer();
+                deferred.resolve([]);
+                spyOn(AccountResource, "operations").and.returnValue(deferred.promise);
+                $rootScope.$apply();
+
+                expect(scope.accounts).toBe(accounts);
+                expect(scope.account).toBeUndefined();
+            }));
+
+            it("call to get all account, but failed", inject(function (AccountResource, $modalError) {
+                var accounts = [];
+                var deferred = $q.defer();
+                deferred.reject('network error');
+                spyOn(AccountResource, "all").and.returnValue(deferred.promise);
+                spyOn($log, "error").and.callThrough();
+                spyOn($modalError, "open").and.callThrough();
                 $controller("AccountCtrl", {
                     $scope: scope,
                     "$location": $location,
@@ -67,12 +112,13 @@ describe("Budgeto account module", function () {
                 });
                 $rootScope.$apply();
 
-                scope.home();
-
-                expect($location.path()).toBe("/");
+                expect($modalError.open).toHaveBeenCalledWith();
+                expect($log.error).toHaveBeenCalledWith('error getting accounts :', 'network error');
+                expect(scope.accounts.length).toBe(0);
+                expect(scope.account).toBeUndefined();
             }));
 
-            it("account home change location to home", inject(function (AccountResource, $modalError) {
+            it("function home change location to home", inject(function (AccountResource, $modalError) {
                 var deferred = $q.defer();
                 deferred.resolve([]);
                 spyOn(AccountResource, "all").and.returnValue(deferred.promise);
@@ -138,9 +184,6 @@ describe("Budgeto account module", function () {
                 expect($modalError.open).toHaveBeenCalledWith();
                 expect($log.error).toHaveBeenCalledWith('error getting operations for', scope.account, ':', 'network fail');
             }));
-
-            // loading on control
-            // rest of class
         });
     });
 });
