@@ -38,9 +38,11 @@ budgeto.constant("MessageService", {
     },
     homeTitle: "Welcome to budgeto",
     homeLink: "Go back to home",
-    errorTitle: "Error",
-    error: "An error occured, please advice us.",
-    closeTitle: "Close"
+    modalError: {
+       title: "Error",
+       message: "An error occured, please advice us.",
+       close: "Close"
+   }
 });
 
 /**
@@ -62,6 +64,13 @@ budgeto.config(["$infiniteLoaderProvider", "MessageService", function ($infinite
  */
 budgeto.config(["LoadingServiceProvider", function (LoadingServiceProvider) {
     LoadingServiceProvider.add("ApiService");
+}]);
+
+/**
+ * config modal error message
+ */
+budgeto.config(["$modalErrorProvider", "MessageService", function ($modalErrorProvider, MessageService) {
+    $modalErrorProvider.setMessage(MessageService.modalError);
 }]);
 
 /**

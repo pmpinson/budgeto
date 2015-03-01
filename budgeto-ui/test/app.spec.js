@@ -28,9 +28,10 @@ describe("Budgeto module", function () {
         it("messages defined correctly", inject(function (MessageService) {
             $rootScope.$apply();
 
-            expect(Object.keys(MessageService).length).toBe(10);
+            expect(Object.keys(MessageService).length).toBe(8);
             expect(Object.keys(MessageService.apisLinks).length).toBe(2);
             expect(Object.keys(MessageService.apisTitles).length).toBe(2);
+            expect(Object.keys(MessageService.modalError).length).toBe(3);
         }));
     });
 
@@ -111,6 +112,14 @@ describe("Budgeto module", function () {
 
             expect(LoadingService.config().getServicesNames().length).toBe(1);
             expect(LoadingService.config().getServicesNames()).toContain("ApiService");
+        }));
+
+        it("$modalError take modal error messages", inject(function ($modalError) {
+            $rootScope.$apply();
+
+            expect($modalError.config().getMessage().title).toBe("Error");
+            expect($modalError.config().getMessage().message).toBe("An error occured, please advice us.");
+            expect($modalError.config().getMessage().close).toBe("Close");
         }));
     });
 });
