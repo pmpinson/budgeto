@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 describe("Budgeto modalError module", function () {
     var $rootScope;
@@ -11,13 +11,13 @@ describe("Budgeto modalError module", function () {
     var body;
 
     beforeEach(function () {
-        module('budgeto.modalError');
+        module("budgeto.modalError");
 
         $document = angular.element(document);
         module(function ($provide) {
-            $provide.value('$document', $document);
+            $provide.value("$document", $document);
         });
-        body = $document.find('body').eq(0);
+        body = $document.find("body").eq(0);
 
         inject(function (_$rootScope_, _$log_, _$location_, _$controller_, _$modal_) {
             $rootScope = _$rootScope_;
@@ -30,10 +30,10 @@ describe("Budgeto modalError module", function () {
     });
 
     describe("controller ModalErrorInstanceCtrl", function () {
-        it('on close method, call close on $modalError provider to close the modal', inject(function ($modalError) {
-            spyOn($modalError, 'close').and.callThrough();
+        it("on close method, call close on $modalError provider to close the modal", inject(function ($modalError) {
+            spyOn($modalError, "close").and.callThrough();
 
-            var ctrl = $controller('ModalErrorInstanceCtrl', {$scope: scope, '$log': $log, '$modalError': $modalError});
+            var ctrl = $controller("ModalErrorInstanceCtrl", {$scope: scope, "$log": $log, "$modalError": $modalError});
 
             scope.close();
             $rootScope.$apply();
@@ -44,46 +44,46 @@ describe("Budgeto modalError module", function () {
 
     describe("provider $modalError", function () {
         beforeEach(function () {
-            spyOn($modal, 'open').and.callThrough();
-            spyOn($location, 'path').and.callThrough();
+            spyOn($modal, "open").and.callThrough();
+            spyOn($location, "path").and.callThrough();
         });
 
-        it('initialised', inject(function ($modalError) {
+        it("initialised", inject(function ($modalError) {
             $rootScope.$apply();
 
             expect($modalError).not.toBeNull();
         }));
 
-        it('open method open a modal', inject(function ($modalError) {
+        it("open method open a modal", inject(function ($modalError) {
 
             var modalInstance = $modalError.open();
             $rootScope.$apply();
 
             expect(modalInstance).not.toBeNull();
             expect($modal.open).toHaveBeenCalledWith({
-                controller: 'ModalErrorInstanceCtrl',
+                controller: "ModalErrorInstanceCtrl",
                 template: jasmine.any(String)
             });
         }));
 
-        it('closed method redirect to /', inject(function ($modalError) {
+        it("closed method redirect to /", inject(function ($modalError) {
             var modalInstance = $modalError.open();
-            spyOn(modalInstance, 'dismiss').and.callThrough();
+            spyOn(modalInstance, "dismiss").and.callThrough();
 
             $modalError.close();
             $rootScope.$apply();
 
-            expect($location.path).toHaveBeenCalledWith('/');
-            expect($location.path()).toBe('/');
-            expect(modalInstance.dismiss).toHaveBeenCalledWith('close');
+            expect($location.path).toHaveBeenCalledWith("/");
+            expect($location.path()).toBe("/");
+            expect(modalInstance.dismiss).toHaveBeenCalledWith("close");
         }));
 
-        it('but no call open before closed method no redirect to /', inject(function ($modalError) {
+        it("but no call open before closed method no redirect to /", inject(function ($modalError) {
             $modalError.close();
             $rootScope.$apply();
 
-            expect($location.path).not.toHaveBeenCalledWith('/');
-            expect($location.path()).toBe('');
+            expect($location.path).not.toHaveBeenCalledWith("/");
+            expect($location.path()).toBe("");
         }));
     });
 });

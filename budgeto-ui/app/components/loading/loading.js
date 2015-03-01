@@ -1,18 +1,18 @@
-'use strict';
+"use strict";
 
 // Declare module
-var budgetoLoading = angular.module('budgeto.loading', [
-    'ngRoute',
-    'ngResource',
-    'ui.bootstrap',
-    'budgeto.infiniteLoader'
+var budgetoLoading = angular.module("budgeto.loading", [
+    "ngRoute",
+    "ngResource",
+    "ui.bootstrap",
+    "budgeto.infiniteLoader"
 ]);
 
-budgetoLoading.config(['$routeProvider', function ($routeProvider) {
+budgetoLoading.config(["$routeProvider", function ($routeProvider) {
     $routeProvider
-        .when('/loading', {
-            templateUrl: 'components/loading/loading.html',
-            controller: 'LoadingCtrl',
+        .when("/loading", {
+            templateUrl: "components/loading/loading.html",
+            controller: "LoadingCtrl",
             reloadOnSearch: false
         });
 }]);
@@ -20,7 +20,7 @@ budgetoLoading.config(['$routeProvider', function ($routeProvider) {
 /**
  * provider to manage loading of application
  */
-budgetoLoading.provider('LoadingService', function () {
+budgetoLoading.provider("LoadingService", function () {
     var servicesNames = [];
 
     var $loadingServiceProvider = {
@@ -29,8 +29,8 @@ budgetoLoading.provider('LoadingService', function () {
             servicesNames.push(value);
         },
 
-        $get: ['$log', '$q', '$injector', function ($log, $q, $injector) {
-            $log.debug('budgeto.loading : load LoadingService');
+        $get: ["$log", "$q", "$injector", function ($log, $q, $injector) {
+            $log.debug("budgeto.loading : load LoadingService");
 
             var $loadingService = {};
             var promise;
@@ -70,24 +70,24 @@ budgetoLoading.provider('LoadingService', function () {
 /**
  * controller to manage loading page
  */
-budgetoLoading.controller('LoadingCtrl', ['$scope', '$location', '$log', 'LoadingService', '$infiniteLoader', function ($scope, $location, $log, LoadingService, $infiniteLoader) {
-    $log.debug('budgeto.loading : load LoadingCtrl');
+budgetoLoading.controller("LoadingCtrl", ["$scope", "$location", "$log", "LoadingService", "$infiniteLoader", function ($scope, $location, $log, LoadingService, $infiniteLoader) {
+    $log.debug("budgeto.loading : load LoadingCtrl");
 
     $infiniteLoader.show();
     $scope.loadFail = false;
 
     var sourcePage = $location.search().sourcePage;
-    if (sourcePage === undefined || sourcePage.indexOf('/loading') !== -1) {
-        sourcePage = '/';
+    if (sourcePage === undefined || sourcePage.indexOf("/loading") !== -1) {
+        sourcePage = "/";
     }
-    $location.search('sourcePage', null);
+    $location.search("sourcePage", null);
 
     LoadingService.loaded().then(function (data) {
-        $log.debug('budgeto.loading : loading done');
+        $log.debug("budgeto.loading : loading done");
         $infiniteLoader.hide();
         $location.path(sourcePage);
     }).catch(function (reason) {
-        $log.error('error getting apis / ', reason);
+        $log.error("error getting apis /", reason);
         $scope.loadFail = true;
         $infiniteLoader.hide();
     });

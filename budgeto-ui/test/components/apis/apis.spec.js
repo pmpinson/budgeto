@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 describe("Budgeto apis module", function () {
     var apis = {
@@ -24,7 +24,7 @@ describe("Budgeto apis module", function () {
         var $log;
 
         beforeEach(function () {
-            module('budgeto.apis');
+            module("budgeto.apis");
 
             inject(function (_$rootScope_, _$log_) {
                 $rootScope = _$rootScope_;
@@ -34,7 +34,7 @@ describe("Budgeto apis module", function () {
         });
 
         describe("factory ApisResource", function (ApisResource) {
-            it('initialised', inject(function (ApisResource) {
+            it("initialised", inject(function (ApisResource) {
                 $rootScope.$apply();
 
                 expect(ApisResource).not.toBeNull();
@@ -42,33 +42,33 @@ describe("Budgeto apis module", function () {
         });
 
         describe("provider ApiService", function (ApiService) {
-            it('initialised', inject(function (ApiService) {
+            it("initialised", inject(function (ApiService) {
                 $rootScope.$apply();
 
                 expect(ApiService).not.toBeNull();
             }));
 
-            it('get result by findAll', inject(function (ApiService) {
+            it("get result by findAll", inject(function (ApiService) {
                 ApiService.loadApis(apis);
                 expect(ApiService.findAll()).not.toBeNull();
                 expect(ApiService.findAll().length).toBe(2);
             }));
 
-            it('get result by find api exist', inject(function (ApiService) {
+            it("get result by find api exist", inject(function (ApiService) {
                 ApiService.loadApis(apis);
-                expect(ApiService.find('api1')).not.toBeNull();
-                expect(ApiService.find('api1').rel).toBe('api1');
-                expect(ApiService.find('api1').href).toBe('http://api1.com');
+                expect(ApiService.find("api1")).not.toBeNull();
+                expect(ApiService.find("api1").rel).toBe("api1");
+                expect(ApiService.find("api1").href).toBe("http://api1.com");
             }));
 
-            it('get result by find api not exist', inject(function (ApiService) {
+            it("get result by find api not exist", inject(function (ApiService) {
                 ApiService.loadApis(apis);
-                expect(ApiService.find('api3')).toBeNull();
+                expect(ApiService.find("api3")).toBeNull();
             }));
 
-            it('getLink find the good link', inject(function (ApiService) {
-                expect(ApiService.getLink('api2', apis.links)).not.toBeNull();
-                expect(ApiService.getLink('api3', apis.links)).toBeNull();
+            it("getLink find the good link", inject(function (ApiService) {
+                expect(ApiService.getLink("api2", apis.links)).not.toBeNull();
+                expect(ApiService.getLink("api3", apis.links)).toBeNull();
             }));
         });
     });
@@ -82,7 +82,7 @@ describe("Budgeto apis module", function () {
         var ApisResource;
 
         beforeEach(function () {
-            module('budgeto.apis', function (ApiServiceProvider) {
+            module("budgeto.apis", function (ApiServiceProvider) {
                 ApiServiceProviderMock = ApiServiceProvider;
             });
 
@@ -95,18 +95,18 @@ describe("Budgeto apis module", function () {
             });
         });
 
-        it('have a valid provider', inject(function () {
+        it("have a valid provider", inject(function () {
             $rootScope.$apply();
 
             expect(ApiServiceProviderMock).not.toBeNull();
         }));
 
-        it('not set url so failed', inject(function () {
+        it("not set url so failed", inject(function () {
 
-            $httpBackend.whenGET('noUrlSet').respond(500, '');
+            $httpBackend.whenGET("noUrlSet").respond(500, "");
             var ApiService = ApiServiceProviderMock.$get[2]($log, ApisResource);
 
-            spyOn(ApisResource, 'all').and.callThrough();
+            spyOn(ApisResource, "all").and.callThrough();
             ApiService.loaded().then(function (data) {
                 expect(true).toBe(false);
             }).catch(function (reason) {
@@ -114,20 +114,20 @@ describe("Budgeto apis module", function () {
             });
 
             $rootScope.$apply();
-            expect(ApisResource.all).toHaveBeenCalledWith('noUrlSet');
+            expect(ApisResource.all).toHaveBeenCalledWith("noUrlSet");
         }));
 
-        it('get result ok', inject(function () {
+        it("get result ok", inject(function () {
 
-            $httpBackend.whenGET('test/components/apis/apis.json').respond(function (method, url, data) {
+            $httpBackend.whenGET("test/components/apis/apis.json").respond(function (method, url, data) {
                 return apis;
             });
 
-            spyOn(ApisResource, 'all').and.callThrough();
-            ApiServiceProviderMock.setUrl('test/components/apis/apis.json');
+            spyOn(ApisResource, "all").and.callThrough();
+            ApiServiceProviderMock.setUrl("test/components/apis/apis.json");
             var ApiService = ApiServiceProviderMock.$get[2]($log, ApisResource);
             $rootScope.$apply();
-            spyOn(ApiService, 'loadApis').and.callThrough();
+            spyOn(ApiService, "loadApis").and.callThrough();
             ApiService.loaded().then(function (data) {
                 expect(data).not.toBeNull(true);
                 expect(data.links.length).toBe(3);
@@ -137,7 +137,7 @@ describe("Budgeto apis module", function () {
             });
 
             $rootScope.$apply();
-            expect(ApisResource.all).toHaveBeenCalledWith('test/components/apis/apis.json');
+            expect(ApisResource.all).toHaveBeenCalledWith("test/components/apis/apis.json");
         }));
     });
 

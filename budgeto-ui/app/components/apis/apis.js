@@ -1,16 +1,16 @@
-'use strict';
+"use strict";
 
 // Declare apis module
-var budgetoApis = angular.module('budgeto.apis', [
-    'ngResource'
+var budgetoApis = angular.module("budgeto.apis", [
+    "ngResource"
 ]);
 
 /**
  * Resource http to cal apis endpoint
  * @returns {{all: to get all apis from rest endpoint, returning an array of apis in a promise}}
  */
-budgetoApis.factory('ApisResource', ['$resource', '$log', function ($resource, $log) {
-    $log.debug('budgeto.apis : load ApiResource');
+budgetoApis.factory("ApisResource", ["$resource", "$log", function ($resource, $log) {
+    $log.debug("budgeto.apis : load ApiResource");
 
     return {
         all: function (url) {
@@ -22,7 +22,7 @@ budgetoApis.factory('ApisResource', ['$resource', '$log', function ($resource, $
 /**
  * provider to manage apis
  */
-budgetoApis.provider('ApiService', function () {
+budgetoApis.provider("ApiService", function () {
     var url = "noUrlSet";
 
     var $apiServiceProvider = {
@@ -31,8 +31,8 @@ budgetoApis.provider('ApiService', function () {
             url = value;
         },
 
-        $get: ['$log', 'ApisResource', function ($log, ApisResource) {
-            $log.debug('budgeto.apis : load ApiService');
+        $get: ["$log", "ApisResource", function ($log, ApisResource) {
+            $log.debug("budgeto.apis : load ApiService");
 
             var apis = [];
             var $apiService = {};
@@ -46,7 +46,7 @@ budgetoApis.provider('ApiService', function () {
             };
 
             $apiService.loaded = function () {
-                $log.debug('budgeto.apis : call api to get all available apis');
+                $log.debug("budgeto.apis : call api to get all available apis");
 
                 return ApisResource.all(url).then(function(data) {
                     return $apiService.loadApis(data);
@@ -55,11 +55,11 @@ budgetoApis.provider('ApiService', function () {
 
             $apiService.loadApis = function (data) {
                 for (var key in data.links) {
-                    if (data.links[key].rel !== 'self') {
+                    if (data.links[key].rel !== "self") {
                         apis.push(data.links[key]);
                     }
                 }
-                $log.debug('budgeto.apis : available apis ', apis);
+                $log.debug("budgeto.apis : available apis", apis);
                 return data;
             };
 

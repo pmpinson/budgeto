@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
 // Declare progress module
-var budgetoInfiniteLoader = angular.module('budgeto.infiniteLoader', []);
+var budgetoInfiniteLoader = angular.module("budgeto.infiniteLoader", []);
 
-budgetoInfiniteLoader.provider('$infiniteLoader', function () {
-    var message = 'Wait';
+budgetoInfiniteLoader.provider("$infiniteLoader", function () {
+    var message = "Wait";
 
     var $infiniteLoaderProvider = {
 
@@ -12,12 +12,12 @@ budgetoInfiniteLoader.provider('$infiniteLoader', function () {
             message = value;
         },
 
-        $get: ['$document', '$log', function ($document, $log) {
-            $log.debug('budgeto.infiniteLoader : load $infiniteLoader');
+        $get: ["$document", "$log", function ($document, $log) {
+            $log.debug("budgeto.infiniteLoader : load $infiniteLoader");
 
             var cpt = 0;
             var $infiniteLoader = {};
-            var body = $document.find('body').eq(0);
+            var body = $document.find("body").eq(0);
             var element = angular.element('<div class="infinite-loader infinite-loader-default hidden"><p>' + message + '</p></div>');
             body.append(element);
 
@@ -31,7 +31,7 @@ budgetoInfiniteLoader.provider('$infiniteLoader', function () {
 
             $infiniteLoader.show = function () {
                 cpt++;
-                element.removeClass('hidden');
+                element.removeClass("hidden");
             };
 
             $infiniteLoader.hide = function () {
@@ -40,7 +40,7 @@ budgetoInfiniteLoader.provider('$infiniteLoader', function () {
                     cpt = 0;
                 }
                 if (cpt === 0) {
-                    element.addClass('hidden');
+                    element.addClass("hidden");
                 }
             };
 
