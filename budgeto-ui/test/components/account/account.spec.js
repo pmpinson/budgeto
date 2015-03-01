@@ -10,11 +10,13 @@ describe("Budgeto account module", function () {
         var $controller;
         var $httpBackend;
         var $q;
+        var ApiService;
+        var api = {label:"myapi", href:"urlofMyApi"};
 
         beforeEach(function () {
             module("budgeto.account");
 
-            inject(function (_$rootScope_, _$log_, _$route_, _$location_, _$controller_, _$httpBackend_, _$q_) {
+            inject(function (_$rootScope_, _$log_, _$route_, _$location_, _$controller_, _$httpBackend_, _$q_, _ApiService_) {
                 $rootScope = _$rootScope_;
                 scope = _$rootScope_.$new();
                 $log = _$log_;
@@ -23,6 +25,9 @@ describe("Budgeto account module", function () {
                 $controller = _$controller_;
                 $httpBackend = _$httpBackend_;
                 $q = _$q_;
+                ApiService = _ApiService_;
+
+                spyOn(ApiService, "find").and.returnValue(api);
             });
         });
 
@@ -33,6 +38,44 @@ describe("Budgeto account module", function () {
             expect($route.routes["/account"].templateUrl).toBe("components/account/account.html");
             expect($route.routes["/account"].controller).toBe("AccountCtrl");
         }));
+
+        describe("AccountApi", function () {
+            it("find the good api because it's defined", inject(function (AccountApi) {
+                expect(ApiService.find).toHaveBeenCalledWith("account");
+                expect(AccountApi).toBe(api);
+            }));
+        });
+
+        describe("AccountResource", function () {
+            it("all get the href of the current AccountApi", inject(function (AccountResource) {
+                var accounts = [{name:"myaccount", links:[{rel:"operations", href:"/myaccount/operations"}]}, {name:"myaccount2", links:[{rel:"operations", href:"/myaccount2/operations"}]}];
+                $httpBackend.whenGET("urlofMyApi").respond(function () {
+                    return accounts;
+                });
+
+                AccountResource.all().then(function(data){
+                    expect(data).toBe(accounts);
+                }).catch(function(){
+                    expect(false).toBe(true);
+                });
+                $rootScope.$apply();
+            }));
+
+            it("operations get the operations from operations link in the account", inject(function (AccountResource) {
+                var account = {name:"myaccount", links:[{rel:"operations", href:"/myaccount/operations"}]};
+                var operations = [{label:"ope1"}];
+                $httpBackend.whenGET("/myaccount/operations").respond(function () {
+                    return operations;
+                });
+
+                AccountResource.operations(account).then(function(data){
+                    expect(data).toBe(operations);
+                }).catch(function(){
+                    expect(false).toBe(true);
+                });
+                $rootScope.$apply();
+            }));
+        });
 
         describe("AccountCtrl", function () {
 
@@ -97,9 +140,8 @@ describe("Budgeto account module", function () {
             }));
 
             it("call to get all account, but failed", inject(function (AccountResource, $modalError) {
-                var accounts = [];
                 var deferred = $q.defer();
-                deferred.reject('network error');
+                deferred.reject("network error");
                 spyOn(AccountResource, "all").and.returnValue(deferred.promise);
                 spyOn($log, "error").and.callThrough();
                 spyOn($modalError, "open").and.callThrough();
@@ -113,7 +155,7 @@ describe("Budgeto account module", function () {
                 $rootScope.$apply();
 
                 expect($modalError.open).toHaveBeenCalledWith();
-                expect($log.error).toHaveBeenCalledWith('error getting accounts :', 'network error');
+                expect($log.error).toHaveBeenCalledWith("error getting accounts :", "network error");
                 expect(scope.accounts.length).toBe(0);
                 expect(scope.account).toBeUndefined();
             }));
@@ -182,7 +224,7 @@ describe("Budgeto account module", function () {
                 $rootScope.$apply();
 
                 expect($modalError.open).toHaveBeenCalledWith();
-                expect($log.error).toHaveBeenCalledWith('error getting operations for', scope.account, ':', 'network fail');
+                expect($log.error).toHaveBeenCalledWith("error getting operations for", scope.account, ":", "network fail");
             }));
         });
     });
