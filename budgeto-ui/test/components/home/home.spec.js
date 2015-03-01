@@ -22,7 +22,7 @@ describe("Budgeto home module", function () {
                 $controller = _$controller_;
                 $httpBackend = _$httpBackend_;
 
-                $httpBackend.whenGET("components/home/home.html").respond(function (method, url, data) {
+                $httpBackend.whenGET("components/home/home.html").respond(function () {
                     return '<div><div>';
                 });
             });
@@ -44,7 +44,7 @@ describe("Budgeto home module", function () {
                 var apis = [{url:"http://"}];
                 spyOn(ApiService, "findAll").and.returnValue(apis);
 
-                var ctrl = $controller("HomeCtrl", {
+                $controller("HomeCtrl", {
                     $scope: scope,
                     "$location": $location,
                     "$log": $log,
@@ -59,7 +59,7 @@ describe("Budgeto home module", function () {
             it(" scope function changePath with a path change the path to selected", inject(function (ApiService) {
                 spyOn($location, "path").and.callThrough({});
 
-                var ctrl = $controller("HomeCtrl", {
+                $controller("HomeCtrl", {
                     $scope: scope,
                     "$location": $location,
                     "$log": $log,
@@ -74,7 +74,7 @@ describe("Budgeto home module", function () {
             it(" scope function changePath with a path null change the path to /home", inject(function (ApiService) {
                 spyOn($location, "path").and.callThrough({});
 
-                var ctrl = $controller("HomeCtrl", {
+                $controller("HomeCtrl", {
                     $scope: scope,
                     "$location": $location,
                     "$log": $log,

@@ -33,7 +33,7 @@ describe("Budgeto modalError module", function () {
         it("on close method, call close on $modalError provider to close the modal", inject(function ($modalError) {
             spyOn($modalError, "close").and.callThrough();
 
-            var ctrl = $controller("ModalErrorInstanceCtrl", {$scope: scope, "$log": $log, "$modalError": $modalError});
+            $controller("ModalErrorInstanceCtrl", {$scope: scope, "$log": $log, "$modalError": $modalError});
 
             scope.close();
             $rootScope.$apply();

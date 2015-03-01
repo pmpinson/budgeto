@@ -39,7 +39,7 @@ describe("Budgeto loading module", function () {
                 spyOn($location, "search").and.callThrough();
                 spyOn($infiniteLoader, "show").and.callThrough();
 
-                var ctrl = $controller("LoadingCtrl", {
+                $controller("LoadingCtrl", {
                     $scope: scope,
                     "$location": $location,
                     "$log": $log,
@@ -59,7 +59,7 @@ describe("Budgeto loading module", function () {
                 spyOn($location, "search").and.returnValue({});
                 spyOn($infiniteLoader, "show").and.callThrough();
 
-                var ctrl = $controller("LoadingCtrl", {
+                $controller("LoadingCtrl", {
                     $scope: scope,
                     "$location": $location,
                     "$log": $log,
@@ -78,7 +78,7 @@ describe("Budgeto loading module", function () {
                 spyOn($location, "search").and.returnValue({sourcePage:"mypage"});
                 spyOn($infiniteLoader, "show").and.callThrough();
 
-                var ctrl = $controller("LoadingCtrl", {
+                $controller("LoadingCtrl", {
                     $scope: scope,
                     "$location": $location,
                     "$log": $log,
@@ -101,7 +101,7 @@ describe("Budgeto loading module", function () {
                 spyOn($infiniteLoader, "hide").and.callThrough();
                 spyOn(LoadingService, "loaded").and.returnValue(customDefer.promise);
 
-                var ctrl = $controller("LoadingCtrl", {
+                $controller("LoadingCtrl", {
                     $scope: scope,
                     "$location": $location,
                     "$log": $log,
@@ -126,7 +126,7 @@ describe("Budgeto loading module", function () {
                 spyOn($infiniteLoader, "hide").and.callThrough();
                 spyOn(LoadingService, "loaded").and.returnValue(customDefer.promise);
 
-                var ctrl = $controller("LoadingCtrl", {
+                $controller("LoadingCtrl", {
                     $scope: scope,
                     "$location": $location,
                     "$log": $log,
@@ -144,7 +144,7 @@ describe("Budgeto loading module", function () {
             }));
         });
 
-        describe("provider LoadingService", function (LoadingService) {
+        describe("provider LoadingService", function () {
             it("initialised", inject(function (LoadingService) {
                 $rootScope.$apply();
 
@@ -221,9 +221,9 @@ describe("Budgeto loading module", function () {
             var LoadingService = LoadingServiceProviderMock.$get[3]($log, $q, $injector);
             $rootScope.$apply();
 
-            LoadingService.loaded().then(function (data) {
+            LoadingService.loaded().then(function () {
                 expect(true).toBe(true);
-            }).catch(function (reason) {
+            }).catch(function () {
                 expect(true).toBe(false);
             });
             $rootScope.$apply();
@@ -238,9 +238,9 @@ describe("Budgeto loading module", function () {
             var LoadingService = LoadingServiceProviderMock.$get[3]($log, $q, $injector);
             $rootScope.$apply();
 
-            LoadingService.loaded().then(function (data) {
+            LoadingService.loaded().then(function () {
                 expect(true).toBe(true);
-            }).catch(function (reason) {
+            }).catch(function () {
                 expect(true).toBe(false);
             });
             $rootScope.$apply();
@@ -253,9 +253,9 @@ describe("Budgeto loading module", function () {
             var LoadingService = LoadingServiceProviderMock.$get[3]($log, $q, $injector);
             $rootScope.$apply();
 
-            LoadingService.loaded().then(function (data) {
+            LoadingService.loaded().then(function () {
                 expect(true).toBe(false);
-            }).catch(function (reason) {
+            }).catch(function () {
                 expect(true).toBe(true);
             });
             $rootScope.$apply();

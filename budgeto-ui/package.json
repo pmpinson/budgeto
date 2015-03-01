@@ -59,7 +59,6 @@
     "dist:style": "lessc app/less/styles.less | cssmin > target/dist/app/styles/styles.css",
 
     "validate:script": "jshint --config config/.jshintrc --exclude app/scripts/ app",
-    "prebuild:script": "npm run validate:script",
     "build:script": "echo nothing",
     "watch:script": "nodemon --watch app/**/*.js --ext js --exec \"npm run build:script\"",
     "predist:script":"mkdirp target/dist/app && jshint --config config/.jshintrc --exclude app/scripts/ --reporter=checkstyle app > target/jshint.xml",
@@ -83,9 +82,7 @@
     "dist": "npm run dist:dep && npm run dist:style && npm run dist:script && npm run dist:html && npm run dist:resources",
 
     "test:validate": "jshint --config config/.jshintrc-test test",
-    "pretest:single": "npm run test:validate",
     "test:single": "karma start config/karma.conf.js  --single-run",
-    "pretest:watch": "npm run test:validate",
     "test:watch": "karma start config/karma.conf.js",
     "test": "npm run test:watch",
 

@@ -30,12 +30,12 @@ budgetoInfiniteLoader.provider("$infiniteLoader", function () {
             };
 
             $infiniteLoader.show = function () {
-                cpt++;
+                cpt = cpt + 1;
                 element.removeClass("hidden");
             };
 
             $infiniteLoader.hide = function () {
-                cpt--;
+                cpt = cpt - 1 ;
                 if (cpt < 0) {
                     cpt = 0;
                 }

@@ -34,6 +34,7 @@ describe("Budgeto infiniteLoader module", function () {
         it("add html to document", inject(function ($infiniteLoader) {
             $rootScope.$apply();
 
+            expect($infiniteLoader).not.toBeNull();
             expect(body.html()).toContain('<div class="infinite-loader infinite-loader-default hidden"><p>Wait</p></div>');
         }));
 

@@ -88,7 +88,7 @@ describe("Budgeto module", function () {
                 $rootScope = _$rootScope_;
                 $httpBackend = _$httpBackend_;
 
-                $httpBackend.whenGET("http://localhost:9001/budgeto-api").respond(function (method, url, data) {
+                $httpBackend.whenGET("http://localhost:9001/budgeto-api").respond(function () {
                     return [];
                 });
             });

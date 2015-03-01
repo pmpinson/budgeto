@@ -88,7 +88,7 @@ budgetoAccount.controller("AccountCtrl", ["$scope", "$location", "$log", "Accoun
 
                     $scope.operations = data;
                 }).catch(function (reason) {
-                    $log.error("error getting operations for", $scope.account, "/", reason);
+                    $log.error("error getting operations for", $scope.account, ":", reason);
                     $modalError.open();
                 });
             }

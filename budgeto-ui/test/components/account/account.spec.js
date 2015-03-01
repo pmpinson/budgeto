@@ -40,7 +40,7 @@ describe("Budgeto account module", function () {
                 var deferred = $q.defer();
                 deferred.resolve([]);
                 spyOn(AccountResource, "all").and.returnValue(deferred.promise);
-                var ctrl = $controller("AccountCtrl", {
+                $controller("AccountCtrl", {
                     $scope: scope,
                     "$location": $location,
                     "$log": $log,
@@ -58,7 +58,7 @@ describe("Budgeto account module", function () {
                 var deferred = $q.defer();
                 deferred.resolve([]);
                 spyOn(AccountResource, "all").and.returnValue(deferred.promise);
-                var ctrl = $controller("AccountCtrl", {
+                $controller("AccountCtrl", {
                     $scope: scope,
                     "$location": $location,
                     "$log": $log,
@@ -72,7 +72,74 @@ describe("Budgeto account module", function () {
                 expect($location.path()).toBe("/");
             }));
 
-            // watch and loading on control
+            it("account home change location to home", inject(function (AccountResource, $modalError) {
+                var deferred = $q.defer();
+                deferred.resolve([]);
+                spyOn(AccountResource, "all").and.returnValue(deferred.promise);
+                $controller("AccountCtrl", {
+                    $scope: scope,
+                    "$location": $location,
+                    "$log": $log,
+                    "AccountResource": AccountResource,
+                    "$modalError": $modalError
+                });
+                $rootScope.$apply();
+
+                scope.home();
+
+                expect($location.path()).toBe("/");
+            }));
+
+            it("scope account is watch for modification to get operations", inject(function (AccountResource, $modalError) {
+                var deferred = $q.defer();
+                deferred.resolve([]);
+                spyOn(AccountResource, "all").and.returnValue(deferred.promise);
+                $controller("AccountCtrl", {
+                    $scope: scope,
+                    "$location": $location,
+                    "$log": $log,
+                    "AccountResource": AccountResource,
+                    "$modalError": $modalError
+                });
+                $rootScope.$apply();
+
+                var operations = [{label:"ope1"}];
+                deferred = $q.defer();
+                deferred.resolve(operations);
+                spyOn(AccountResource, "operations").and.returnValue(deferred.promise);
+                scope.account = {name:"myaccount", links:[{rel:"operations", href:"/myaccount/operations"}]};
+                $rootScope.$apply();
+
+                expect(AccountResource.operations).toHaveBeenCalledWith(scope.account);
+                expect(scope.operations).toBe(operations);
+            }));
+
+            it("scope account is watch for modification to get operations but http call fail", inject(function (AccountResource, $modalError) {
+                var deferred = $q.defer();
+                deferred.resolve([]);
+                spyOn(AccountResource, "all").and.returnValue(deferred.promise);
+                $controller("AccountCtrl", {
+                    $scope: scope,
+                    "$location": $location,
+                    "$log": $log,
+                    "AccountResource": AccountResource,
+                    "$modalError": $modalError
+                });
+                $rootScope.$apply();
+
+                deferred = $q.defer();
+                deferred.reject("network fail");
+                spyOn(AccountResource, "operations").and.returnValue(deferred.promise);
+                spyOn($log, "error").and.callThrough();
+                spyOn($modalError, "open").and.callThrough();
+                scope.account = {name:"myaccount", links:[{rel:"operations", href:"/myaccount/operations"}]};
+                $rootScope.$apply();
+
+                expect($modalError.open).toHaveBeenCalledWith();
+                expect($log.error).toHaveBeenCalledWith('error getting operations for', scope.account, ':', 'network fail');
+            }));
+
+            // loading on control
             // rest of class
         });
     });

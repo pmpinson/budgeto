@@ -33,7 +33,7 @@ describe("Budgeto apis module", function () {
             });
         });
 
-        describe("factory ApisResource", function (ApisResource) {
+        describe("factory ApisResource", function () {
             it("initialised", inject(function (ApisResource) {
                 $rootScope.$apply();
 
@@ -41,7 +41,7 @@ describe("Budgeto apis module", function () {
             }));
         });
 
-        describe("provider ApiService", function (ApiService) {
+        describe("provider ApiService", function () {
             it("initialised", inject(function (ApiService) {
                 $rootScope.$apply();
 
@@ -107,9 +107,9 @@ describe("Budgeto apis module", function () {
             var ApiService = ApiServiceProviderMock.$get[2]($log, ApisResource);
 
             spyOn(ApisResource, "all").and.callThrough();
-            ApiService.loaded().then(function (data) {
+            ApiService.loaded().then(function () {
                 expect(true).toBe(false);
-            }).catch(function (reason) {
+            }).catch(function () {
                 expect(true).toBe(true);
             });
 
@@ -119,7 +119,7 @@ describe("Budgeto apis module", function () {
 
         it("get result ok", inject(function () {
 
-            $httpBackend.whenGET("test/components/apis/apis.json").respond(function (method, url, data) {
+            $httpBackend.whenGET("test/components/apis/apis.json").respond(function () {
                 return apis;
             });
 
@@ -132,7 +132,7 @@ describe("Budgeto apis module", function () {
                 expect(data).not.toBeNull(true);
                 expect(data.links.length).toBe(3);
                 expect(ApiService.loadApis).toHaveBeenCalledWith(apis);
-            }).catch(function (reason) {
+            }).catch(function () {
                 expect(true).toBe(false);
             });
 
