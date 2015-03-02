@@ -2,7 +2,7 @@
 
 // Budgeto app
 var budgeto = angular.module("budgeto", [
-    "ngRoute",
+    "ui.router",
     "budgeto.infiniteLoader",
     "budgeto.loading",
     "budgeto.home",
@@ -76,11 +76,13 @@ budgeto.config(["$modalErrorProvider", "MessageService", function ($modalErrorPr
 /**
  * BudgetoRun : call to the init app page
  */
-budgeto.run(["$location", "$rootScope", "$log", "MessageService", function ($location, $rootScope, $log, MessageService) {
+budgeto.run(["$state", "$rootScope", "$log", "MessageService", function ($state, $rootScope, $log, MessageService) {
     $log.debug("budgeto : run");
 
     $rootScope.MessageService = MessageService;
 
-    $location.search("sourcePage", $location.path());
-    $location.path("/loading");
+    //$location.search("sourcePage", $location.path());
+    console.log("current path", $state.current);
+    console.log("current params", $state.params);
+    $state.go("loading");
 }]);

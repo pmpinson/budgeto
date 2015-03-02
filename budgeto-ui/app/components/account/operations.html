@@ -1,0 +1,6 @@
+<table data-ng-model="operations" border="1">
+    <tr data-ng-repeat="operation in operations">
+        <td>{{operation.date | amDateFormat:'dddd Do MMMM'}}</td>
+        <td>{{operation.label}}</td>
+    </tr>
+</table>

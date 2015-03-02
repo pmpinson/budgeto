@@ -2,33 +2,34 @@
 
 // Declare module
 var budgetoHome = angular.module("budgeto.home", [
-    "ngRoute",
+    "ui.router",
     "ngResource",
     "budgeto.apis"
 ]);
 
-budgetoHome.config(["$routeProvider", function ($routeProvider) {
-    $routeProvider
-        .when("/home", {
+budgetoHome.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $urlRouterProvider) {
+    $stateProvider
+        .state("home", {
+            url: "",
             templateUrl: "components/home/home.html",
             controller: "HomeCtrl"
-        })
-        .otherwise({redirectTo: "/home"});
+        });
+    $urlRouterProvider.otherwise("home");
 }]);
 
 /**
  * controller to manage home page
  */
-budgetoHome.controller("HomeCtrl", ["$scope", "$location", "$log", "ApiService", function ($scope, $location, $log, ApiService) {
+budgetoHome.controller("HomeCtrl", ["$scope", "$state", "$log", "ApiService", function ($scope, $state, $log, ApiService) {
     $log.debug("budgeto.home : load HomeCtrl");
 
     $scope.apis = ApiService.findAll();
 
     $scope.changePath = function (path) {
         if (path === undefined) {
-            $location.path();
+            $state.go("home");
         } else {
-            $location.path("/" + path);
+            $state.go(path);
         }
     };
 }]);

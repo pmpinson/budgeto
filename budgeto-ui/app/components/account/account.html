@@ -5,12 +5,9 @@
 </select>
 <h2>{{account.name}}</h2>
 <p>{{account.note}}</p>
-<table data-ng-model="operations" border="1">
-    <tr data-ng-repeat="operation in operations">
-        <td>{{operation.date | amDateFormat:'dddd Do MMMM'}}</td>
-        <td>{{operation.label}}</td>
-    </tr>
-</table>
+<br/>
+<br/>
+<section data-ui-view="operations"></section>
 <br/>
 <br/>
 <a data-ng-click="home()">{{MessageService.homeLink}}</a>

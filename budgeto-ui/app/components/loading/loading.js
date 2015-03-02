@@ -2,15 +2,15 @@
 
 // Declare module
 var budgetoLoading = angular.module("budgeto.loading", [
-    "ngRoute",
+    "ui.router",
     "ngResource",
     "ui.bootstrap",
     "budgeto.infiniteLoader"
 ]);
 
-budgetoLoading.config(["$routeProvider", function ($routeProvider) {
-    $routeProvider
-        .when("/loading", {
+budgetoLoading.config(["$stateProvider", function ($stateProvider) {
+    $stateProvider
+        .state("loading", {
             templateUrl: "components/loading/loading.html",
             controller: "LoadingCtrl",
             reloadOnSearch: false
@@ -70,7 +70,7 @@ budgetoLoading.provider("LoadingService", function () {
 /**
  * controller to manage loading page
  */
-budgetoLoading.controller("LoadingCtrl", ["$scope", "$location", "$log", "LoadingService", "$infiniteLoader", function ($scope, $location, $log, LoadingService, $infiniteLoader) {
+budgetoLoading.controller("LoadingCtrl", ["$scope", "$location", "$log", "LoadingService", "$infiniteLoader", "$state", function ($scope, $location, $log, LoadingService, $infiniteLoader, $state) {
     $log.debug("budgeto.loading : load LoadingCtrl");
 
     $infiniteLoader.show();
@@ -78,14 +78,14 @@ budgetoLoading.controller("LoadingCtrl", ["$scope", "$location", "$log", "Loadin
 
     var sourcePage = $location.search().sourcePage;
     if (sourcePage === undefined || sourcePage.indexOf("/loading") !== -1) {
-        sourcePage = "/";
+        sourcePage = "home";
     }
     $location.search("sourcePage", null);
 
     LoadingService.loaded().then(function (data) {
         $log.debug("budgeto.loading : loading done");
         $infiniteLoader.hide();
-        $location.path(sourcePage);
+        $state.go(sourcePage);
         return data;
     }).catch(function (reason) {
         $log.error("error getting apis /", reason);

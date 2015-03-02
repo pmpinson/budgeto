@@ -2,17 +2,25 @@
 
 // Declare module
 var budgetoAccount = angular.module("budgeto.account", [
-    "ngRoute",
+    "ui.router",
     "ngResource",
     "angularMoment",
     "budgeto.modalError",
     "budgeto.apis"
 ]);
 
-budgetoAccount.config(["$routeProvider", function ($routeProvider) {
-    $routeProvider.when("/account", {
-        templateUrl: "components/account/account.html",
-        controller: "AccountCtrl"
+budgetoAccount.config(["$stateProvider", function ($stateProvider) {
+    $stateProvider.state("account", {
+        views:{
+            "":{
+                templateUrl: "components/account/account.html",
+                controller: "AccountCtrl"
+            },
+            "account.operations":{
+                templateUrl: "components/account/operations.html",
+                controller: "OperationsCtrl"
+            }
+        }
     });
 }]);
 
@@ -54,7 +62,7 @@ budgetoAccount.factory("AccountResource", ["$resource", "$log", "AccountApi", "A
  * controller to manage account
  */
 
-budgetoAccount.controller("AccountCtrl", ["$scope", "$location", "$log", "AccountResource", "$modalError", function ($scope, $location, $log, AccountResource, $modalError) {
+budgetoAccount.controller("AccountCtrl", ["$scope", "$state", "$log", "AccountResource", "$modalError", function ($scope, $state, $log, AccountResource, $modalError) {
     $log.debug("budgeto.account : load AccountCtrl");
 
     AccountResource.all().then(function (data) {
@@ -75,28 +83,50 @@ budgetoAccount.controller("AccountCtrl", ["$scope", "$location", "$log", "Accoun
         $modalError.open();
     });
 
-    $scope.$watch(
-        function ($scope) {
-            return $scope.account;
-        },
-        function () {
-            $scope.operations = [];
-            if ($scope.account !== undefined) {
-                $log.debug("budgeto.account : select account", $scope.account);
-
-                AccountResource.operations($scope.account).then(function (data) {
-                    $log.debug("budgeto.account : get all operations", data);
-
-                    $scope.operations = data;
-                }).catch(function (reason) {
-                    $log.error("error getting operations for", $scope.account, ":", reason);
-                    $modalError.open();
-                });
-            }
-        }
-    );
+    //$scope.$watch(
+    //    function ($scope) {
+    //        return $scope.account;
+    //    },
+    //    function () {
+    //        $scope.operations = [];
+    //        if ($scope.account !== undefined) {
+    //            $log.debug("budgeto.account : select account", $scope.account);
+    //
+    //            AccountResource.operations($scope.account).then(function (data) {
+    //                $log.debug("budgeto.account : get all operations", data);
+    //
+    //                $scope.operations = data;
+    //            }).catch(function (reason) {
+    //                $log.error("error getting operations for", $scope.account, ":", reason);
+    //                $modalError.open();
+    //            });
+    //        }
+    //    }
+    //);
 
     $scope.home = function () {
-        $location.path("/");
+        $state.go("home");
     };
+}]);
+
+/**
+ * controller to manage account
+ */
+
+budgetoAccount.controller("OperationsCtrl", ["$scope", "$state", "$log", "AccountResource", "$modalError", function ($scope, $state, $log, AccountResource, $modalError) {
+    $log.debug("budgeto.account : load OperationsCtrl");
+
+    $scope.operations = [];
+    if ($scope.account !== undefined) {
+        $log.debug("budgeto.account : select account", $scope.account);
+
+        AccountResource.operations($scope.account).then(function (data) {
+            $log.debug("budgeto.account : get all operations", data);
+
+            $scope.operations = data;
+        }).catch(function (reason) {
+            $log.error("error getting operations for", $scope.account, ":", reason);
+            $modalError.open();
+        });
+    }
 }]);
