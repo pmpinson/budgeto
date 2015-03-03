@@ -10,7 +10,7 @@ var budgetoHome = angular.module("budgeto.home", [
 budgetoHome.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $urlRouterProvider) {
     $stateProvider
         .state("home", {
-            url: "",
+            url: "/",
             templateUrl: "components/home/home.html",
             controller: "HomeCtrl"
         });

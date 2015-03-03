@@ -3,11 +3,7 @@
 </div>
 <select data-ng-model="account" data-ng-options="account as account.name for account in accounts">
 </select>
-<h2>{{account.name}}</h2>
-<p>{{account.note}}</p>
-<br/>
-<br/>
-<section data-ui-view="operations"></section>
+<div data-ui-view></div>
 <br/>
 <br/>
 <a data-ng-click="home()">{{MessageService.homeLink}}</a>
