@@ -82,7 +82,5 @@ budgeto.run(["$state", "$rootScope", "$log", "MessageService", function ($state,
     $rootScope.MessageService = MessageService;
 
     //$location.search("sourcePage", $location.path());
-    console.log("current path", $state.current);
-    console.log("current params", $state.params);
     $state.go("loading");
 }]);
