@@ -9,7 +9,12 @@ budgetoHomeRoute.config(["$routeProvider", function ($routeProvider) {
     $routeProvider
         .when("/home", {
             templateUrl: "components/home/home.html",
-            controller: "HomeCtrl"
+            controller: "HomeCtrl",
+            reloadOnSearch: false
+        })
+        .when("/loading", {
+            templateUrl: "components/loading/loading.html",
+            controller: "LoadingCtrl"
         })
         .otherwise({redirectTo: "/home"});
 }]);

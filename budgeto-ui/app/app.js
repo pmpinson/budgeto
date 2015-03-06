@@ -5,7 +5,6 @@ var budgeto = angular.module("budgeto", [
     "ngRoute",
     "budgeto.infiniteLoader",
     "budgeto.loading",
-    "budgeto.loading.route",
     "budgeto.home",
     "budgeto.home.route",
     "budgeto.account",
@@ -28,7 +27,6 @@ budgeto.constant("angularMomentConfig", {
  * message
  */
 budgeto.constant("MessageService", {
-    applicationInit: "Wait for application loading",
     applicationInitFail: "Erreur during initialisation. Come back later. So Sorry...",
     infiniteLoaderMsg: "Work in progress. Pleas wait...",
     apisLinks: {
@@ -85,5 +83,5 @@ budgeto.run(["$location", "$rootScope", "$log", "MessageService", function ($loc
     $rootScope.MessageService = MessageService;
 
     $location.search("sourcePage", $location.path());
-    $location.path("/loading");
+    $location.path("/home");
 }]);

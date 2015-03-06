@@ -17,7 +17,7 @@ describe("Budgeto module", function () {
         }));
 
         it("messages defined correctly", inject(function (MessageService) {
-            expect(Object.keys(MessageService).length).toBe(8);
+            expect(Object.keys(MessageService).length).toBe(7);
             expect(Object.keys(MessageService.apisLinks).length).toBe(2);
             expect(Object.keys(MessageService.apisTitles).length).toBe(2);
             expect(Object.keys(MessageService.modalError).length).toBe(3);
@@ -50,9 +50,9 @@ describe("Budgeto module", function () {
 
             expect($location.path.calls.count()).toBe(2);
             expect($location.path).toHaveBeenCalledWith();
-            expect($location.path).toHaveBeenCalledWith("/loading");
+            expect($location.path).toHaveBeenCalledWith("/home");
             expect($location.search).toHaveBeenCalledWith("sourcePage", $location.path());
-            expect($location.path()).toBe("/loading");
+            expect($location.path()).toBe("/home");
         }));
 
         it("set MessageService in rootScope", inject(function (MessageService) {
