@@ -71,8 +71,8 @@
     "dist": "mkdirp target && rimraf target && npm run dist:dep && npm run dist:html && npm run dist:style && npm run dist:script && npm run dist:image && karma start config/karma.conf-dist.js  --single-run",
 
     "test:validate": "jshint --config config/.jshintrc-test test",
-    "test:single": "karma start config/karma.conf.js  --single-run",
-    "test:watch": "karma start config/karma.conf.js",
+    "test:single": "rimraf target/coverage && rimraf target/test-results && karma start config/karma.conf.js  --single-run",
+    "test:watch": "rimraf target/coverage && rimraf target/test-results && karma start config/karma.conf.js",
     "test": "npm run test:watch",
 
     "dev": "parallelshell \"npm run build:serve\" \"npm run watch\"",

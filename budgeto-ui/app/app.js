@@ -5,8 +5,11 @@ var budgeto = angular.module("budgeto", [
     "ngRoute",
     "budgeto.infiniteLoader",
     "budgeto.loading",
+    "budgeto.loading.route",
     "budgeto.home",
-    "budgeto.account"
+    "budgeto.home.route",
+    "budgeto.account",
+    "budgeto.account.route"
 ]);
 
 /**

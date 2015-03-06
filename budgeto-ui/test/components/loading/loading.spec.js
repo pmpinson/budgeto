@@ -5,7 +5,6 @@ describe("Budgeto loading module", function () {
         var $rootScope;
         var scope;
         var $log;
-        var $route;
         var $location;
         var $controller;
         var $q;
@@ -13,25 +12,15 @@ describe("Budgeto loading module", function () {
         beforeEach(function () {
             module("budgeto.loading");
 
-            inject(function (_$rootScope_, _$log_, _$route_, _$location_, _$controller_, _$q_) {
+            inject(function (_$rootScope_, _$log_, _$location_, _$controller_, _$q_) {
                 $rootScope = _$rootScope_;
                 scope = _$rootScope_.$new();
                 $log = _$log_;
-                $route = _$route_;
                 $location = _$location_;
                 $controller = _$controller_;
                 $q = _$q_;
             });
         });
-
-        it("$routeProvider add route", inject(function () {
-            $rootScope.$apply();
-
-            expect($route.routes["/loading"]).not.toBeNull();
-            expect($route.routes["/loading"].templateUrl).toBe("components/loading/loading.html");
-            expect($route.routes["/loading"].controller).toBe("LoadingCtrl");
-            expect($route.routes["/loading"].reloadOnSearch).toBe(false);
-        }));
 
         describe("LoadingCtrl", function () {
 
@@ -146,8 +135,6 @@ describe("Budgeto loading module", function () {
 
         describe("provider LoadingService", function () {
             it("initialised", inject(function (LoadingService) {
-                $rootScope.$apply();
-
                 expect(LoadingService).not.toBeNull();
             }));
         });
@@ -212,14 +199,11 @@ describe("Budgeto loading module", function () {
         });
 
         it("have a valid provider", inject(function () {
-            $rootScope.$apply();
-
             expect(LoadingServiceProviderMock).not.toBeNull();
         }));
 
         it("take 0 services names", inject(function () {
             var LoadingService = LoadingServiceProviderMock.$get[3]($log, $q, $injector);
-            $rootScope.$apply();
 
             LoadingService.loaded().then(function () {
                 expect(true).toBe(true);
@@ -236,7 +220,6 @@ describe("Budgeto loading module", function () {
             LoadingServiceProviderMock.add("Service3");
 
             var LoadingService = LoadingServiceProviderMock.$get[3]($log, $q, $injector);
-            $rootScope.$apply();
 
             LoadingService.loaded().then(function () {
                 expect(true).toBe(true);
@@ -251,7 +234,6 @@ describe("Budgeto loading module", function () {
             LoadingServiceProviderMock.add("ServiceFail1");
 
             var LoadingService = LoadingServiceProviderMock.$get[3]($log, $q, $injector);
-            $rootScope.$apply();
 
             LoadingService.loaded().then(function () {
                 expect(true).toBe(false);

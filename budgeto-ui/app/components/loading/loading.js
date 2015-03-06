@@ -2,20 +2,10 @@
 
 // Declare module
 var budgetoLoading = angular.module("budgeto.loading", [
-    "ngRoute",
     "ngResource",
     "ui.bootstrap",
     "budgeto.infiniteLoader"
 ]);
-
-budgetoLoading.config(["$routeProvider", function ($routeProvider) {
-    $routeProvider
-        .when("/loading", {
-            templateUrl: "components/loading/loading.html",
-            controller: "LoadingCtrl",
-            reloadOnSearch: false
-        });
-}]);
 
 /**
  * provider to manage loading of application

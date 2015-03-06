@@ -2,19 +2,11 @@
 
 // Declare module
 var budgetoAccount = angular.module("budgeto.account", [
-    "ngRoute",
     "ngResource",
     "angularMoment",
     "budgeto.modalError",
     "budgeto.apis"
 ]);
-
-budgetoAccount.config(["$routeProvider", function ($routeProvider) {
-    $routeProvider.when("/account", {
-        templateUrl: "components/account/account.html",
-        controller: "AccountCtrl"
-    });
-}]);
 
 /**
  * account api to store the api definition for account
@@ -34,18 +26,24 @@ budgetoAccount.factory("AccountApi", ["$resource", "$log", "ApiService", functio
  * @returns {{all: get all accounts, returning an array in a promise, operations: get all operation of an account, returning an array of operation in a promise}}
  */
 
-budgetoAccount.factory("AccountResource", ["$resource", "$log", "AccountApi", "ApiService", function ($resource, $log, AccountApi, ApiService) {
+budgetoAccount.factory("AccountResource", ["$resource", "$log", "AccountApi", "ApiService", "$modalError", function ($resource, $log, AccountApi, ApiService, $modalError) {
     $log.debug("budgeto.account : load AccountResource");
 
     return {
         all: function () {
             var url = AccountApi.href;
-            return $resource(url, {}, {}).query({}).$promise;
+            return $resource(url, {}, {}).query({}).$promise.catch(function (reason) {
+                $log.error("error getting accounts :", reason);
+                $modalError.open();
+            });
         },
 
         operations: function (account) {
             var url = ApiService.getLink("operations", account.links).href;
-            return $resource(url, {}, {}).query({}).$promise;
+            return $resource(url, {}, {}).query({}).$promise.catch(function (reason) {
+                $log.error("error getting operations for", account, ":", reason);
+                $modalError.open();
+            });
         }
     };
 }]);
@@ -54,25 +52,20 @@ budgetoAccount.factory("AccountResource", ["$resource", "$log", "AccountApi", "A
  * controller to manage account
  */
 
-budgetoAccount.controller("AccountCtrl", ["$scope", "$location", "$log", "AccountResource", "$modalError", function ($scope, $location, $log, AccountResource, $modalError) {
+budgetoAccount.controller("AccountCtrl", ["$scope", "$location", "$log", "AccountResource", function ($scope, $location, $log, AccountResource) {
     $log.debug("budgeto.account : load AccountCtrl");
+
+    $scope.accounts = [];
+    $scope.account = undefined;
+    $scope.operations = [];
 
     AccountResource.all().then(function (data) {
         $log.debug("budgeto.account : get all accounts", data);
 
         $scope.accounts = data;
-        $scope.operations = [];
-        $scope.account = undefined;
-
         if (data.length !== 0) {
             $scope.account = data[0];
         }
-    }).catch(function (reason) {
-        $scope.accounts = [];
-        $scope.operations = [];
-        $scope.account = undefined;
-        $log.error("error getting accounts :", reason);
-        $modalError.open();
     });
 
     $scope.$watch(
@@ -88,9 +81,6 @@ budgetoAccount.controller("AccountCtrl", ["$scope", "$location", "$log", "Accoun
                     $log.debug("budgeto.account : get all operations", data);
 
                     $scope.operations = data;
-                }).catch(function (reason) {
-                    $log.error("error getting operations for", $scope.account, ":", reason);
-                    $modalError.open();
                 });
             }
         }
