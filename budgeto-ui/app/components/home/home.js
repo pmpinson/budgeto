@@ -9,48 +9,38 @@ var budgetoHome = angular.module("budgeto.home", [
     "budgeto.infiniteLoader"
 ]);
 
-budgetoHome.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $urlRouterProvider) {
-    $stateProvider
-        .state("home", {
-            url: "/",
-            templateUrl: "components/home/home.html",
-            controller: "HomeCtrl"
-        });
-    $urlRouterProvider.otherwise("home");
-}]);
-
 /**
  * controller to manage home page
  */
-budgetoHome.controller("HomeCtrl", ["$scope", "$state", "$log", "ApiService", function ($scope, $state, $log, ApiService) {
-budgetoHome.controller("HomeCtrl", ["$scope", "$location", "$log", "ApiService", "$infiniteLoader", "LoadingService", function ($scope, $location, $log, ApiService, $infiniteLoader, LoadingService) {
+budgetoHome.controller("HomeCtrl", ["$scope", "$state", "$log", "ApiService", "$infiniteLoader", "LoadingService", function ($scope, $state, $log, ApiService, $infiniteLoader, LoadingService) {
     $log.debug("budgeto.home : load HomeCtrl");
 
-    $infiniteLoader.show();
-    $scope.loadFail = false;
+    var that = this;
 
-    var sourcePage = $location.search().sourcePage;
-    $location.search("sourcePage", null);
+    $infiniteLoader.show();
+    this.loadFail = false;
 
     LoadingService.loaded().then(function (data) {
         $log.debug("budgeto.loading : loading done");
         $infiniteLoader.hide();
-        $scope.apis = ApiService.findAll();
-        if (sourcePage !== undefined) {
-            $location.path(sourcePage);
-        }
+        that.apis = ApiService.findAll();
         return data;
     }).catch(function (reason) {
         $log.error("error getting apis /", reason);
-        $scope.loadFail = true;
+        that.loadFail = true;
         $infiniteLoader.hide();
     });
 
-    $scope.changePath = function (path) {
-        if (path === undefined) {
-            $state.go("home");
-        } else {
-            $state.go(path);
+    this.changePath = function (path) {
+        var destination = path;
+        if (destination === undefined) {
+            destination = "home";
+        }
+        try {
+            return $state.go(destination);
+        } catch (exception) {
+            $log.error("unknown path", path);
+            return $state.go("home");
         }
     };
 }]);

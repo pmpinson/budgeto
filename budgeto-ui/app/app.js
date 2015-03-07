@@ -27,7 +27,6 @@ budgeto.constant("angularMomentConfig", {
  * message
  */
 budgeto.constant("MessageService", {
-    applicationInit: "Wait for application loading",
     applicationInitFail: "Erreur during initialisation. Come back later. So Sorry...",
     infiniteLoaderMsg: "Work in progress. Pleas wait...",
     apisLinks: {
@@ -83,6 +82,5 @@ budgeto.run(["$state", "$rootScope", "$log", "MessageService", function ($state,
 
     $rootScope.MessageService = MessageService;
 
-    //$location.search("sourcePage", $location.path());
-    $location.path("/home");
+    $state.transitionTo("home");
 }]);

@@ -26,41 +26,35 @@ describe("Budgeto module", function () {
 
     describe("application run", function () {
         var $log;
-        var $location;
+        var $state;
         var $rootScope;
 
         beforeEach(function () {
             module("budgeto");
 
-            inject(function (_$log_, _$location_, _$rootScope_) {
+            inject(function (_$log_, _$state_, _$rootScope_) {
                 $log = _$log_;
-                $location = _$location_;
+                $state = _$state_;
                 $rootScope = _$rootScope_;
             });
         });
 
         it("redirecting to /loading and keep source path", inject(function (MessageService) {
-            spyOn($location, "path").and.callThrough();
-            spyOn($location, "search").and.callThrough();
+            spyOn($state, "transitionTo").and.callThrough();
 
             // call run
             var myModule = angular.module("budgeto");
-            myModule._runBlocks[0][4]($location, $rootScope, $log, MessageService);
-            $rootScope.$apply();
+            myModule._runBlocks[0][4]($state, $rootScope, $log, MessageService);
 
-            expect($location.path.calls.count()).toBe(2);
-            expect($location.path).toHaveBeenCalledWith();
-            expect($location.path).toHaveBeenCalledWith("/home");
-            expect($location.search).toHaveBeenCalledWith("sourcePage", $location.path());
-            expect($location.path()).toBe("/home");
+            expect($state.transitionTo.calls.count()).toBe(1);
+            expect($state.transitionTo).toHaveBeenCalledWith("home");
         }));
 
         it("set MessageService in rootScope", inject(function (MessageService) {
 
             // call run
             var myModule = angular.module("budgeto");
-            myModule._runBlocks[0][4]($location, $rootScope, $log, MessageService);
-            $rootScope.$apply();
+            myModule._runBlocks[0][4]($state, $rootScope, $log, MessageService);
 
             expect($rootScope.MessageService).toBe(MessageService);
         }));
