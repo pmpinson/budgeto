@@ -10,6 +10,7 @@ import org.pmp.budgeto.test.AssertTools;
 import org.pmp.budgeto.test.TestTools;
 import org.pmp.budgeto.test.config.TestConfig;
 import org.pmp.budgeto.test.extractor.ConstraintViolationExtractor;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -140,6 +141,18 @@ public class OperationTest {
         Assertions.assertThat(violations).hasSize(1);
         Assertions.assertThat(((ConstraintViolation<Account>) violations.toArray()[0]).getMessageTemplate()).isEqualTo("{javax.validation.constraints.NotNull.message}");
         Assertions.assertThat(((ConstraintViolation<Account>) violations.toArray()[0]).getPropertyPath().toString()).isEqualTo("date");
+    }
+
+    @Test
+    public void generateLinks() throws Exception {
+
+        Operation object = new Operation(TestConfig.dateTools).setDate(DateTime.now());
+
+        RequestContextHolder.setRequestAttributes(TestTools.mockServletRequestAttributes());
+
+        Assertions.assertThat(object.getLinks()).hasSize(0);
+
+        RequestContextHolder.resetRequestAttributes();
     }
 
 }

@@ -4,8 +4,10 @@ import org.assertj.core.api.Assertions;
 import org.assertj.core.groups.Tuple;
 import org.junit.Before;
 import org.junit.Test;
+import org.pmp.budgeto.test.TestTools;
 import org.pmp.budgeto.test.config.TestConfig;
 import org.pmp.budgeto.test.extractor.ConstraintViolationExtractor;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -122,6 +124,21 @@ public class BudgetTest {
         Assertions.assertThat(violations).extracting(new ConstraintViolationExtractor()).contains(
                 Tuple.tuple("name", "must not empty string (trim too)")
                 , Tuple.tuple("name", "may not be null"));
+    }
+
+    @Test
+    public void generateLinks() throws Exception {
+
+        Budget object = new Budget().setName("theName");
+
+        RequestContextHolder.setRequestAttributes(TestTools.mockServletRequestAttributes());
+
+        Assertions.assertThat(object.getLinks()).hasSize(1);
+
+        Assertions.assertThat(object.getLinks().get(0).getRel()).isEqualTo("self");
+        Assertions.assertThat(object.getLinks().get(0).getHref()).isEqualTo("http://local/myappserv1/budget/theName");
+
+        RequestContextHolder.resetRequestAttributes();
     }
 
 }
