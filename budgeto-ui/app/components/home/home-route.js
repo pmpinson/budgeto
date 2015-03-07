@@ -2,19 +2,13 @@
 
 // Declare module
 var budgetoHomeRoute = angular.module("budgeto.home.route", [
-    "ngRoute"
+    "ui.router"
 ]);
 
-budgetoHomeRoute.config(["$routeProvider", function ($routeProvider) {
-    $routeProvider
-        .when("/home", {
+budgetoHomeRoute.config(["$stateProvider", function ($stateProvider) {
+    $stateProvider
+        .state("home", {
             templateUrl: "components/home/home.html",
-            controller: "HomeCtrl",
-            reloadOnSearch: false
-        })
-        .when("/loading", {
-            templateUrl: "components/loading/loading.html",
-            controller: "LoadingCtrl"
-        })
-        .otherwise({redirectTo: "/home"});
+            controller: "HomeCtrl as homeCtrl"
+        });
 }]);
