@@ -13,7 +13,7 @@ describe("Budgeto home-route module", function () {
 
     it("$stateProvider add route home", inject(function () {
         expect($state.get("home")).not.toBeNull();
-        expect($state.get("home").url).toBe("/home");
+        expect($state.get("home").url).toBeUndefined();
         expect($state.get("home").templateUrl).toBe("components/home/home.html");
         expect($state.get("home").controller).toBe("HomeCtrl as homeCtrl");
     }));

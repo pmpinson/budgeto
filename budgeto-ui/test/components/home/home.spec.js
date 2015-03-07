@@ -152,7 +152,7 @@ describe("Budgeto home module", function () {
 
             expect($state.current).not.toBeNull();
             expect($state.current.name).toBe("home");
-            expect($log.error).toHaveBeenCalledWith("unknown path", "unexisting");
+            expect($log.error).toHaveBeenCalledWith("unknown path", "unexisting", ":", jasmine.any(Error));
         }));
     });
 });

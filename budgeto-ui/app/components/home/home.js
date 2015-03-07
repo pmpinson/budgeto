@@ -39,7 +39,7 @@ budgetoHome.controller("HomeCtrl", ["$scope", "$state", "$log", "ApiService", "$
         try {
             return $state.go(destination);
         } catch (exception) {
-            $log.error("unknown path", path);
+            $log.error("unknown path", path, ":", exception);
             return $state.go("home");
         }
     };

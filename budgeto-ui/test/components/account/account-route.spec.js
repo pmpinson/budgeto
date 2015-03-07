@@ -13,7 +13,7 @@ describe("Budgeto account-route module", function () {
 
     it("$stateProvider add route", inject(function () {
         expect($state.get("account")).not.toBeNull();
-        expect($state.get("account").url).toBe("/account");
+        expect($state.get("account").url).toBeUndefined();
         expect($state.get("account").templateUrl).toBe("components/account/account.html");
         expect($state.get("account").controller).toBe("AccountCtrl as accountCtrl");
 
@@ -23,7 +23,7 @@ describe("Budgeto account-route module", function () {
         expect($state.get("account.list").controller).toBe("AccountListCtrl as accountListCtrl");
 
         expect($state.get("account.list.detail")).not.toBeNull();
-        expect($state.get("account.list.detail").url).toBe("/detail");
+        expect($state.get("account.list.detail").url).toBeUndefined();
         expect($state.get("account.list.detail").templateUrl).toBe("components/account/account-detail.html");
         expect($state.get("account.list.detail").controller).toBe("AccountDetailCtrl as accountDetailCtrl");
     }));

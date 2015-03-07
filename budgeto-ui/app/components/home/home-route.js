@@ -8,7 +8,6 @@ var budgetoHomeRoute = angular.module("budgeto.home.route", [
 budgetoHomeRoute.config(["$stateProvider", function ($stateProvider) {
     $stateProvider
         .state("home", {
-            url: "/home",
             templateUrl: "components/home/home.html",
             controller: "HomeCtrl as homeCtrl"
         });
