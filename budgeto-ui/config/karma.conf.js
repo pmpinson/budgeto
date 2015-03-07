@@ -46,7 +46,7 @@ module.exports = function(config) {
 
     htmlReporter: {
       outputDir: 'target/test-results',
-      focusOnFailures: true
+      focusOnFailures: true,
     },
 
     coverageReporter: {

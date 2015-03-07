@@ -69,7 +69,7 @@ budgetoAccount.factory("AccountResource", ["$resource", "$log", "AccountApi", "A
         operations: function (account) {
             var url = ApiService.getLink("operations", account.links).href;
             return $resource(url, {}, {}).query({}).$promise.catch(function (reason) {
-                $log.error("error getting operations for", that.account, ":", reason);
+                $log.error("error getting operations for", account, ":", reason);
                 $modalError.open();
             });
         }
@@ -79,12 +79,23 @@ budgetoAccount.factory("AccountResource", ["$resource", "$log", "AccountApi", "A
 /**
  * controller to manage account
  */
-
 budgetoAccount.controller("AccountCtrl", ["$scope", "$state", "$log", "AccountResource", "$modalError", function ($scope, $state, $log, AccountResource, $modalError) {
+budgetoAccount.controller("AccountCtrl", ["$scope", "$location", "$log", "AccountResource", function ($scope, $location, $log, AccountResource) {
     $log.debug("budgeto.account : load AccountCtrl");
 
+    $scope.accounts = [];
+    $scope.account = undefined;
+    $scope.operations = [];
+
+    AccountResource.all().then(function (data) {
+        $log.debug("budgeto.account : get all accounts", data);
     $state.go("account.list");
 
+        $scope.accounts = data;
+        if (data.length !== 0) {
+            $scope.account = data[0];
+        }
+    });
     this.home = function () {
         $state.go("home");
     };
@@ -111,6 +122,14 @@ budgetoAccount.controller("AccountListCtrl", ["$scope", "$state", "$log", "Accou
             return that.account;
         },
         function () {
+            $scope.operations = [];
+            if ($scope.account !== undefined) {
+                $log.debug("budgeto.account : select account", $scope.account);
+
+                AccountResource.operations($scope.account).then(function (data) {
+                    $log.debug("budgeto.account : get all operations", data);
+
+                    $scope.operations = data;
             if (that.account !== undefined) {
                 $log.debug("budgeto.account : select account", that.account);
                 $state.go("account.list.detail").catch(function (reason) {

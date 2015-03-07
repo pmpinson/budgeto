@@ -1,6 +1,9 @@
 <div class="page-header">
     <h1>{{MessageService.homeTitle}}</h1>
 </div>
-<div data-ng-repeat="api in apis">
+<alert data-ng-show="loadFail" type="danger">
+    <h2>{{MessageService.applicationInitFail}}</h2>
+</alert>
+<div data-ng-hide="loadFail" data-ng-repeat="api in apis">
     <a data-ng-click="changePath(api.rel)">{{MessageService.apisLinks[api.rel]}}</a>
 </div>

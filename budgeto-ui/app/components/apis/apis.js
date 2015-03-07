@@ -49,7 +49,8 @@ budgetoApis.provider("ApiService", function () {
                 $log.debug("budgeto.apis : call api to get all available apis");
 
                 return ApisResource.all(url).then(function(data) {
-                    return $apiService.loadApis(data);
+                    $apiService.loadApis(data);
+                    return data;
                 });
             };
 
@@ -60,7 +61,6 @@ budgetoApis.provider("ApiService", function () {
                     }
                 }
                 $log.debug("budgeto.apis : available apis", apis);
-                return data;
             };
 
             $apiService.findAll = function () {

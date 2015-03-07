@@ -6,7 +6,9 @@ var budgeto = angular.module("budgeto", [
     "budgeto.infiniteLoader",
     "budgeto.loading",
     "budgeto.home",
-    "budgeto.account"
+    "budgeto.home.route",
+    "budgeto.account",
+    "budgeto.account.route"
 ]);
 
 /**
@@ -82,5 +84,5 @@ budgeto.run(["$state", "$rootScope", "$log", "MessageService", function ($state,
     $rootScope.MessageService = MessageService;
 
     //$location.search("sourcePage", $location.path());
-    $state.go("loading");
+    $location.path("/home");
 }]);

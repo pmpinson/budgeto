@@ -9,8 +9,8 @@ var UglifyJS = require("uglify-js");
 var yArgs = require("yargs");
 
 var ARGS = yArgs
-    .usage("$0 sourcePath1:destPath1 [sourcePath2:destPath2] [options], sourcePath must be glob pattern")
-    .describe("e", "Print version number and exit.")
+    .usage("$0 sourcePath1:destPath1 [sourcePath2:destPath2] [options], sourcePath cqn a file or a glob expression, destPath the base of output path where output hierarchy is reproduce after processing")
+    .describe("e", "exclude files, can use glob expression")
     .describe("v", "Print version number and exit.")
     .describe("h", "Print help message.")
 
