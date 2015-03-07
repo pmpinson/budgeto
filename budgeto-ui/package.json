@@ -46,7 +46,7 @@
     },
 
     "build:dep": "mkdirp target && mkdirp app/scripts && bower --config.directory=target/bower_components install && bowcat target -o app/scripts/",
-    "dist:dep": "mkdirp target/bowcat && mkdirp target/dist/app/scripts && bower --config.directory=target/bower_components install && bowcat target -o target/bowcat && uglifyjs target/bowcat/build.js > target/dist/app/scripts/build.js",
+    "dist:dep": "mkdirp target/bowcat && mkdirp target/dist/app/scripts && bower --production --config.directory=target/bower_components install && bowcat target -o target/bowcat && uglifyjs target/bowcat/build.js > target/dist/app/scripts/build.js",
 
     "validate:html": "echo nothing",
     "build:html": "echo nothing",
@@ -60,7 +60,8 @@
     "validate:script": "jshint --config config/.jshintrc --exclude app/scripts/ app",
     "build:script": "echo nothing",
     "watch:script": "watch \"npm run build:script\" app",
-    "dist:script": "mkdirp target/dist/app/scripts && jshint --config config/.jshintrc --exclude app/scripts/ --reporter=checkstyle app > target/jshint.xml && npm run dist:validate:script && node config/build/uglify.js app/**/*.js:target/dist -e app/scripts/build.js",
+    "dist:script": "mkdirp target/dist/app/scripts && jshint --config config/.jshintrc --exclude app/scripts/ app && node config/build/uglify.js app/**/*.js:target/dist -e app/scripts/build.js",
+    "dist:scriptOld": "mkdirp target/dist/app/scripts && jshint --config config/.jshintrc --exclude app/scripts/ --reporter=checkstyle app > target/jshint.xml && node config/build/uglify.js app/**/*.js:target/dist -e app/scripts/build.js",
 
     "validate:image": "echo nothing",
     "build:image": "echo nothing",
@@ -68,10 +69,11 @@
 
     "build": "npm run build:dep && npm run build:html && npm run build:style && npm run build:script && npm run build:image",
     "watch": "parallelshell \"npm run watch:style\" \"npm run watch:script\"",
-    "dist": "mkdirp target && rimraf target && npm run dist:dep && npm run dist:html && npm run dist:style && npm run dist:script && npm run dist:image && karma start config/karma.conf-dist.js  --single-run",
+    "dist": "rimraf target && npm run build && npm run test:dist && mkdirp target && rimraf target/bower_components && npm run dist:dep && npm run dist:html && npm run dist:style && npm run dist:script && npm run dist:image",
 
     "test:validate": "jshint --config config/.jshintrc-test test",
-    "test:single": "rimraf target/coverage && rimraf target/test-results && karma start config/karma.conf.js  --single-run",
+    "test:single": "rimraf target/coverage && rimraf target/test-results && karma start config/karma.conf.js --single-run",
+    "test:dist": "rimraf target/coverage && rimraf target/test-results && karma start config/karma.conf-dist.js --single-run",
     "test:watch": "rimraf target/coverage && rimraf target/test-results && karma start config/karma.conf.js",
     "test": "npm run test:watch",
 

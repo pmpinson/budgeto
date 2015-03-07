@@ -5,7 +5,7 @@ var budgetoAccountRoute = angular.module("budgeto.account.route", [
     "ui.router"
 ]);
 
-budgetoAccountRoute.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $urlRouterProvider) {
+budgetoAccountRoute.config(["$stateProvider", function ($stateProvider) {
     $stateProvider.state("account", {
         templateUrl: "components/account/account.html",
         controller: "AccountCtrl as accountCtrl"
