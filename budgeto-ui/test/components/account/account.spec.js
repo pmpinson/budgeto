@@ -40,7 +40,7 @@ describe("Budgeto account module", function () {
                 $httpBackend.verifyNoOutstandingRequest();
             });
 
-            it("all get the href of the current AccountApi", inject(function (AccountResource, ApiService) {
+            it("all get the href of the current AccountApi", inject(function (AccountResource) {
                 var accounts = [{name:"myaccount", links:[{rel:"operations", href:"/myaccount/operations"}]}, {name:"myaccount2", links:[{rel:"operations", href:"/myaccount2/operations"}]}];
                 $httpBackend.whenGET("urlofMyApi").respond(accounts);
 
@@ -126,7 +126,7 @@ describe("Budgeto account module", function () {
 
             it("change location to account.list", inject(function () {
                 spyOn($state, "go").and.callThrough();
-                var accountCtrl = $controller("AccountCtrl", {
+                $controller("AccountCtrl", {
                     "$scope": scope,
                     "$state": $state,
                     "$log": $log
