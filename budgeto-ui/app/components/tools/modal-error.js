@@ -2,16 +2,22 @@
 
 // Declare progress module
 var budgetoModalError = angular.module("budgeto.modalError", [
-    "ui.bootstrap"
+    "ui.router",
+    "ui.bootstrap",
+    "budgeto.utils"
 ]);
 
 /**
  * controller for modal of global error message
  */
-budgetoModalError.controller("ModalErrorInstanceCtrl", ["$scope", "$log", "$modalError", function ($scope, $log, $modalError) {
+budgetoModalError.controller("ModalErrorInstanceCtrl", ["$scope", "$log", "$modalError", "modalOptions", "$utils", function ($scope, $log, $modalError, modalOptions, $utils) {
     $log.debug("budgeto.modalError : load ModalErrorInstanceCtrl");
 
-    $scope.close = function () {
+    this.modalOptions = modalOptions;
+
+    this.utils = $utils;
+
+    this.close = function () {
         $modalError.close();
     };
 }]);
@@ -20,19 +26,22 @@ budgetoModalError.controller("ModalErrorInstanceCtrl", ["$scope", "$log", "$moda
  * provider to manage modalError
  */
 budgetoModalError.provider("$modalError", function () {
-    var message = {
-        title: "Error oocured",
-        message: "An error occured",
-        close: "Close"
+
+    var defaultOptions = {
+        logMessages: undefined,
+        reason: undefined,
+        title: "Error",
+        detail: "detail",
+        close: "OK"
     };
 
     var $modalErrorProvider = {
 
-        setMessage: function (value) {
-            message = value;
+        setDefaultOptions: function (value) {
+            _.extend(defaultOptions, value);
         },
 
-        $get: ["$log", "$modal", "$location", function ($log, $modal, $location) {
+        $get: ["$log", "$modal", "$state", function ($log, $modal, $state) {
             $log.debug("budgeto.modalError : load $modalError");
 
             var modalInstance;
@@ -40,28 +49,47 @@ budgetoModalError.provider("$modalError", function () {
 
             $modalError.config = function () {
                 return {
-                    getMessage: function () {
-                        return message;
+                    getDefaultOptions: function () {
+                        return defaultOptions;
                     }
                 };
             };
 
-            $modalError.open = function () {
+            $modalError.manageError = function () {
+                var logMessages = Array.prototype.slice.call(arguments);
+                return function(reason) {
+                    $log.error(logMessages, reason);
+                    $modalError.open({logMessages:logMessages, reason:reason});
+                };
+            };
+
+            $modalError.prepareOptions = function(options) {
+                return _.extend({}, defaultOptions, options);
+            };
+
+            $modalError.open = function (options) {
                 modalInstance = $modal.open({
-                    controller: "ModalErrorInstanceCtrl",
-                    template: '<div>' +
-                    '<div class="modal-header"><h3 class="modal-title">' + message.title + '</h3></div>' +
-                    '<div class="modal-body"><p>' + message.message + '</p></div>' +
-                    '<div class="modal-footer"><button class="btn btn-primary" ng-click="close()">' + message.close + '</button></div>' +
-                    '</div>'
+                    controller: "ModalErrorInstanceCtrl as modalErrorInstanceCtrl",
+                    templateUrl: "components/tools/modal-error.html",
+                    resolve: {
+                        modalOptions: function () {
+                            return $modalError.prepareOptions(options);
+                        }
+                    }
                 });
+
+                modalInstance.result.then(function () {
+                    $state.go("home");
+                }, function () {
+                    $state.go("home");
+                });
+
                 return modalInstance;
             };
 
             $modalError.close = function () {
                 if (modalInstance !== undefined) {
                     modalInstance.dismiss("close");
-                    $location.path("/");
                     modalInstance = undefined;
                 }
             };

@@ -26,25 +26,18 @@ budgetoAccount.factory("AccountApi", ["$resource", "$log", "ApiService", functio
  * account ressource
  * @returns {{all: get all accounts, returning an array in a promise, operations: get all operation of an account, returning an array of operation in a promise}}
  */
-
 budgetoAccount.factory("AccountResource", ["$resource", "$log", "AccountApi", "ApiService", "$modalError", function ($resource, $log, AccountApi, ApiService, $modalError) {
     $log.debug("budgeto.account : load AccountResource");
 
     return {
         all: function () {
             var url = AccountApi.href;
-            return $resource(url, {}, {}).query({}).$promise.catch(function (reason) {
-                $log.error("error getting accounts :", reason);
-                $modalError.open();
-            });
+            return $resource(url, {}, {}).query({}).$promise.catch($modalError.manageError("error getting accounts"));
         },
 
         operations: function (account) {
             var url = ApiService.getLink("operations", account.links).href;
-            return $resource(url, {}, {}).query({}).$promise.catch(function (reason) {
-                $log.error("error getting operations for", account, ":", reason);
-                $modalError.open();
-            });
+            return $resource(url, {}, {}).query({}).$promise.catch($modalError.manageError("error getting operations for", account));
         }
     };
 }]);
