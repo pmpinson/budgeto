@@ -100,8 +100,7 @@ public class DomainToolsImplTest {
             Assertions.assertThat(e.getConstraintViolations()).hasSize(3);
 
             Assertions.assertThat(e.getConstraintViolations()).extracting(new DomainValidationErrorExtractor()).contains(
-                    Assertions.tuple("test", Arrays.toString(ArrayUtils.toArray("must be false"))), Assertions.tuple("name", Arrays.toString(ArrayUtils.toArray("may not be empty", "may not be null")))
-                    , Assertions.tuple("_all", Arrays.toString(ArrayUtils.toArray("object name must be not null and equals to 'the value for name'")))
+                    Assertions.tuple("_all", Arrays.toString(ArrayUtils.toArray("object name must be not null and equals to 'the value for name'")))
             );
         }
         Mockito.verify(translatorTools, Mockito.times(2)).get("object.desc");
