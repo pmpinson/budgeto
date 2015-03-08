@@ -53,6 +53,7 @@
 
     "globals": {
         "angular": true,
-        "moment": true
+        "moment": true,
+        "_": true
     }
 }

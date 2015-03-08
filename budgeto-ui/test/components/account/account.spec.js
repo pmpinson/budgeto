@@ -58,12 +58,14 @@ describe("Budgeto account module", function () {
                 $httpBackend.whenGET("urlofMyApi").respond(500, "network fail");
 
                 spyOn($log, "error").and.callThrough();
-                spyOn($modalError, "open").and.callThrough();
+                spyOn($modalError, "manageError").and.returnValue(function(reason) {
+                    expect(reason.data).toBe("network fail");
+                    expect(reason.status).toBe(500);
+                });
                 AccountResource.all();
                 $httpBackend.flush();
 
-                expect($log.error).toHaveBeenCalledWith("error getting accounts :", jasmine.any(Object));
-                expect($modalError.open).toHaveBeenCalledWith();
+                expect($modalError.manageError).toHaveBeenCalledWith("error getting accounts");
             }));
 
             it("operations get the operations from operations link in the account", inject(function (AccountResource) {
@@ -85,12 +87,14 @@ describe("Budgeto account module", function () {
                 $httpBackend.whenGET("/myaccount/operations").respond(500, "network fail");
 
                 spyOn($log, "error").and.callThrough();
-                spyOn($modalError, "open").and.callThrough();
+                spyOn($modalError, "manageError").and.returnValue(function(reason) {
+                    expect(reason.data).toBe("network fail");
+                    expect(reason.status).toBe(500);
+                });
                 AccountResource.operations(account);
                 $httpBackend.flush();
 
-                expect($log.error).toHaveBeenCalledWith("error getting operations for", account, ":", jasmine.any(Object));
-                expect($modalError.open).toHaveBeenCalledWith();
+                expect($modalError.manageError).toHaveBeenCalledWith("error getting operations for", account);
             }));
         });
     });

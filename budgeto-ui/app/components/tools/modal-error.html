@@ -4,13 +4,13 @@
     </div>
     <div class="modal-body">
         <div data-ng-repeat="logMessage in modalErrorInstanceCtrl.modalOptions.logMessages">
-            <p data-ng-hide="modalErrorInstanceCtrl.isObject(logMessage)">{{logMessage}}</p>
-            <pre data-ng-show="modalErrorInstanceCtrl.isObject(logMessage)">{{modalErrorInstanceCtrl.formatObject(logMessage)}}</pre>
+            <p data-ng-hide="modalErrorInstanceCtrl.utils.isObject(logMessage)">{{logMessage}}</p>
+            <pre data-ng-show="modalErrorInstanceCtrl.utils.isObject(logMessage)">{{modalErrorInstanceCtrl.utils.formatObject(logMessage)}}</pre>
         </div>
         <accordion>
             <accordion-group heading="{{modalErrorInstanceCtrl.modalOptions.detail}}" is-open="false">
-                <p data-ng-hide="modalErrorInstanceCtrl.isObject(modalErrorInstanceCtrl.modalOptions.reason)">{{modalErrorInstanceCtrl.modalOptions.reason}}</p>
-                <pre data-ng-show="modalErrorInstanceCtrl.isObject(modalErrorInstanceCtrl.modalOptions.reason)">{{modalErrorInstanceCtrl.formatObject(modalErrorInstanceCtrl.modalOptions.reason)}}</pre>
+                <p data-ng-hide="modalErrorInstanceCtrl.utils.isObject(modalErrorInstanceCtrl.modalOptions.reason)">{{modalErrorInstanceCtrl.utils.modalOptions.reason}}</p>
+                <pre data-ng-show="modalErrorInstanceCtrl.utils.isObject(modalErrorInstanceCtrl.modalOptions.reason)">{{modalErrorInstanceCtrl.utils.formatObject(modalErrorInstanceCtrl.modalOptions.reason)}}</pre>
             </accordion-group>
         </accordion>
     </div>

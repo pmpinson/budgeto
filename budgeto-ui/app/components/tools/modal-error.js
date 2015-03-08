@@ -2,24 +2,20 @@
 
 // Declare progress module
 var budgetoModalError = angular.module("budgeto.modalError", [
-    "ui.bootstrap"
+    "ui.router",
+    "ui.bootstrap",
+    "budgeto.utils"
 ]);
 
 /**
  * controller for modal of global error message
  */
-budgetoModalError.controller("ModalErrorInstanceCtrl", ["$scope", "$log", "$modalError", "modalOptions", function ($scope, $log, $modalError, modalOptions) {
+budgetoModalError.controller("ModalErrorInstanceCtrl", ["$scope", "$log", "$modalError", "modalOptions", "$utils", function ($scope, $log, $modalError, modalOptions, $utils) {
     $log.debug("budgeto.modalError : load ModalErrorInstanceCtrl");
 
     this.modalOptions = modalOptions;
 
-    this.isObject = function(val) {
-        return typeof val === 'object';
-    }
-
-    this.formatObject = function(val) {
-        return JSON.stringify(val, null, "    ");
-    }
+    this.utils = $utils;
 
     this.close = function () {
         $modalError.close();
@@ -34,9 +30,9 @@ budgetoModalError.provider("$modalError", function () {
     var defaultOptions = {
         logMessages: undefined,
         reason: undefined,
-        title: "Error oocured",
-        message: "An error occured",
-        close: "Close"
+        title: "Error",
+        detail: "detail",
+        close: "OK"
     };
 
     var $modalErrorProvider = {
@@ -53,8 +49,8 @@ budgetoModalError.provider("$modalError", function () {
 
             $modalError.config = function () {
                 return {
-                    getMessage: function () {
-                        return message;
+                    getDefaultOptions: function () {
+                        return defaultOptions;
                     }
                 };
             };
@@ -64,8 +60,12 @@ budgetoModalError.provider("$modalError", function () {
                 return function(reason) {
                     $log.error(logMessages, reason);
                     $modalError.open({logMessages:logMessages, reason:reason});
-                }
-            }
+                };
+            };
+
+            $modalError.prepareOptions = function(options) {
+                return _.extend({}, defaultOptions, options);
+            };
 
             $modalError.open = function (options) {
                 modalInstance = $modal.open({
@@ -73,12 +73,12 @@ budgetoModalError.provider("$modalError", function () {
                     templateUrl: "components/tools/modal-error.html",
                     resolve: {
                         modalOptions: function () {
-                            return _.extend({}, defaultOptions, options);
+                            return $modalError.prepareOptions(options);
                         }
                     }
                 });
 
-                modalInstance.result.then(function (selectedItem) {
+                modalInstance.result.then(function () {
                     $state.go("home");
                 }, function () {
                     $state.go("home");

@@ -1,50 +1,77 @@
 "use strict";
 
 describe("Budgeto modalError module", function () {
-    var $rootScope;
-    var scope;
-    var $log;
-    var $location;
-    var $controller;
-    var $modal;
-    var $document;
-    var body;
-
-    beforeEach(function () {
-        module("budgeto.modalError");
-
-        $document = angular.element(document);
-        module(function ($provide) {
-            $provide.value("$document", $document);
-        });
-        body = $document.find("body").eq(0);
-
-        inject(function (_$rootScope_, _$log_, _$location_, _$controller_, _$modal_) {
-            $rootScope = _$rootScope_;
-            scope = _$rootScope_.$new();
-            $log = _$log_;
-            $location = _$location_;
-            $controller = _$controller_;
-            $modal = _$modal_;
-        });
-    });
 
     describe("controller ModalErrorInstanceCtrl", function () {
+        var $rootScope;
+        var scope;
+        var $log;
+        var $state;
+        var $controller;
+
+        beforeEach(function () {
+            module("budgeto.modalError");
+
+            inject(function (_$rootScope_, _$log_, _$state_, _$controller_) {
+                $rootScope = _$rootScope_;
+                scope = _$rootScope_.$new();
+                $log = _$log_;
+                $state = _$state_;
+                $controller = _$controller_;
+            });
+        });
+
         it("on close method, call close on $modalError provider to close the modal", inject(function ($modalError) {
             spyOn($modalError, "close").and.callThrough();
 
-            $controller("ModalErrorInstanceCtrl", {$scope: scope, "$log": $log, "$modalError": $modalError});
+            var modalOptions = {};
+            var modalErrorInstanceCtrl = $controller("ModalErrorInstanceCtrl", {
+                $scope: scope,
+                "$log": $log,
+                "$modalError": $modalError,
+                "modalOptions": modalOptions
+            });
 
-            scope.close();
+            modalErrorInstanceCtrl.close();
 
             expect($modalError.close).toHaveBeenCalledWith();
+            expect(modalErrorInstanceCtrl.utils).not.toBeUndefined();
+            expect(modalErrorInstanceCtrl.modalOptions).toBe(modalOptions);
         }));
     });
 
     describe("provider $modalError", function () {
+        var $rootScope;
+        var scope;
+        var $log;
+        var $state;
+        var $controller;
+        var $modal;
+        var $httpBackend;
+
         beforeEach(function () {
-            spyOn($modal, "open").and.callThrough();
-            spyOn($location, "path").and.callThrough();
+            module("budgeto.modalError", function($stateProvider){
+                $stateProvider
+                    .state("home", {});
+            });
+
+            inject(function (_$rootScope_, _$log_, _$state_, _$controller_, _$modal_, _$httpBackend_) {
+                $rootScope = _$rootScope_;
+                scope = _$rootScope_.$new();
+                $log = _$log_;
+                $state = _$state_;
+                $controller = _$controller_;
+                $modal = _$modal_;
+                $httpBackend = _$httpBackend_;
+
+                spyOn($modal, "open").and.callThrough();
+                spyOn($state, "go").and.callThrough();
+            });
+        });
+
+        afterEach(function() {
+            $httpBackend.verifyNoOutstandingExpectation();
+            $httpBackend.verifyNoOutstandingRequest();
         });
 
         it("initialised", inject(function ($modalError) {
@@ -52,32 +79,108 @@ describe("Budgeto modalError module", function () {
         }));
 
         it("open method open a modal", inject(function ($modalError) {
+            $httpBackend.whenGET("components/tools/modal-error.html").respond("<div></div>");
 
-            var modalInstance = $modalError.open();
+            var options = {val:"myval"};
+            spyOn($modalError, "prepareOptions").and.callThrough();
+            var modalInstance = $modalError.open(options);
 
             expect(modalInstance).not.toBeNull();
             expect($modal.open).toHaveBeenCalledWith({
-                controller: "ModalErrorInstanceCtrl",
-                template: jasmine.any(String)
+                controller: "ModalErrorInstanceCtrl as modalErrorInstanceCtrl",
+                templateUrl: "components/tools/modal-error.html",
+                resolve: {
+                    modalOptions: jasmine.any(Function)
+                }
             });
+            $httpBackend.flush();
+            expect($modalError.prepareOptions).toHaveBeenCalledWith(options);
         }));
 
-        it("closed method redirect to /", inject(function ($modalError) {
+        it("prepareOptions method extends default options", inject(function ($modalError) {
+            var options = $modalError.prepareOptions({});
+
+            expect(options.title).toBe("Error");
+            expect(options.detail).toBe("detail");
+            expect(options.close).toBe("OK");
+            expect(options.logMessages).toBeUndefined();
+            expect(options.reason).toBeUndefined();
+        }));
+
+        it("prepareOptions method with value extends default options", inject(function ($modalError) {
+            var options = $modalError.prepareOptions({
+                logMessages: "a message",
+                reason: "cause by",
+                title: "Error modal",
+                detail: "detail of error",
+                close: "Close"
+            });
+
+            expect(options.title).toBe("Error modal");
+            expect(options.detail).toBe("detail of error");
+            expect(options.close).toBe("Close");
+            expect(options.logMessages).toBe("a message");
+            expect(options.reason).toBe("cause by");
+        }));
+
+        it("closed method redirect to home", inject(function ($modalError) {
+            $httpBackend.whenGET("components/tools/modal-error.html").respond("<div></div>");
             var modalInstance = $modalError.open();
+            $httpBackend.flush();
             spyOn(modalInstance, "dismiss").and.callThrough();
 
             $modalError.close();
+            $rootScope.$apply();
 
-            expect($location.path).toHaveBeenCalledWith("/");
-            expect($location.path()).toBe("/");
+            expect($state.go).toHaveBeenCalledWith("home");
             expect(modalInstance.dismiss).toHaveBeenCalledWith("close");
         }));
 
-        it("but no call open before closed method no redirect to /", inject(function ($modalError) {
-            $modalError.close();
+        it("closed by escape or backdrop redirect to home", inject(function ($modalError) {
+            $httpBackend.whenGET("components/tools/modal-error.html").respond("<div></div>");
+            var modalInstance = $modalError.open();
+            $httpBackend.flush();
+            spyOn(modalInstance, "close").and.callThrough();
 
-            expect($location.path).not.toHaveBeenCalledWith("/");
-            expect($location.path()).toBe("");
+            modalInstance.close();
+            $rootScope.$apply();
+
+            expect($state.go).toHaveBeenCalledWith("home");
+            expect(modalInstance.close).toHaveBeenCalledWith();
+        }));
+
+        it("closed do nothing if open not called before", inject(function ($modalError) {
+            $modalError.close();
+            $rootScope.$apply();
+
+            expect($state.go).not.toHaveBeenCalledWith("home");
+        }));
+
+        it("manageError function help to get good information on modal", inject(function ($modalError) {
+            $httpBackend.whenGET("components/tools/modal-error.html").respond("<div></div>");
+            spyOn($log, "error").and.callThrough();
+            spyOn($modalError, "open").and.callThrough();
+
+            $modalError.manageError()();
+            $httpBackend.flush();
+
+            expect($log.error).toHaveBeenCalledWith(jasmine.any(Array), undefined);
+            expect($modalError.open).toHaveBeenCalledWith({logMessages: jasmine.any(Array), reason:undefined});
+        }));
+
+        it("manageError function with params help to get good information on modal", inject(function ($modalError) {
+            $httpBackend.whenGET("components/tools/modal-error.html").respond("<div></div>");
+            spyOn($log, "error").and.callThrough();
+            spyOn($modalError, "open").and.callThrough();
+
+            var message = "a message";
+            var object = {param:"an object"};
+            var reason = "an error";
+            $modalError.manageError(message, object)(reason);
+            $httpBackend.flush();
+
+            expect($log.error).toHaveBeenCalledWith([message, object], reason);
+            expect($modalError.open).toHaveBeenCalledWith({logMessages: [message, object], reason:reason});
         }));
     });
 });

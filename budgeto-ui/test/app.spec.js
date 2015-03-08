@@ -79,10 +79,12 @@ describe("Budgeto module", function () {
             expect(LoadingService.config().getServicesNames()).toContain("ApiService");
         }));
 
-        it("$modalError take modal error messages", inject(function ($modalError) {
-            expect($modalError.config().getMessage().title).toBe("Error");
-            expect($modalError.config().getMessage().message).toBe("An error occured, please advice us.");
-            expect($modalError.config().getMessage().close).toBe("Close");
+        it("$modalError take default options", inject(function ($modalError) {
+            expect($modalError.config().getDefaultOptions().title).toBe("An error occured, please advice us.");
+            expect($modalError.config().getDefaultOptions().close).toBe("Close");
+            expect($modalError.config().getDefaultOptions().detail).toBe("Error detail");
+            expect($modalError.config().getDefaultOptions().logMessages).toBeUndefined();
+            expect($modalError.config().getDefaultOptions().reason).toBeUndefined();
         }));
     });
 });
