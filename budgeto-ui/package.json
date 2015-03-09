@@ -31,20 +31,14 @@
     "mkdirp": "latest",
     "opener": "latest",
     "parallelshell": "latest",
+    "protractor": "latest",
     "rimraf": "latest",
     "uglify-js": "latest",
     "watch": "latest",
+    "webdriver-manager": "latest",
     "yargs": "latest"
   },
   "scripts": {
-    "//": {
-      "preupdate-webdriver": "npm install",
-      "update-webdriver": "webdriver-manager update",
-      "preprotractor": "npm run update-webdriver",
-      "protractor": "protractor e2e-tests/protractor.conf.js",
-      "update-index-async": "node -e \"require('shelljs/global'); sed('-i', /\\/\\/@@NG_LOADER_START@@[\\s\\S]*\\/\\/@@NG_LOADER_END@@/, '//@@NG_LOADER_START@@\\n' + sed(/sourceMappingURL=angular-loader.min.js.map/,'sourceMappingURL=bower_components/angular-loader/angular-loader.min.js.map','app/bower_components/angular-loader/angular-loader.min.js') + '\\n//@@NG_LOADER_END@@', 'app/index-async.html');\""
-    },
-
     "build:dep": "mkdirp target && mkdirp app/scripts && bower --config.directory=target/bower_components install && bowcat target -o app/scripts/",
     "dist:dep": "mkdirp target/bowcat && mkdirp target/dist/app/scripts && bower --config.directory=target/bower_components install && bowcat target -o target/bowcat && uglifyjs target/bowcat/build.js > target/dist/app/scripts/build.js",
 
@@ -74,6 +68,9 @@
     "test:single": "rimraf target/coverage && rimraf target/test-results && karma start config/karma.conf.js  --single-run",
     "test:watch": "rimraf target/coverage && rimraf target/test-results && karma start config/karma.conf.js",
     "test": "npm run test:watch",
+
+    "pree2etest:watch": "webdriver-manager update",
+    "e2etest:watch": "protractor config/protractor.conf.js",
 
     "dev": "parallelshell \"npm run build:serve\" \"npm run watch\"",
     "live-reload": "live-reload --port 8999 app/",
