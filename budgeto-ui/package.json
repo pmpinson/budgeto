@@ -37,7 +37,8 @@
     "uglify-js": "latest",
     "watch": "latest",
     "webdriver-manager": "latest",
-    "yargs": "latest"
+    "yargs": "latest",
+    "ps-node":"latest"
   },
   "scripts": {
     "build:dep": "mkdirp target && mkdirp app/scripts && bower --config.directory=target/bower_components install && bowcat target -o app/scripts/",
@@ -60,6 +61,7 @@
     "validate:image": "echo nothing",
     "build:image": "echo nothing",
     "dist:image": "mkdirp target/dist/app/images && node config/build/images.js app/**/*.gif:target/dist",
+    "gg": "node config/build/ps.js",
 
     "build": "npm run build:dep && npm run build:html && npm run build:style && npm run build:script && npm run build:image",
     "watch": "parallelshell \"npm run watch:style\" \"npm run watch:script\"",
@@ -78,6 +80,7 @@
     "open-browser": "opener http://localhost:9000/app",
 
     "build:serve": "npm run build && npm run open-browser & http-server -a localhost -p 9000 -c-1",
+    "build:stop": "http-server -a localhost -p 9000 -c-1 stop",
     "dist:serve": "npm run dist && npm run open-browser & http-server target/dist/ -a localhost -p 9000 -c-1",
     "start": "npm run dist:serve"
   }
