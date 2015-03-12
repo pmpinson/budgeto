@@ -19,8 +19,7 @@ describe('my app', function() {
 
 
     it('should render home but search for element not exist', function() {
-      expect(element.all(by.name('element not exist')).first().getText()).
-        toExist();
+      expect(element.all(by.css('.container')).count()).toEqual(1);
     });
 
   });
