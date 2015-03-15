@@ -1,54 +1,66 @@
 "use strict";
 
-// Declare module
-var budgetoLoading = angular.module("budgeto.loading", []);
+define(['angular'], function(angular) {
 
-/**
- * provider to manage loading of application
- */
-budgetoLoading.provider("LoadingService", function () {
-    var servicesNames = [];
+    var moduleDefinition = {
+        name: "budgeto.loading",
+        dependencies: [
+        ],
+        module: undefined
+    }
 
-    var $loadingServiceProvider = {
+    // Register angular module
+    moduleDefinition.module = angular.module(moduleDefinition.name, moduleDefinition.dependencies);
 
-        add: function (value) {
-            servicesNames.push(value);
-        },
+    /**
+     * provider to manage loading of application
+     */
+    moduleDefinition.module.provider("LoadingService", function () {
+        var servicesNames = [];
 
-        $get: ["$log", "$q", "$injector", function ($log, $q, $injector) {
-            $log.debug("budgeto.loading : load LoadingService");
+        var $loadingServiceProvider = {
 
-            var $loadingService = {};
-            var promise;
+            add: function (value) {
+                servicesNames.push(value);
+            },
 
-            if (servicesNames.length !== 0) {
+            $get: ["$log", "$q", "$injector", function ($log, $q, $injector) {
+                $log.debug("budgeto.loading : load LoadingService");
 
-                var servicesPromises = [];
-                for (var key in servicesNames) {
-                    servicesPromises.push($injector.get(servicesNames[key]).loaded());
-                }
-                promise = $q.all(servicesPromises);
-            } else {
-                var deferred = $q.defer();
-                promise = deferred.promise;
-                deferred.resolve(true);
-            }
+                var $loadingService = {};
+                var promise;
 
-            $loadingService.config = function () {
-                return {
-                    getServicesNames: function () {
-                        return servicesNames;
+                if (servicesNames.length !== 0) {
+
+                    var servicesPromises = [];
+                    for (var key in servicesNames) {
+                        servicesPromises.push($injector.get(servicesNames[key]).loaded());
                     }
+                    promise = $q.all(servicesPromises);
+                } else {
+                    var deferred = $q.defer();
+                    promise = deferred.promise;
+                    deferred.resolve(true);
+                }
+
+                $loadingService.config = function () {
+                    return {
+                        getServicesNames: function () {
+                            return servicesNames;
+                        }
+                    };
                 };
-            };
 
-            $loadingService.loaded = function () {
-                return promise;
-            };
+                $loadingService.loaded = function () {
+                    return promise;
+                };
 
-            return $loadingService;
-        }]
-    };
+                return $loadingService;
+            }]
+        };
 
-    return $loadingServiceProvider;
+        return $loadingServiceProvider;
+    });
+
+    return moduleDefinition;
 });

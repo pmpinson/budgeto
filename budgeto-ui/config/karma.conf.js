@@ -10,17 +10,18 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine'],
+    frameworks: ['jasmine', 'requirejs'],
 
 
     // list of files / patterns to load in the browser
-    // 'bower_components/angular-mocks/angular-mocks.js',
     files: [
-      'app/scripts/build.js',
-      'app/app.js',
-      'app/components/**/*.js',
-      'test/app.spec.js',
-      'test/components/**/*.spec.js'
+      {pattern: 'app/bower_components/**/*.js', included: false},
+      {pattern: 'app/budgeto.js', included: false},
+      {pattern: 'app/components/**/*.js', included: false},
+      {pattern: 'test/budgeto.spec.js', included: false},
+      {pattern: 'test/components/**/*.spec.js', included: false},
+      'app/main.js',
+      'test/main.js'
     ],
 
 
@@ -32,7 +33,7 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-          'app/app.js': ['coverage'],
+          'app/budgeto.js': ['coverage'],
           'app/components/**/*.js': ['coverage']
     },
 

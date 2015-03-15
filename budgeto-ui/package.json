@@ -26,6 +26,7 @@
     "karma-jasmine": "latest",
     "karma-junit-reporter": "latest",
     "karma-phantomjs-launcher": "latest",
+    "karma-requirejs": "latest",
     "less": "latest",
     "live-reload": "latest",
     "mkdirp": "latest",
