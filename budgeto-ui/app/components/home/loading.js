@@ -1,9 +1,9 @@
-"use strict";
+'use strict';
 
 define(['angular'], function(angular) {
 
     var moduleDefinition = {
-        name: "budgeto.loading",
+        name: 'budgeto.loading',
         dependencies: [
         ],
         module: undefined
@@ -15,7 +15,7 @@ define(['angular'], function(angular) {
     /**
      * provider to manage loading of application
      */
-    moduleDefinition.module.provider("LoadingService", function () {
+    moduleDefinition.module.provider('LoadingService', function () {
         var servicesNames = [];
 
         var $loadingServiceProvider = {
@@ -24,8 +24,8 @@ define(['angular'], function(angular) {
                 servicesNames.push(value);
             },
 
-            $get: ["$log", "$q", "$injector", function ($log, $q, $injector) {
-                $log.debug("budgeto.loading : load LoadingService");
+            $get: ['$log', '$q', '$injector', function ($log, $q, $injector) {
+                $log.debug('budgeto.loading : load LoadingService');
 
                 var $loadingService = {};
                 var promise;

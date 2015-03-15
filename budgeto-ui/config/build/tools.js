@@ -1,18 +1,18 @@
 #! /usr/bin/env node
 // -*- js -*-
 
-"use strict";
+'use strict';
 
-var fs = require("fs");
+var fs = require('fs');
 var mkDirP = require('mkdirp');
-var glob = require("glob");
+var glob = require('glob');
 var path = require('path');
 
 module.exports.processDirectories = function (directories, excludedPath, callback) {
     directories.forEach(function(directory) {
-        var idx = directory.indexOf(":");
+        var idx = directory.indexOf(':');
         if (idx === -1) {
-            console.log(directory, " bad syntax use sourcePath:destPath");
+            console.log(directory, ' bad syntax use sourcePath:destPath');
             process.exit(6);
             return;
         }
@@ -20,12 +20,12 @@ module.exports.processDirectories = function (directories, excludedPath, callbac
         var destination = directory.substr(idx + 1);
 
         if (!module.exports.controlOutputDirectory(destination)) {
-            console.log(directory, "destination '", destination, "' not exist, or not directory or not have write access'");
+            console.log(directory, 'destination "', destination, '" not exist, or not directory or not have write access');
             process.exit(6);
             return;
         }
 
-        if (excludedPath !== undefined && excludedPath !== "") {
+        if (excludedPath !== undefined && excludedPath !== '') {
             glob(excludedPath, {}, function (err, excludedFiles) {
                 module.exports.processDirectory(source, destination, excludedFiles, callback);
             });
@@ -57,7 +57,7 @@ module.exports.processFile = function(file, output, excludedFiles, callback) {
             if (err) {
                 throw err;
              } else {
-                fs.writeFile(output + "/" + file, callback(file), function (err) {
+                fs.writeFile(output + '/' + file, callback(file), function (err) {
                     if (err) {
                         throw err;
                     }

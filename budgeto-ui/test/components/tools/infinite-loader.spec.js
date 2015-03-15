@@ -1,49 +1,49 @@
-"use strict";
+'use strict';
 
 define(['components/tools/infinite-loader', 'angular', 'angular-mocks'], function(test, angular) {
 
-    describe("Budgeto infiniteLoader module", function () {
+    describe('Budgeto infiniteLoader module', function () {
 
-        describe("provider $infiniteLoader", function () {
+        describe('provider $infiniteLoader', function () {
             var $document;
             var body;
 
             beforeEach(function () {
-                module("budgeto.infiniteLoader");
+                module('budgeto.infiniteLoader');
 
                 $document = angular.element(document);
                 module(function ($provide) {
-                    $provide.value("$document", $document);
+                    $provide.value('$document', $document);
                 });
-                body = $document.find("body").eq(0);
+                body = $document.find('body').eq(0);
             });
 
             afterEach(function () {
-                $document.find("body").html("");
+                $document.find('body').html('');
             });
 
-            it("initialised", inject(function ($infiniteLoader) {
+            it('initialised', inject(function ($infiniteLoader) {
                 expect($infiniteLoader).not.toBeNull();
             }));
 
-            it("add html to document", inject(function ($infiniteLoader) {
+            it('add html to document', inject(function ($infiniteLoader) {
                 expect($infiniteLoader).not.toBeNull();
                 expect(body.html()).toContain('<div class="infinite-loader infinite-loader-default hidden"><p>Wait</p></div>');
             }));
 
-            it("call to hide do nothing", inject(function ($infiniteLoader) {
+            it('call to hide do nothing', inject(function ($infiniteLoader) {
                 $infiniteLoader.hide();
 
                 expect(body.html()).toContain('<div class="infinite-loader infinite-loader-default hidden"><p>Wait</p></div>');
             }));
 
-            it("call to show remove the hidden class", inject(function ($infiniteLoader) {
+            it('call to show remove the hidden class', inject(function ($infiniteLoader) {
                 $infiniteLoader.show();
 
                 expect(body.html()).toContain('<div class="infinite-loader infinite-loader-default"><p>Wait</p></div>');
             }));
 
-            it("call show and after hide keep hidden class", inject(function ($infiniteLoader) {
+            it('call show and after hide keep hidden class', inject(function ($infiniteLoader) {
                 $infiniteLoader.show();
 
                 expect(body.html()).toContain('<div class="infinite-loader infinite-loader-default"><p>Wait</p></div>');
@@ -53,7 +53,7 @@ define(['components/tools/infinite-loader', 'angular', 'angular-mocks'], functio
                 expect(body.html()).toContain('<div class="infinite-loader infinite-loader-default hidden"><p>Wait</p></div>');
             }));
 
-            it("call to show 2 times and after hide 1 keep the hidden class removed", inject(function ($infiniteLoader) {
+            it('call to show 2 times and after hide 1 keep the hidden class removed', inject(function ($infiniteLoader) {
                 $infiniteLoader.show();
                 $infiniteLoader.show();
 
@@ -65,22 +65,22 @@ define(['components/tools/infinite-loader', 'angular', 'angular-mocks'], functio
             }));
         });
 
-        describe("configuration of provider $infiniteLoader", function () {
+        describe('configuration of provider $infiniteLoader', function () {
             var $infiniteLoaderProviderMock;
             var $log;
             var $document;
             var body;
 
             beforeEach(function () {
-                module("budgeto.infiniteLoader", function ($infiniteLoaderProvider) {
+                module('budgeto.infiniteLoader', function ($infiniteLoaderProvider) {
                     $infiniteLoaderProviderMock = $infiniteLoaderProvider;
                 });
 
                 $document = angular.element(document);
                 module(function ($provide) {
-                    $provide.value("$document", $document);
+                    $provide.value('$document', $document);
                 });
-                body = $document.find("body").eq(0);
+                body = $document.find('body').eq(0);
 
                 inject(function (_$log_) {
                     $log = _$log_;
@@ -88,16 +88,16 @@ define(['components/tools/infinite-loader', 'angular', 'angular-mocks'], functio
             });
 
             afterEach(function () {
-                $document.find("body").html("");
+                $document.find('body').html('');
             });
 
-            it("have a valid provider", inject(function () {
+            it('have a valid provider', inject(function () {
 
                 expect($infiniteLoaderProviderMock).not.toBeNull();
             }));
 
-            it("take a config message", inject(function () {
-                $infiniteLoaderProviderMock.setMessage("the new wait message");
+            it('take a config message', inject(function () {
+                $infiniteLoaderProviderMock.setMessage('the new wait message');
 
                 var $infiniteLoader = $infiniteLoaderProviderMock.$get[2]($document, $log);
                 $infiniteLoader.show();
