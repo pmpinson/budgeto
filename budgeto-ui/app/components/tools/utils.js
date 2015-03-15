@@ -7,7 +7,7 @@ define(['angular', 'underscore'], function(angular, _) {
         dependencies: [
         ],
         module: undefined
-    }
+    };
 
     // Register angular module
     moduleDefinition.module = angular.module(moduleDefinition.name, moduleDefinition.dependencies);
