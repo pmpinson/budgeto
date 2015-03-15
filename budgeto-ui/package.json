@@ -10,7 +10,6 @@
       "protractor": "^1.1.1",
       "shelljs": "^0.2.6"
     },
-    "bowcat": "latest",
     "bower": "latest",
     "cssmin ": "latest",
     "glob": "latest",
@@ -26,6 +25,7 @@
     "karma-jasmine": "latest",
     "karma-junit-reporter": "latest",
     "karma-phantomjs-launcher": "latest",
+    "karma-requirejs": "latest",
     "less": "latest",
     "live-reload": "latest",
     "mkdirp": "latest",
@@ -45,25 +45,26 @@
       "update-index-async": "node -e \"require('shelljs/global'); sed('-i', /\\/\\/@@NG_LOADER_START@@[\\s\\S]*\\/\\/@@NG_LOADER_END@@/, '//@@NG_LOADER_START@@\\n' + sed(/sourceMappingURL=angular-loader.min.js.map/,'sourceMappingURL=bower_components/angular-loader/angular-loader.min.js.map','app/bower_components/angular-loader/angular-loader.min.js') + '\\n//@@NG_LOADER_END@@', 'app/index-async.html');\""
     },
 
-    "addBuild:dep": "bower --config.directory=target/bower_components --save-dev install && npm run build:dep",
-    "addDist:dep": "bower --config.directory=target/bower_components --save install && npm run build:dep",
-    "build:dep": "mkdirp target && mkdirp app/scripts && bower --config.directory=target/bower_components install && bowcat target -o app/scripts/",
-    "dist:dep": "mkdirp target/bowcat && mkdirp target/dist/app/scripts && bower --production --config.directory=target/bower_components install && bowcat target -o target/bowcat && uglifyjs target/bowcat/build.js > target/dist/app/scripts/build.js",
+    "addBuild:dep": "bower --config.directory=app/lib --save-dev install",
+    "postaddBuild:dep": "npm run build:dep",
+    "addDist:dep": "bower --config.directory=app/lib --save install",
+    "postaddDist:dep": "npm run build:dep",
+    "build:dep": "mkdirp target && bower --config.directory=app/lib install",
+    "dist:dep": "mkdirp target/dist/app/lib && bower --production --config.directory=target/dist/app/lib install",
 
     "validate:html": "echo nothing",
     "build:html": "echo nothing",
     "dist:html": "mkdirp target/dist/app && node config/build/htmlmin.js app/**/*.html:target/dist",
 
-    "validate:style": "lessc -l app/less/styles.less",
-    "build:style": "mkdirp app/styles && lessc app/less/styles.less > app/styles/styles.css",
-    "watch:style": "watch \"npm run build:style\" app/less",
-    "dist:style": "mkdirp target/dist/app/styles && lessc app/less/styles.less | cssmin > target/dist/app/styles/styles.css",
+    "validate:style": "lessc -l app/styles/styles.less",
+    "build:style": "lessc app/styles/styles.less > app/styles/styles.css",
+    "watch:style": "watch \"npm run build:style\" app/styles",
+    "dist:style": "mkdirp target/dist/app/styles && lessc app/styles/styles.less | cssmin > target/dist/app/styles/styles.css",
 
-    "validate:script": "jshint --config config/.jshintrc --exclude app/scripts/ app",
+    "validate:script": "jshint --config config/.jshintrc --exclude app/lib/ app",
     "build:script": "echo nothing",
     "watch:script": "watch \"npm run build:script\" app",
-    "dist:script": "mkdirp target/dist/app/scripts && jshint --config config/.jshintrc --exclude app/scripts/ app && node config/build/uglify.js app/**/*.js:target/dist -e app/scripts/build.js",
-    "dist:scriptOld": "mkdirp target/dist/app/scripts && jshint --config config/.jshintrc --exclude app/scripts/ --reporter=checkstyle app > target/jshint.xml && node config/build/uglify.js app/**/*.js:target/dist -e app/scripts/build.js",
+    "dist:script": "mkdirp target/dist/app && jshint --config config/.jshintrc --exclude app/lib/ app && node config/build/uglify.js app/*.js:target/dist app/components/**/*.js:target/dist -e app/lib/*",
 
     "validate:image": "echo nothing",
     "build:image": "echo nothing",
