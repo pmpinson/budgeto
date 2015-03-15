@@ -52,8 +52,8 @@
     "validthis": false,
 
     "globals": {
-        "angular": true,
-        "moment": true,
-        "_": true
+        "define": true,
+        "require": true,
+        "window": true
     }
 }
