@@ -1,11 +1,11 @@
-"use strict";
+'use strict';
 
 define(['angular', 'angular-resource'], function(angular) {
 
     var moduleDefinition = {
-        name: "budgeto.apis",
+        name: 'budgeto.apis',
         dependencies: [
-          "ngResource"
+          'ngResource'
         ],
         module: undefined
     };
@@ -17,8 +17,8 @@ define(['angular', 'angular-resource'], function(angular) {
      * Resource http to cal apis endpoint
      * @returns {{all: to get all apis from rest endpoint, returning an array of apis in a promise}}
      */
-    moduleDefinition.module.factory("ApisResource", ["$resource", "$log", function ($resource, $log) {
-        $log.debug("budgeto.apis : load ApiResource");
+    moduleDefinition.module.factory('ApisResource', ['$resource', '$log', function ($resource, $log) {
+        $log.debug('budgeto.apis : load ApiResource');
 
         return {
             all: function (url) {
@@ -30,8 +30,8 @@ define(['angular', 'angular-resource'], function(angular) {
     /**
      * provider to manage apis
      */
-    moduleDefinition.module.provider("ApiService", function () {
-        var url = "noUrlSet";
+    moduleDefinition.module.provider('ApiService', function () {
+        var url = 'noUrlSet';
 
         var $apiServiceProvider = {
 
@@ -39,8 +39,8 @@ define(['angular', 'angular-resource'], function(angular) {
                 url = value;
             },
 
-            $get: ["$log", "ApisResource", function ($log, ApisResource) {
-                $log.debug("budgeto.apis : load ApiService");
+            $get: ['$log', 'ApisResource', function ($log, ApisResource) {
+                $log.debug('budgeto.apis : load ApiService');
 
                 var apis = [];
                 var $apiService = {};
@@ -54,7 +54,7 @@ define(['angular', 'angular-resource'], function(angular) {
                 };
 
                 $apiService.loaded = function () {
-                    $log.debug("budgeto.apis : call api to get all available apis");
+                    $log.debug('budgeto.apis : call api to get all available apis');
 
                     return ApisResource.all(url).then(function(data) {
                         $apiService.loadApis(data);
@@ -64,11 +64,11 @@ define(['angular', 'angular-resource'], function(angular) {
 
                 $apiService.loadApis = function (data) {
                     for (var key in data.links) {
-                        if (data.links[key].rel !== "self") {
+                        if (data.links[key].rel !== 'self') {
                             apis.push(data.links[key]);
                         }
                     }
-                    $log.debug("budgeto.apis : available apis", apis);
+                    $log.debug('budgeto.apis : available apis', apis);
                 };
 
                 $apiService.findAll = function () {

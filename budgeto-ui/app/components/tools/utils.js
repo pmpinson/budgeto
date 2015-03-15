@@ -1,9 +1,9 @@
-"use strict";
+'use strict';
 
 define(['angular', 'underscore'], function(angular, _) {
 
     var moduleDefinition = {
-        name: "budgeto.utils",
+        name: 'budgeto.utils',
         dependencies: [
         ],
         module: undefined
@@ -15,12 +15,12 @@ define(['angular', 'underscore'], function(angular, _) {
     /**
      * provider an utility object
      */
-    moduleDefinition.module.provider("$utils", function () {
+    moduleDefinition.module.provider('$utils', function () {
 
         var $utilsProvider = {
 
-            $get: ["$log", function ($log) {
-                $log.debug("budgeto.utils : load $utils");
+            $get: ['$log', function ($log) {
+                $log.debug('budgeto.utils : load $utils');
 
                 var $utils = {};
 
@@ -29,7 +29,7 @@ define(['angular', 'underscore'], function(angular, _) {
                 };
 
                 $utils.formatObject = function(val) {
-                    return JSON.stringify(val, null, "    ");
+                    return JSON.stringify(val, null, '    ');
                 };
 
                 return $utils;

@@ -1,11 +1,11 @@
-"use strict";
+'use strict';
 
 define(['angular', 'components/apis/apis', 'components/tools/infinite-loader', 'components/home/loading', 'angular-ui-router'], function(angular, apis, infiniteLoader, loading) {
 
     var moduleDefinition = {
-        name: "budgeto.home",
+        name: 'budgeto.home',
         dependencies: [
-            "ui.router",
+            'ui.router',
             apis.name,
             infiniteLoader.name,
             loading.name
@@ -19,8 +19,8 @@ define(['angular', 'components/apis/apis', 'components/tools/infinite-loader', '
     /**
      * controller to manage home page
      */
-    moduleDefinition.module.controller("HomeCtrl", ["$scope", "$state", "$log", "ApiService", "$infiniteLoader", "LoadingService", function ($scope, $state, $log, ApiService, $infiniteLoader, LoadingService) {
-        $log.debug("budgeto.home : load HomeCtrl");
+    moduleDefinition.module.controller('HomeCtrl', ['$scope', '$state', '$log', 'ApiService', '$infiniteLoader', 'LoadingService', function ($scope, $state, $log, ApiService, $infiniteLoader, LoadingService) {
+        $log.debug('budgeto.home : load HomeCtrl');
 
         var that = this;
 
@@ -28,12 +28,12 @@ define(['angular', 'components/apis/apis', 'components/tools/infinite-loader', '
         this.loadFail = false;
 
         LoadingService.loaded().then(function (data) {
-            $log.debug("budgeto.loading : loading done");
+            $log.debug('budgeto.loading : loading done');
             $infiniteLoader.hide();
             that.apis = ApiService.findAll();
             return data;
         }).catch(function (reason) {
-            $log.error("error getting apis /", reason);
+            $log.error('error getting apis /', reason);
             that.loadFail = true;
             $infiniteLoader.hide();
         });
@@ -41,13 +41,13 @@ define(['angular', 'components/apis/apis', 'components/tools/infinite-loader', '
         this.changePath = function (path) {
             var destination = path;
             if (destination === undefined) {
-                destination = "home";
+                destination = 'home';
             }
             try {
                 return $state.go(destination);
             } catch (exception) {
-                $log.error("unknown path", path, ":", exception);
-                return $state.go("home");
+                $log.error('unknown path', path, ':', exception);
+                return $state.go('home');
             }
         };
     }]);

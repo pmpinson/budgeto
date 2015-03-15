@@ -1,12 +1,12 @@
-"use strict";
+'use strict';
 
 define(['angular', 'underscore', 'components/tools/utils', 'angular-ui-router', 'angular-bootstrap'], function(angular, _, utils) {
 
     var moduleDefinition = {
-        name: "budgeto.modalError",
+        name: 'budgeto.modalError',
         dependencies: [
-            "ui.router",
-            "ui.bootstrap",
+            'ui.router',
+            'ui.bootstrap',
             utils.name
         ],
         module: undefined
@@ -18,8 +18,8 @@ define(['angular', 'underscore', 'components/tools/utils', 'angular-ui-router', 
     /**
      * controller for modal of global error message
      */
-    moduleDefinition.module.controller("ModalErrorInstanceCtrl", ["$scope", "$log", "$modalError", "modalOptions", "$utils", function ($scope, $log, $modalError, modalOptions, $utils) {
-        $log.debug("budgeto.modalError : load ModalErrorInstanceCtrl");
+    moduleDefinition.module.controller('ModalErrorInstanceCtrl', ['$scope', '$log', '$modalError', 'modalOptions', '$utils', function ($scope, $log, $modalError, modalOptions, $utils) {
+        $log.debug('budgeto.modalError : load ModalErrorInstanceCtrl');
 
         this.modalOptions = modalOptions;
 
@@ -33,14 +33,14 @@ define(['angular', 'underscore', 'components/tools/utils', 'angular-ui-router', 
     /**
      * provider to manage modalError
      */
-    moduleDefinition.module.provider("$modalError", function () {
+    moduleDefinition.module.provider('$modalError', function () {
 
         var defaultOptions = {
             logMessages: undefined,
             reason: undefined,
-            title: "Error",
-            detail: "detail",
-            close: "OK"
+            title: 'Error',
+            detail: 'detail',
+            close: 'OK'
         };
 
         var $modalErrorProvider = {
@@ -49,8 +49,8 @@ define(['angular', 'underscore', 'components/tools/utils', 'angular-ui-router', 
                 _.extend(defaultOptions, value);
             },
 
-            $get: ["$log", "$modal", "$state", function ($log, $modal, $state) {
-                $log.debug("budgeto.modalError : load $modalError");
+            $get: ['$log', '$modal', '$state', function ($log, $modal, $state) {
+                $log.debug('budgeto.modalError : load $modalError');
 
                 var modalInstance;
                 var $modalError = {};
@@ -77,8 +77,8 @@ define(['angular', 'underscore', 'components/tools/utils', 'angular-ui-router', 
 
                 $modalError.open = function (options) {
                     modalInstance = $modal.open({
-                        controller: "ModalErrorInstanceCtrl as modalErrorInstanceCtrl",
-                        templateUrl: "components/tools/modal-error.html",
+                        controller: 'ModalErrorInstanceCtrl as modalErrorInstanceCtrl',
+                        templateUrl: 'components/tools/modal-error.html',
                         resolve: {
                             modalOptions: function () {
                                 return $modalError.prepareOptions(options);
@@ -87,9 +87,9 @@ define(['angular', 'underscore', 'components/tools/utils', 'angular-ui-router', 
                     });
 
                     modalInstance.result.then(function () {
-                        $state.go("home");
+                        $state.go('home');
                     }, function () {
-                        $state.go("home");
+                        $state.go('home');
                     });
 
                     return modalInstance;
@@ -97,7 +97,7 @@ define(['angular', 'underscore', 'components/tools/utils', 'angular-ui-router', 
 
                 $modalError.close = function () {
                     if (modalInstance !== undefined) {
-                        modalInstance.dismiss("close");
+                        modalInstance.dismiss('close');
                         modalInstance = undefined;
                     }
                 };

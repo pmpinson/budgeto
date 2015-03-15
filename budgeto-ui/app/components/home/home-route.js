@@ -1,11 +1,11 @@
-"use strict";
+'use strict';
 
 define(['angular', 'angular-ui-router'], function(angular) {
 
     var moduleDefinition = {
-        name: "budgeto.home.route",
+        name: 'budgeto.home.route',
         dependencies: [
-            "ui.router"
+            'ui.router'
         ],
         module: undefined
     };
@@ -13,11 +13,11 @@ define(['angular', 'angular-ui-router'], function(angular) {
     // Register angular module
     moduleDefinition.module = angular.module(moduleDefinition.name, moduleDefinition.dependencies);
 
-    moduleDefinition.module.config(["$stateProvider", function ($stateProvider) {
+    moduleDefinition.module.config(['$stateProvider', function ($stateProvider) {
         $stateProvider
-            .state("home", {
-                templateUrl: "components/home/home.html",
-                controller: "HomeCtrl as homeCtrl"
+            .state('home', {
+                templateUrl: 'components/home/home.html',
+                controller: 'HomeCtrl as homeCtrl'
             });
     }]);
 

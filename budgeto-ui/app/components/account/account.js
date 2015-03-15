@@ -1,13 +1,13 @@
-"use strict";
+'use strict';
 
 define(['angular', 'components/apis/apis', 'components/tools/modal-error', 'angular-ui-router', 'angular-resource', 'angular-moment'], function(angular, apis, modalError) {
 
     var moduleDefinition = {
-        name: "budgeto.account",
+        name: 'budgeto.account',
         dependencies: [
-            "ui.router",
-            "ngResource",
-            "angularMoment",
+            'ui.router',
+            'ngResource',
+            'angularMoment',
             apis.name,
             modalError.name
         ],
@@ -21,11 +21,11 @@ define(['angular', 'components/apis/apis', 'components/tools/modal-error', 'angu
      * account api to store the api definition for account
      * @returns the api
      */
-    moduleDefinition.module.factory("AccountApi", ["$resource", "$log", "ApiService", function ($resource, $log, ApiService) {
-        $log.debug("budgeto.account : load AccountApi");
+    moduleDefinition.module.factory('AccountApi', ['$resource', '$log', 'ApiService', function ($resource, $log, ApiService) {
+        $log.debug('budgeto.account : load AccountApi');
 
-        var api = ApiService.find("account");
-        $log.debug("budgeto.account : api", api);
+        var api = ApiService.find('account');
+        $log.debug('budgeto.account : api', api);
 
         return api;
     }]);
@@ -34,18 +34,18 @@ define(['angular', 'components/apis/apis', 'components/tools/modal-error', 'angu
      * account ressource
      * @returns {{all: get all accounts, returning an array in a promise, operations: get all operation of an account, returning an array of operation in a promise}}
      */
-    moduleDefinition.module.factory("AccountResource", ["$resource", "$log", "AccountApi", "ApiService", "$modalError", function ($resource, $log, AccountApi, ApiService, $modalError) {
-        $log.debug("budgeto.account : load AccountResource");
+    moduleDefinition.module.factory('AccountResource', ['$resource', '$log', 'AccountApi', 'ApiService', '$modalError', function ($resource, $log, AccountApi, ApiService, $modalError) {
+        $log.debug('budgeto.account : load AccountResource');
 
         return {
             all: function () {
                 var url = AccountApi.href;
-                return $resource(url, {}, {}).query({}).$promise.catch($modalError.manageError("error getting accounts"));
+                return $resource(url, {}, {}).query({}).$promise.catch($modalError.manageError('error getting accounts'));
             },
 
             operations: function (account) {
-                var url = ApiService.getLink("operations", account.links).href;
-                return $resource(url, {}, {}).query({}).$promise.catch($modalError.manageError("error getting operations for", account));
+                var url = ApiService.getLink('operations', account.links).href;
+                return $resource(url, {}, {}).query({}).$promise.catch($modalError.manageError('error getting operations for', account));
             }
         };
     }]);
@@ -53,13 +53,13 @@ define(['angular', 'components/apis/apis', 'components/tools/modal-error', 'angu
     /**
      * controller to manage account
      */
-    moduleDefinition.module.controller("AccountCtrl", ["$scope", "$state", "$log", function ($scope, $state, $log) {
-        $log.debug("budgeto.account : load AccountCtrl");
+    moduleDefinition.module.controller('AccountCtrl', ['$scope', '$state', '$log', function ($scope, $state, $log) {
+        $log.debug('budgeto.account : load AccountCtrl');
 
-        $state.go("account.list");
+        $state.go('account.list');
 
         this.home = function () {
-            $state.go("home");
+            $state.go('home');
         };
     }]);
 
@@ -67,8 +67,8 @@ define(['angular', 'components/apis/apis', 'components/tools/modal-error', 'angu
      * controller to manage account list
      */
 
-    moduleDefinition.module.controller("AccountListCtrl", ["$scope", "$state", "$log", "AccountResource", function ($scope, $state, $log, AccountResource) {
-        $log.debug("budgeto.account : load AccountListCtrl");
+    moduleDefinition.module.controller('AccountListCtrl', ['$scope', '$state', '$log', 'AccountResource', function ($scope, $state, $log, AccountResource) {
+        $log.debug('budgeto.account : load AccountListCtrl');
 
         var that = this;
 
@@ -76,7 +76,7 @@ define(['angular', 'components/apis/apis', 'components/tools/modal-error', 'angu
         that.account = undefined;
 
         AccountResource.all().then(function (data) {
-            $log.debug("budgeto.account : get all accounts", data);
+            $log.debug('budgeto.account : get all accounts', data);
 
             that.accounts = data;
             if (that.accounts.length !== 0) {
@@ -90,9 +90,9 @@ define(['angular', 'components/apis/apis', 'components/tools/modal-error', 'angu
             },
             function () {
                 if (that.account !== undefined) {
-                    $log.debug("budgeto.account : select account", that.account);
+                    $log.debug('budgeto.account : select account', that.account);
 
-                    $state.go("account.list.detail", {name:that.account.name});
+                    $state.go('account.list.detail', {name:that.account.name});
                 }
             }
         );
@@ -101,8 +101,8 @@ define(['angular', 'components/apis/apis', 'components/tools/modal-error', 'angu
     /**
      * controller to manage detail account
      */
-    moduleDefinition.module.controller("AccountDetailCtrl", ["$scope", "$log", "AccountResource", function ($scope, $log, AccountResource) {
-        $log.debug("budgeto.account : load AccountDetailCtrl");
+    moduleDefinition.module.controller('AccountDetailCtrl', ['$scope', '$log', 'AccountResource', function ($scope, $log, AccountResource) {
+        $log.debug('budgeto.account : load AccountDetailCtrl');
 
         var that = this;
 
@@ -110,7 +110,7 @@ define(['angular', 'components/apis/apis', 'components/tools/modal-error', 'angu
         that.operations = [];
 
         AccountResource.operations(that.account).then(function (data) {
-            $log.debug("budgeto.account : get all operations", data);
+            $log.debug('budgeto.account : get all operations', data);
 
             that.operations = data;
         });
