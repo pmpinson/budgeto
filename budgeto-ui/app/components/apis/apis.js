@@ -8,7 +8,7 @@ define(['angular', 'angular-resource'], function(angular) {
           "ngResource"
         ],
         module: undefined
-    }
+    };
 
     // Register angular module
     moduleDefinition.module = angular.module(moduleDefinition.name, moduleDefinition.dependencies);

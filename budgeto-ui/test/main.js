@@ -13,7 +13,7 @@ Object.keys(window.__karma__.files).forEach(function(file) {
 
 require.config({
   paths:{
-	'angular-mocks': 'bower_components/angular-mocks/angular-mocks'
+	'angular-mocks': 'lib/angular-mocks/angular-mocks'
   },
   shim:{
     'angular-mocks': {

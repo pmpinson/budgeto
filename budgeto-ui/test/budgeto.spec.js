@@ -1,6 +1,6 @@
 "use strict";
 
-define(['budgeto', 'angular-mocks'], function() {
+define(['budgeto', 'angular', 'angular-mocks'], function(test, angular) {
 
     describe("Budgeto module", function () {
 

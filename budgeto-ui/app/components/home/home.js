@@ -11,7 +11,7 @@ define(['angular', 'components/apis/apis', 'components/tools/infinite-loader', '
             loading.name
         ],
         module: undefined
-    }
+    };
 
     // Register angular module
     moduleDefinition.module = angular.module(moduleDefinition.name, moduleDefinition.dependencies);

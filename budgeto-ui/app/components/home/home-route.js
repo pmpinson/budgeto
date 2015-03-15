@@ -8,7 +8,7 @@ define(['angular', 'angular-ui-router'], function(angular) {
             "ui.router"
         ],
         module: undefined
-    }
+    };
 
     // Register angular module
     moduleDefinition.module = angular.module(moduleDefinition.name, moduleDefinition.dependencies);

@@ -7,7 +7,7 @@ define(['angular'], function(angular) {
         dependencies: [
         ],
         module: undefined
-    }
+    };
 
     // Register angular module
     moduleDefinition.module = angular.module(moduleDefinition.name, moduleDefinition.dependencies);

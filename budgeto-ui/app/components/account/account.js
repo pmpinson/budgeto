@@ -12,7 +12,7 @@ define(['angular', 'components/apis/apis', 'components/tools/modal-error', 'angu
             modalError.name
         ],
         module: undefined
-    }
+    };
 
     // Register angular module
     moduleDefinition.module = angular.module(moduleDefinition.name, moduleDefinition.dependencies);

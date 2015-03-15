@@ -1,5 +1,5 @@
 "use strict";
 
-require(['angular', 'budgeto', 'angular-moment'], function(angular) {
-    angular.bootstrap(document, ['budgeto']);
+require(['angular', 'budgeto'], function(angular) {
+    angular.bootstrap(window.document, ['budgeto']);
 });
