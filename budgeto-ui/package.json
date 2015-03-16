@@ -71,7 +71,7 @@
 
     "test:validate": "jshint --config config/.jshintrc-test test",
     "test:single": "rimraf target/coverage && rimraf target/test-results && karma start config/karma.conf.js --single-run",
-    "test:dist": "rimraf target/coverage && rimraf target/test-results && karma start config/karma.conf-dist.js --single-run",
+    "test:dist": "rimraf target/coverage && rimraf target/test-results && karma start config/karma.dist.conf.js --single-run",
     "test:watch": "rimraf target/coverage && rimraf target/test-results && karma start config/karma.conf.js",
     "test": "npm run test:watch",
 
