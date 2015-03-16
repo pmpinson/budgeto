@@ -15,6 +15,7 @@
     "glob": "latest",
     "htmlmin": "latest",
     "http-server": "latest",
+    "jasmine-reporters": "latest",
     "jshint": "latest",
     "karma": "latest",
     "karma-chrome-launcher": "latest",
@@ -31,9 +32,11 @@
     "mkdirp": "latest",
     "opener": "latest",
     "parallelshell": "latest",
+    "protractor": "latest",
     "rimraf": "latest",
     "uglify-js": "latest",
     "watch": "latest",
+    "webdriver-manager": "latest",
     "yargs": "latest"
   },
   "scripts": {
@@ -68,9 +71,13 @@
 
     "test:validate": "jshint --config config/.jshintrc-test test",
     "test:single": "rimraf target/coverage && rimraf target/test-results && karma start config/karma.conf.js --single-run",
-    "test:dist": "rimraf target/coverage && rimraf target/test-results && karma start config/karma.conf-dist.js --single-run",
+    "test:dist": "rimraf target/coverage && rimraf target/test-results && karma start config/karma.dist.conf.js --single-run",
     "test:watch": "rimraf target/coverage && rimraf target/test-results && karma start config/karma.conf.js",
     "test": "npm run test:watch",
+
+    "e2etest:validate": "jshint --config config/.jshintrc-e2e-test e2e-tests",
+    "pree2etest:single": "webdriver-manager update",
+    "e2etest:single": "protractor config/protractor.conf.js",
 
     "dev": "parallelshell \"npm run build:serve\" \"npm run watch\"",
     "live-reload": "live-reload --port 8999 app/",
