@@ -2,16 +2,21 @@
 
 define(['angular'], function(angular) {
 
+    // module definition
     var moduleDefinition = {
         name: 'budgeto.infiniteLoader',
         dependencies: [
         ],
         module: undefined
     };
-
-    // Register angular module
     moduleDefinition.module = angular.module(moduleDefinition.name, moduleDefinition.dependencies);
 
+    /**
+    * define provider for manage infinite loader globaly
+    * available config : setMessage to define message show with infinite loader
+    * config : method to get the config : return {getMessage()}
+    * show / hide : method to show and hide the infinite loader. Add a div with loader add the end of the body
+    */
     moduleDefinition.module.provider('$infiniteLoader', function () {
         var message = 'Wait';
 

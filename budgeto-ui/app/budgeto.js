@@ -29,7 +29,7 @@ define(['angular', 'components/apis/apis', 'components/tools/infinite-loader', '
     });
 
     /**
-     * message
+     * messages
      */
     budgeto.constant('MessageService', {
         applicationInitFail: 'Erreur during initialisation. Come back later. So Sorry...',
