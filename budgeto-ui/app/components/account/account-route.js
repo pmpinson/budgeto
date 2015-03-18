@@ -2,18 +2,10 @@
 
 define(['angular', 'angular-ui-router'], function(angular) {
 
-    var moduleDefinition = {
-        name: 'budgeto.account.route',
-        dependencies: [
-            'ui.router'
-        ],
-        module: undefined
-    };
-
-    // Register angular module
-    moduleDefinition.module = angular.module(moduleDefinition.name, moduleDefinition.dependencies);
-
-    moduleDefinition.module.config(['$stateProvider', function ($stateProvider) {
+    /**
+     * route definition for account
+     */
+    function AccountRouteDefinition($stateProvider) {
         $stateProvider.state('account', {
             templateUrl: 'components/account/account.html',
             controller: 'AccountCtrl as accountCtrl'
@@ -29,7 +21,21 @@ define(['angular', 'angular-ui-router'], function(angular) {
             templateUrl: 'components/account/account-detail.html',
             controller: 'AccountDetailCtrl as accountDetailCtrl'
         });
-    }]);
+    }
+
+    // module definition
+    var moduleDefinition = {
+        name: 'budgeto.account.route',
+        dependencies: [
+            'ui.router'
+        ],
+        module: undefined
+    };
+
+    moduleDefinition.module = angular.module(moduleDefinition.name, moduleDefinition.dependencies);
+
+    AccountRouteDefinition.$inject = ['$stateProvider'];
+    moduleDefinition.module.config(AccountRouteDefinition);
 
     return moduleDefinition;
 });

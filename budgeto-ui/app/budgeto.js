@@ -4,34 +4,36 @@ define(['angular', 'components/apis/apis', 'components/tools/infinite-loader', '
     'components/home/loading', 'components/home/home', 'components/home/home-route', 'components/account/account', 'components/account/account-route'
     ], function(angular, apis, infiniteLoader, modalError, loading, home, homeRoute, account, accountRoute) {
 
-    // Register angular module
-    var budgeto = angular.module('budgeto', [
-        apis.name,
-        infiniteLoader.name,
-        modalError.name,
-        loading.name,
-        home.name,
-        homeRoute.name,
-        account.name,
-        accountRoute.name
-    ]);
+    // module definition
+    var moduleDefinition = {
+        name: 'budgeto',
+        dependencies: [
+            apis.name,
+            infiniteLoader.name,
+            modalError.name,
+            loading.name,
+            home.name,
+            homeRoute.name,
+            account.name,
+            accountRoute.name
+        ],
+        module: undefined
+    };
 
     /**
      * rest api url
      */
-    budgeto.constant('BudgetoRestApiURL', 'http://localhost:9001/budgeto-api');
+    var BudgetoRestApiURL = 'http://localhost:9001/budgeto-api';
 
     /**
      * configuration of moment timezone
      */
-    budgeto.constant('angularMomentConfig', {
-        timezone: 'UTC'
-    });
+    var angularMomentConfig = {timezone: 'UTC'};
 
     /**
      * messages
      */
-    budgeto.constant('MessageService', {
+    var messages = {
         applicationInitFail: 'Erreur during initialisation. Come back later. So Sorry...',
         infiniteLoaderMsg: 'Work in progress. Pleas wait...',
         apisLinks: {
@@ -49,44 +51,60 @@ define(['angular', 'components/apis/apis', 'components/tools/infinite-loader', '
            detail: 'Error detail',
            close: 'Close'
        }
-    });
+    };
 
     /**
      * config of apis provider
      */
-    budgeto.config(['ApiServiceProvider', 'BudgetoRestApiURL', function (ApiServiceProvider, BudgetoRestApiURL) {
+    function ApiServiceConfig(ApiServiceProvider, BudgetoRestApiURL) {
         ApiServiceProvider.setUrl(BudgetoRestApiURL);
-    }]);
+    }
 
     /**
      * config message for infinite loader
      */
-    budgeto.config(['$infiniteLoaderProvider', 'MessageService', function ($infiniteLoaderProvider, MessageService) {
+    function InfiniteLoaderConfig($infiniteLoaderProvider, MessageService) {
         $infiniteLoaderProvider.setMessage(MessageService.infiniteLoaderMsg);
-    }]);
+    }
 
     /**
      * config service to have been loaded
      */
-    budgeto.config(['LoadingServiceProvider', function (LoadingServiceProvider) {
+    function LoadingServiceConfig(LoadingServiceProvider) {
         LoadingServiceProvider.add('ApiService');
-    }]);
+    }
 
     /**
      * config modal error message
      */
-    budgeto.config(['$modalErrorProvider', 'MessageService', function ($modalErrorProvider, MessageService) {
+    function ModalErrorConfig($modalErrorProvider, MessageService) {
         $modalErrorProvider.setDefaultOptions(MessageService.modalError);
-    }]);
+    }
+
+    moduleDefinition.module = angular.module(moduleDefinition.name, moduleDefinition.dependencies);
+
+    moduleDefinition.module.constant('BudgetoRestApiURL', BudgetoRestApiURL);
+    moduleDefinition.module.constant('angularMomentConfig', angularMomentConfig);
+    moduleDefinition.module.constant('MessageService', messages);
+    ApiServiceConfig.$inject = ['ApiServiceProvider', 'BudgetoRestApiURL'];
+    moduleDefinition.module.config(ApiServiceConfig);
+    InfiniteLoaderConfig.$inject = ['$infiniteLoaderProvider', 'MessageService'];
+    moduleDefinition.module.config(InfiniteLoaderConfig);
+    LoadingServiceConfig.$inject = ['LoadingServiceProvider'];
+    moduleDefinition.module.config(LoadingServiceConfig);
+    ModalErrorConfig.$inject = ['$modalErrorProvider', 'MessageService'];
+    moduleDefinition.module.config(ModalErrorConfig);
 
     /**
      * BudgetoRun : call to the init app page
      */
-    budgeto.run(['$state', '$rootScope', '$log', 'MessageService', function ($state, $rootScope, $log, MessageService) {
+    moduleDefinition.module.run(['$state', '$rootScope', '$log', 'MessageService', function ($state, $rootScope, $log, MessageService) {
         $log.debug('budgeto : run');
 
         $rootScope.MessageService = MessageService;
 
         $state.transitionTo('home');
     }]);
+
+    return moduleDefinition;
 });

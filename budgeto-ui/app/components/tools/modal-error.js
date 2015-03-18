@@ -1,35 +1,23 @@
 'use strict';
 
-define(['angular', 'underscore', 'components/tools/utils', 'angular-ui-router', 'angular-bootstrap'], function(angular, _, utils) {
-
-    // module definition
-    var moduleDefinition = {
-        name: 'budgeto.modalError',
-        dependencies: [
-            'ui.router',
-            'ui.bootstrap',
-            utils.name
-        ],
-        module: undefined
-    };
-    moduleDefinition.module = angular.module(moduleDefinition.name, moduleDefinition.dependencies);
+define(['angular', 'components/tools/utils', 'underscore', 'angular-ui-router', 'angular-bootstrap'], function(angular, utils, _) {
 
     /**
      * controller for modal of global error message
      * keep util in utils var
      * method close to close the modal instance
      */
-    moduleDefinition.module.controller('ModalErrorInstanceCtrl', ['$scope', '$log', '$modalError', 'modalOptions', '$utils', function ($scope, $log, $modalError, modalOptions, $utils) {
+    function ModalErrorInstanceCtrl($scope, $log, $modalError, modalOptions) {
         $log.debug('budgeto.modalError : load ModalErrorInstanceCtrl');
 
-        this.modalOptions = modalOptions;
+        this.utils = utils;
 
-        this.utils = $utils;
+        this.modalOptions = modalOptions;
 
         this.close = function () {
             $modalError.close();
         };
-    }]);
+    }
 
     /**
      * provider to manage modalError
@@ -41,7 +29,7 @@ define(['angular', 'underscore', 'components/tools/utils', 'angular-ui-router', 
      * close : close the modal instance
      * manageError : callback function to be use with catch of promise
      */
-    moduleDefinition.module.provider('$modalError', function () {
+    function ModalErrorProvider() {
 
         var defaultOptions = {
             logMessages: undefined,
@@ -116,7 +104,23 @@ define(['angular', 'underscore', 'components/tools/utils', 'angular-ui-router', 
         };
 
         return $modalErrorProvider;
-    });
+    }
+
+    // module definition
+    var moduleDefinition = {
+        name: 'budgeto.modalError',
+        dependencies: [
+            'ui.router',
+            'ui.bootstrap'
+        ],
+        module: undefined
+    };
+
+    moduleDefinition.module = angular.module(moduleDefinition.name, moduleDefinition.dependencies);
+
+    ModalErrorInstanceCtrl.$inject = ['$scope', '$log', '$modalError', 'modalOptions'];
+    moduleDefinition.module.controller('ModalErrorInstanceCtrl', ModalErrorInstanceCtrl);
+    moduleDefinition.module.provider('$modalError', ModalErrorProvider);
 
     return moduleDefinition;
 });

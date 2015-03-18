@@ -23,12 +23,27 @@ define(['components/tools/modal-error', 'angular-mocks'], function() {
                 });
             });
 
+            it('have a good initialisation', inject(function ($modalError) {
+                spyOn($modalError, 'close').and.callThrough();
+
+                var modalOptions = {};
+                var modalErrorInstanceCtrl = $controller('ModalErrorInstanceCtrl', {
+                    '$scope': scope,
+                    '$log': $log,
+                    '$modalError': $modalError,
+                    'modalOptions': modalOptions
+                });
+
+                expect(modalErrorInstanceCtrl.utils).not.toBeUndefined();
+                expect(modalErrorInstanceCtrl.modalOptions).toBe(modalOptions);
+            }));
+
             it('on close method, call close on $modalError provider to close the modal', inject(function ($modalError) {
                 spyOn($modalError, 'close').and.callThrough();
 
                 var modalOptions = {};
                 var modalErrorInstanceCtrl = $controller('ModalErrorInstanceCtrl', {
-                    $scope: scope,
+                    '$scope': scope,
                     '$log': $log,
                     '$modalError': $modalError,
                     'modalOptions': modalOptions
@@ -37,8 +52,6 @@ define(['components/tools/modal-error', 'angular-mocks'], function() {
                 modalErrorInstanceCtrl.close();
 
                 expect($modalError.close).toHaveBeenCalledWith();
-                expect(modalErrorInstanceCtrl.utils).not.toBeUndefined();
-                expect(modalErrorInstanceCtrl.modalOptions).toBe(modalOptions);
             }));
         });
 

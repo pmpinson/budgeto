@@ -2,22 +2,13 @@
 
 define(['angular'], function(angular) {
 
-    // module definition
-    var moduleDefinition = {
-        name: 'budgeto.infiniteLoader',
-        dependencies: [
-        ],
-        module: undefined
-    };
-    moduleDefinition.module = angular.module(moduleDefinition.name, moduleDefinition.dependencies);
-
     /**
     * define provider for manage infinite loader globaly
     * available config : setMessage to define message show with infinite loader
     * config : method to get the config : return {getMessage()}
     * show / hide : method to show and hide the infinite loader. Add a div with loader add the end of the body
     */
-    moduleDefinition.module.provider('$infiniteLoader', function () {
+    function InfiniteLoaderProvider() {
         var message = 'Wait';
 
         var $infiniteLoaderProvider = {
@@ -63,7 +54,19 @@ define(['angular'], function(angular) {
         };
 
         return $infiniteLoaderProvider;
-    });
+    }
+
+    var moduleDefinition = {
+        name: 'budgeto.infiniteLoader',
+        dependencies: [
+        ],
+        module: undefined
+    };
+
+    // module definition
+    moduleDefinition.module = angular.module(moduleDefinition.name, moduleDefinition.dependencies);
+
+    moduleDefinition.module.provider('$infiniteLoader', InfiniteLoaderProvider);
 
     return moduleDefinition;
 });

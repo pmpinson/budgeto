@@ -1,59 +1,47 @@
 'use strict';
 
-define(['angular', 'components/apis/apis', 'components/tools/modal-error', 'angular-ui-router', 'angular-resource', 'angular-moment'], function(angular, apis, modalError) {
-
-    var moduleDefinition = {
-        name: 'budgeto.account',
-        dependencies: [
-            'ui.router',
-            'ngResource',
-            'angularMoment',
-            apis.name,
-            modalError.name
-        ],
-        module: undefined
-    };
-
-    // Register angular module
-    moduleDefinition.module = angular.module(moduleDefinition.name, moduleDefinition.dependencies);
+define(['angular', 'components/apis/apis', 'components/tools/modal-error', 'angular-ui-router', 'angular-resource', 'angular-moment'],
+    function(angular, apis, modalError) {
 
     /**
      * account api to store the api definition for account
      * @returns the api
      */
-    moduleDefinition.module.factory('AccountApi', ['$resource', '$log', 'ApiService', function ($resource, $log, ApiService) {
+    function AccountApi($resource, $log, ApiService) {
         $log.debug('budgeto.account : load AccountApi');
 
         var api = ApiService.find('account');
         $log.debug('budgeto.account : api', api);
 
         return api;
-    }]);
+    }
 
     /**
      * account ressource
      * @returns {{all: get all accounts, returning an array in a promise, operations: get all operation of an account, returning an array of operation in a promise}}
      */
-    moduleDefinition.module.factory('AccountResource', ['$resource', '$log', 'AccountApi', 'ApiService', '$modalError', function ($resource, $log, AccountApi, ApiService, $modalError) {
+    function AccountResource($resource, $log, AccountApi, ApiService, $modalError) {
         $log.debug('budgeto.account : load AccountResource');
 
-        return {
-            all: function () {
-                var url = AccountApi.href;
-                return $resource(url, {}, {}).query({}).$promise.catch($modalError.manageError('error getting accounts'));
-            },
+        var accountResource = {};
 
-            operations: function (account) {
-                var url = ApiService.getLink('operations', account.links).href;
-                return $resource(url, {}, {}).query({}).$promise.catch($modalError.manageError('error getting operations for', account));
-            }
+        accountResource.all = function () {
+            var url = AccountApi.href;
+            return $resource(url, {}, {}).query({}).$promise.catch($modalError.manageError('error getting accounts'));
         };
-    }]);
+
+        accountResource.operations = function (account) {
+            var url = ApiService.getLink('operations', account.links).href;
+            return $resource(url, {}, {}).query({}).$promise.catch($modalError.manageError('error getting operations for', account));
+        };
+
+        return accountResource;
+    }
 
     /**
      * controller to manage account
      */
-    moduleDefinition.module.controller('AccountCtrl', ['$scope', '$state', '$log', function ($scope, $state, $log) {
+    function AccountCtrl($scope, $state, $log) {
         $log.debug('budgeto.account : load AccountCtrl');
 
         $state.go('account.list');
@@ -61,13 +49,12 @@ define(['angular', 'components/apis/apis', 'components/tools/modal-error', 'angu
         this.home = function () {
             $state.go('home');
         };
-    }]);
+    }
 
     /**
      * controller to manage account list
      */
-
-    moduleDefinition.module.controller('AccountListCtrl', ['$scope', '$state', '$log', 'AccountResource', function ($scope, $state, $log, AccountResource) {
+    function AccountListCtrl($scope, $state, $log, AccountResource) {
         $log.debug('budgeto.account : load AccountListCtrl');
 
         var that = this;
@@ -96,12 +83,12 @@ define(['angular', 'components/apis/apis', 'components/tools/modal-error', 'angu
                 }
             }
         );
-    }]);
+    }
 
     /**
      * controller to manage detail account
      */
-    moduleDefinition.module.controller('AccountDetailCtrl', ['$scope', '$log', 'AccountResource', function ($scope, $log, AccountResource) {
+    function AccountDetailCtrl($scope, $log, AccountResource) {
         $log.debug('budgeto.account : load AccountDetailCtrl');
 
         var that = this;
@@ -114,7 +101,33 @@ define(['angular', 'components/apis/apis', 'components/tools/modal-error', 'angu
 
             that.operations = data;
         });
-    }]);
+    }
+
+    // module definition
+    var moduleDefinition = {
+        name: 'budgeto.account',
+        dependencies: [
+            'ui.router',
+            'ngResource',
+            'angularMoment',
+            apis.name,
+            modalError.name
+        ],
+        module: undefined
+    };
+
+    moduleDefinition.module = angular.module(moduleDefinition.name, moduleDefinition.dependencies);
+
+    AccountApi.$inject = ['$resource', '$log', 'ApiService'];
+    moduleDefinition.module.factory('AccountApi', AccountApi);
+    AccountResource.$inject = ['$resource', '$log', 'AccountApi', 'ApiService', '$modalError'];
+    moduleDefinition.module.factory('AccountResource', AccountResource);
+    AccountCtrl.$inject = ['$scope', '$state', '$log'];
+    moduleDefinition.module.controller('AccountCtrl', AccountCtrl);
+    AccountListCtrl.$inject = ['$scope', '$state', '$log', 'AccountResource'];
+    moduleDefinition.module.controller('AccountListCtrl', AccountListCtrl);
+    AccountDetailCtrl.inject = ['$scope', '$log', 'AccountResource'];
+    moduleDefinition.module.controller('AccountDetailCtrl', AccountDetailCtrl);
 
     return moduleDefinition;
 });
