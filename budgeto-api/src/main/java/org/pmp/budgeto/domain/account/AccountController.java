@@ -46,7 +46,7 @@ public class AccountController {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "Retrieve all accounts", notes = "No")
+    @ApiOperation(value = "Retrieve all accounts dfsdfsd", notes = "No")
     @ApiResponses({
             @ApiResponse(code = DefaultControllerAdvice.OK_CODE, message = DefaultControllerAdvice.OK_MSG),
             @ApiResponse(code = DefaultControllerAdvice.NOT_FOUND_CODE, message = DefaultControllerAdvice.NOT_FOUND_MSG, response = ControllerError.class),
