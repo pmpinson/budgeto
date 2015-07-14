@@ -1,3 +1,5 @@
+An update to test bamboo / jira integration
+
 # budgeto
 
 project to test some new technos and made some reflexion on architecture.
