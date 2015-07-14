@@ -1,4 +1,4 @@
-An update to test bamboo / jira integration
+An update to test bamboo / jira integration with jira id in commit
 
 # budgeto
 
