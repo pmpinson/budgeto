@@ -1,5 +1,3 @@
-An update to test bamboo / jira integration with jira id in commit
-
 # budgeto
 
 project to test some new technos and made some reflexion on architecture.
