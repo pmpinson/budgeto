@@ -17,6 +17,8 @@ case class PrintClosedAccounts()
 /**
  * replies on command
  */
+case class PrintAccountsSuccess(accounts: List[Account])
+case class PrintClosedAccountsSuccess(accounts: List[Account])
 
 /**
  * Events
@@ -27,19 +29,20 @@ class AccountViewActor(override val id: String, override val eventLog: ActorRef)
   private val accounts: scala.collection.mutable.Map[String, Account] = scala.collection.mutable.Map.empty
   private val closedAccounts: scala.collection.mutable.Map[String, Account] = scala.collection.mutable.Map.empty
 
+  def gg() = "ss"
+
   override val onCommand: Receive = {
-    case PrintAccounts => {
-      println("accounts")
-      accounts.foreach { case (k, a) => println(s"\t$a") }
-    }
-    case PrintAccounts => {
-      println("closedAccounts")
-      closedAccounts.foreach { case (k, a) => println(s"\t$a") }
-    }
+    case PrintAccounts() => sender() ! PrintAccountsSuccess(accounts.values.toList)
+    case PrintClosedAccounts() => sender() ! PrintAccountsSuccess(closedAccounts.values.toList)
   }
 
   override val onEvent: Receive = {
-    case AccountCreated(account) => accounts.put(account.id, account)
-    case AccountClosed(account) => closedAccounts.put(account.id, account);accounts.remove(id)
+    case AccountCreated(account) => {
+      accounts.put(account.id, account)
+    }
+    case AccountClosed(account) => {
+      accounts.remove(id)
+      closedAccounts.put(account.id, account)
+    }
   }
 }

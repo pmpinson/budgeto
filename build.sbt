@@ -25,5 +25,5 @@ lazy val root = (project in file("."))
     coverageMinimum := 95,
     coverageFailOnMinimum := true,
 
-parallelExecution in Test := false
+    fork := true // fix problem with sbt class loading on leveldbjni
   )

@@ -1,31 +1,19 @@
 package org.pmp.budgeto
 
-import akka.actor.{ActorSystem, Props}
+import akka.actor.Props
 import akka.pattern.ask
-import akka.util.Timeout
-import com.rbmhtechnology.eventuate.log.leveldb.LeveldbEventLog
-import org.joda.time.DateTime
 import org.pmp.budgeto.domain._
+import org.scalatest.GivenWhenThen
 import org.scalatest.Matchers._
-import org.scalatest.{BeforeAndAfterAll, FunSuite, GivenWhenThen}
 
 import scala.concurrent.Await
 import scala.concurrent.duration._
 
-class AccountActorTest extends FunSuite with GivenWhenThen with BeforeAndAfterAll {
-  implicit val system = ActorSystem("budgetoTest")
-  implicit val timeout = Timeout(10.seconds)
-
-  override def afterAll() = {
-    system.terminate()
-  }
+class AccountActorTest extends EventuateContext with GivenWhenThen {
 
   test("When I create an account") {
     Given("an account actor")
-    val actorId = "AccountActor" + DateTime.now().getMillis
-    val eventLog = system.actorOf(LeveldbEventLog.props(logId = actorId, prefix = "test"))
-
-    val accountActor = system.actorOf(Props(new AccountActor(actorId, eventLog)))
+    val accountActor = system.actorOf(Props(new AccountActor(actorId("AccountActor"), eventLog)))
 
     When("send a create command")
     val future = accountActor ? CreateAccount("testAccount", "a note", 125)
@@ -40,10 +28,7 @@ class AccountActorTest extends FunSuite with GivenWhenThen with BeforeAndAfterAl
 
   test("When I create an account but account with same label alread exist") {
     Given("an account actor and an account created with id 101")
-    val actorId = "AccountActor" + DateTime.now().getMillis
-    val eventLog = system.actorOf(LeveldbEventLog.props(logId = actorId, prefix = "test"))
-
-    val accountActor = system.actorOf(Props(new AccountActor(actorId, eventLog)))
+    val accountActor = system.actorOf(Props(new AccountActor(actorId("AccountActor"), eventLog)))
     accountActor ? CreateAccount("testAccount", "a note", 125)
 
     When("send a create account command")
@@ -51,15 +36,12 @@ class AccountActorTest extends FunSuite with GivenWhenThen with BeforeAndAfterAl
 
     Then("I expected to have an failure")
     val CreateAccountFailure(message, _) = Await.result(future, Duration.Inf)
-    message should be ("""an account with label "testAccount" already exist""")
+    message should be( """an account with label "testAccount" already exist""")
   }
 
   test("When I close an account") {
     Given("an account actor and an account created with id 101")
-    val actorId = "AccountActor" + DateTime.now().getMillis
-    val eventLog = system.actorOf(LeveldbEventLog.props(logId = actorId, prefix = "test"))
-
-    val accountActor = system.actorOf(Props(new AccountActor(actorId, eventLog, new IdGeneratorFixed("101").next)))
+    val accountActor = system.actorOf(Props(new AccountActor(actorId("AccountActor"), eventLog, new IdGeneratorFixed("101").next)))
     accountActor ! CreateAccount("testAccount", "a note", 125)
 
     When("send a closed account command")
@@ -73,12 +55,7 @@ class AccountActorTest extends FunSuite with GivenWhenThen with BeforeAndAfterAl
 
   test("When I close an account that not exist") {
     Given("an account actor and an account created with id 101")
-    implicit val system = ActorSystem("budgetoTest4")
-    implicit val timeout = Timeout(10.seconds)
-    val actorId = "AccountActor" + DateTime.now().getMillis
-    val eventLog = system.actorOf(LeveldbEventLog.props(logId = actorId, prefix = "test"))
-
-    val accountActor = system.actorOf(Props(new AccountActor(actorId, eventLog, new IdGeneratorFixed("101").next)))
+    val accountActor = system.actorOf(Props(new AccountActor(actorId("AccountActor"), eventLog, new IdGeneratorFixed("101").next)))
     accountActor ! CreateAccount("testAccount", "a note", 125)
 
     When("send a closed account command")
@@ -86,17 +63,12 @@ class AccountActorTest extends FunSuite with GivenWhenThen with BeforeAndAfterAl
 
     Then("I expected to have a create account success and the account have te good value")
     val CloseAccountFailure(message, _) = Await.result(future, Duration.Inf)
-    message should be ("""account with id "102" not exist""")
+    message should be( """account with id "102" not exist""")
   }
 
   test("When I close an account that is already closed") {
     Given("an account actor and an account closed with id 101")
-    implicit val system = ActorSystem("budgetoTest")
-    implicit val timeout = Timeout(10.seconds)
-    val actorId = "AccountActor" + DateTime.now().getMillis
-    val eventLog = system.actorOf(LeveldbEventLog.props(logId = actorId, prefix = "test"))
-
-    val accountActor = system.actorOf(Props(new AccountActor(actorId, eventLog, new IdGeneratorFixed("101").next)))
+    val accountActor = system.actorOf(Props(new AccountActor(actorId("AccountActor"), eventLog, new IdGeneratorFixed("101").next)))
     accountActor ? CreateAccount("testAccount", "a note", 125)
     accountActor ? CloseAccount("101")
 
@@ -105,7 +77,7 @@ class AccountActorTest extends FunSuite with GivenWhenThen with BeforeAndAfterAl
 
     Then("I expected to have a create account success and the account have te good value")
     val CloseAccountFailure(message, _) = Await.result(future, Duration.Inf)
-    message should be ("""account with id "101" already closed""")
+    message should be( """account with id "101" already closed""")
   }
 
 }
