@@ -1,7 +1,5 @@
 package org.pmp.budgeto.domain
 
-import java.util.UUID
-
 import akka.actor.ActorRef
 import com.rbmhtechnology.eventuate.EventsourcedActor
 import org.joda.time.DateTime
@@ -16,69 +14,80 @@ case class Account(id: String, label: String, note: String, initialBalance: Doub
 /**
  * list of commands
  */
-case class PrintAccounts()
-
 case class CreateAccount(label: String, note: String, initialBalance: Double = 0)
 
-case class CloseAccount(id: String)
+case class CloseAccount(accountId: String)
 
 /**
  * replies on command
  */
 case class CreateAccountSuccess(account: Account)
 
-case class CreateAccountFailure(cause: Throwable)
+case class CreateAccountFailure(message: String, cause: Option[Throwable] = None)
 
-case class CloseAccountSuccess(id: String)
+case class CloseAccountSuccess(account: Account)
 
-case class CloseAccountFailure(cause: Throwable)
+case class CloseAccountFailure(message: String, cause: Option[Throwable] = None)
 
 /**
  * Events
  */
 case class AccountCreated(account: Account)
 
-case class AccountClosed(id: String)
+case class AccountClosed(account: Account)
 
 
-class AccountActor(override val id: String, override val eventLog: ActorRef) extends EventsourcedActor {
+class AccountActor(override val id: String, override val eventLog: ActorRef, idGenerator: () => String = new IdGenerator().next) extends EventsourcedActor {
 
   private val accounts: scala.collection.mutable.Map[String, Account] = scala.collection.mutable.Map.empty
-  private val closedAccounts: scala.collection.mutable.Map[String, Account] = scala.collection.mutable.Map.empty
+  private var labels: List[String] = List.empty
+  private var closedIds: List[String] = List.empty
 
-  override val onCommand: Receive = {
-    case PrintAccounts => {
-      println("accounts")
-      accounts.foreach { case (k, a) => println(s"\t$a") }
-      println("closedAccounts")
-      closedAccounts.foreach { case (k, a) => println(s"\t$a") }
+  def persistObject[T](obj: T, event: (T) => Any, onSuccess: (T) => Any, onFailure: (String, Option[Throwable]) => Any) = {
+    persist(event(obj)) {
+      case Success(e) =>
+        onEvent(e)
+        sender() ! onSuccess(obj)
+      case Failure(err) =>
+        sender() ! onFailure(err.getMessage, Some(err))
     }
-
-    case CreateAccount(label, note, initialBalance) => for {
-      account <- Account(UUID.randomUUID().toString, label, note, initialBalance, DateTime.now())
-    } persist(AccountCreated(account)) {
-        case Success(e) =>
-          onEvent(e)
-          sender() ! CreateAccountSuccess(account)
-        case Failure(err) =>
-          sender() ! CreateAccountFailure(err)
-      }
-
-    case CloseAccount(id) => for {
-      evt <- AccountClosed(id)
-    } persist(evt) {
-        case Success(e) =>
-          onEvent(e)
-          sender() ! CloseAccountSuccess(id)
-        case Failure(err) =>
-          sender() ! CloseAccountFailure(err)
-      }
   }
 
-}
+  override val onCommand: Receive = {
 
-override val onEvent: Receive = {
-case AccountCreated (account) => accounts.put (account.id, account)
-case AccountClosed (id) => closedAccounts.put (id, accounts.remove (id).get)
-}
+    case CreateAccount(label, note, initialBalance) => {
+      for {
+        labelExist <- if (labels.contains(label)) {
+          sender() ! CreateAccountFailure( s"""an account with label "${label}" already exist""")
+          None
+        } else Some(true)
+        account = Account(idGenerator(), label, note, initialBalance, DateTime.now())
+      } yield persistObject(account, AccountCreated, CreateAccountSuccess, CreateAccountFailure)
+    }
+
+    case CloseAccount(accountId) => {
+      for {
+        idNotExist <- if (accounts.get(accountId).isEmpty) {
+          sender() ! CloseAccountFailure( s"""account with id "${accountId}" not exist""")
+          None
+        } else Some(true)
+        alreadyClose <- if (closedIds.contains(accountId)) {
+          sender() ! CloseAccountFailure( s"""account with id "${accountId}" already closed""")
+          None
+        } else Some(true)
+        account <- accounts.get(accountId)
+      } yield persistObject(account, AccountClosed, CloseAccountSuccess, CloseAccountFailure)
+    }
+  }
+
+  override val onEvent: Receive = {
+    case AccountCreated(account) => {
+      labels = labels :+ account.label
+      accounts.put(account.id, account)
+    }
+    case AccountClosed(account) => {
+      closedIds = closedIds :+ account.id
+    }
+  }
+
 }

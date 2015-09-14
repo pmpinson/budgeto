@@ -2,7 +2,7 @@ package org.pmp.budgeto.domain
 
 import java.util.UUID
 
-import akka.actor.{Props, ActorRef}
+import akka.actor.{ActorRef, Props}
 import com.rbmhtechnology.eventuate.EventsourcedActor
 import org.joda.time.DateTime
 
@@ -36,8 +36,7 @@ case class AccountOperationCreated(accountId: String, operation: AccountOperatio
 
 class AccountOperationActor(override val id: String, override val eventLog: ActorRef) extends EventsourcedActor {
 
-  val system.actorOf(Props(new AccountActor("1", eventLog)))
-
+  private var activesAccounts: List[String] = List.empty
   private val accounts: scala.collection.mutable.Map[String, AccountOperations] = scala.collection.mutable.Map.empty
 
   override val onCommand: Receive = {
@@ -45,9 +44,11 @@ class AccountOperationActor(override val id: String, override val eventLog: Acto
       println("accounts operations")
       accounts.foreach { case (k, a) => {
         println(s"\t$a")
-        a.operations.foreach { case (kp, p) => println(s"\t\t$p")}
-      }}
+        a.operations.foreach { case (kp, p) => println(s"\t\t$p") }
+      }
+      }
     }
+
     case CreateAccountOperation(accountId, label, amount) => {
       val account = accounts.get(accountId)
       if (account.isDefined) {
@@ -63,8 +64,8 @@ class AccountOperationActor(override val id: String, override val eventLog: Acto
   }
 
   override val onEvent: Receive = {
-    case AccountCreated(account) => accounts.put(account.id, AccountOperations(account.id, account.initialBalance))
-    case AccountClosed(accountId) => accounts.remove(accountId)
+    case AccountCreated(account) => activesAccounts = activesAccounts :+ account.id
+    case AccountClosed(accountId) => activesAccounts = activesAccounts diff List(accountId)
     case AccountOperationCreated(accountId, operation) => {
       val account = accounts.get(accountId).get
       accounts.put(account.id, account.copy(balance = (account.balance + operation.amount), operations = account.operations + (operation.id -> operation)))
