@@ -1,13 +1,11 @@
-package org.pmp.budgeto.domain
-
-import java.nio.file.Paths
+package org.pmp.budgeto
 
 import akka.actor._
-import akka.pattern.ask
 import akka.util.Timeout
 import com.rbmhtechnology.eventuate.log.leveldb.LeveldbEventLog
+import org.pmp.budgeto.domain.account.AccountActor
+import org.pmp.budgeto.view.account.AccountViewActor
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 
 object Bootstrap extends App {
@@ -20,6 +18,6 @@ object Bootstrap extends App {
   system.actorOf(Props(new AccountActor("1", eventLog)))
   system.actorOf(Props(new AccountViewActor("2", eventLog)))
 
-//    on register shutdown system.terminate()
+  //    on register shutdown system.terminate()
 
 }

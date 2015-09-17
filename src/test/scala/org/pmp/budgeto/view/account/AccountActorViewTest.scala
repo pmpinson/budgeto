@@ -1,8 +1,10 @@
-package org.pmp.budgeto
+package org.pmp.budgeto.view.account
 
 import akka.actor.{ActorRef, Props}
 import akka.pattern.ask
+import org.pmp.budgeto.EventuateContext
 import org.pmp.budgeto.domain._
+import org.pmp.budgeto.domain.account._
 import org.scalatest.Inspectors._
 import org.scalatest.Matchers._
 
@@ -10,8 +12,8 @@ class AccountActorViewTest extends EventuateContext {
 
   var accountActor: ActorRef = null
   var accountViewActor: ActorRef = null
-  var accountId1:String = null
-  var accountId2:String = null
+  var accountId1: String = null
+  var accountId2: String = null
 
   override def setup = {
     accountActor = system.actorOf(Props(new AccountActor(actorId("AccountActor"), eventLog)))

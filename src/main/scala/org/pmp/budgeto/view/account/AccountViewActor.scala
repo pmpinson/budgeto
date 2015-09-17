@@ -1,35 +1,11 @@
-package org.pmp.budgeto.domain
+package org.pmp.budgeto.view.account
 
 import akka.actor.ActorRef
 import com.rbmhtechnology.eventuate.EventsourcedView
+import org.pmp.budgeto.domain.CommandFailure
+import org.pmp.budgeto.domain.account._
 
 import scala.collection.SortedSet
-
-/**
- * Objects
- */
-
-/**
- * list of commands
- */
-case class PrintAccounts()
-
-case class PrintClosedAccounts()
-
-case class PrintAccountOperations(accountId: String)
-
-/**
- * replies on command
- */
-case class PrintAccountsSuccess(accounts: List[Account])
-
-case class PrintClosedAccountsSuccess(accounts: List[Account])
-
-case class PrintAccountOperationsSuccess(operations: SortedSet[AccountOperation])
-
-/**
- * Events
- */
 
 class AccountViewActor(override val id: String, override val eventLog: ActorRef) extends EventsourcedView {
 

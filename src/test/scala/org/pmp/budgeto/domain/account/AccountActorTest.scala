@@ -1,7 +1,8 @@
-package org.pmp.budgeto
+package org.pmp.budgeto.domain.account
 
 import akka.actor.{ActorRef, Props}
 import akka.pattern.ask
+import org.pmp.budgeto.EventuateContext
 import org.pmp.budgeto.domain._
 import org.scalatest.Inspectors._
 import org.scalatest.Matchers._
@@ -127,15 +128,16 @@ class AccountActorTest extends EventuateContext {
 
     Then("I expected to have a faillure")
     val CreateAccountOperationSuccess(accountId, accountOperation) = waitFor(future)
-    accountId should be (accountId1)
+    accountId should be(accountId1)
     accountOperation should matchPattern {
       case AccountOperation(_, "an operation", 12500, _) =>
     }
     Then("a event with the operation have been sent")
     forExactly(1, expectedEvents) { case AccountOperationCreated(id, ope) => {
-      id should be (accountId1)
+      id should be(accountId1)
       ope should be(accountOperation)
-    }}
+    }
+    }
   }
 
 }
