@@ -6,6 +6,7 @@ import akka.actor.{ActorRef, Props}
 import com.rbmhtechnology.eventuate.EventsourcedActor
 import org.joda.time.DateTime
 
+import scala.collection.SortedSet
 import scala.util.{Failure, Success}
 
 /**
@@ -36,39 +37,29 @@ case class AccountOperationCreated(accountId: String, operation: AccountOperatio
 
 class AccountOperationActor(override val id: String, override val eventLog: ActorRef) extends EventsourcedActor {
 
-  private var activesAccounts: List[String] = List.empty
-  private val accounts: scala.collection.mutable.Map[String, AccountOperations] = scala.collection.mutable.Map.empty
+  private var accounts: List[String] = List.empty
 
   override val onCommand: Receive = {
-    case PrintAccountsOperations => {
-      println("accounts operations")
-      accounts.foreach { case (k, a) => {
-        println(s"\t$a")
-        a.operations.foreach { case (kp, p) => println(s"\t\t$p") }
-      }
-      }
-    }
-
     case CreateAccountOperation(accountId, label, amount) => {
-      val account = accounts.get(accountId)
-      if (account.isDefined) {
-        persist(AccountOperationCreated(accountId, AccountOperation(UUID.randomUUID().toString, label, amount, DateTime.now()))) {
-          case Success(evt) =>
-            onEvent(evt)
-            sender() ! CreateAccountOperationSuccess(account.get.balance)
-          case Failure(err) =>
-            sender() ! CreateAccountOperationFailure(err)
-        }
-      } else sender() ! CreateAccountOperationFailure(new IllegalArgumentException("Account not found"))
+//      val account = accounts.get(accountId)
+//      if (account.isDefined) {
+//        persist(AccountOperationCreated(accountId, AccountOperation(UUID.randomUUID().toString, label, amount, DateTime.now()))) {
+//          case Success(evt) =>
+//            onEvent(evt)
+//            sender() ! CreateAccountOperationSuccess(account.get.balance)
+//          case Failure(err) =>
+//            sender() ! CreateAccountOperationFailure(err)
+//        }
+//      } else sender() ! CreateAccountOperationFailure(new IllegalArgumentException("Account not found"))
     }
   }
 
   override val onEvent: Receive = {
-    case AccountCreated(account) => activesAccounts = activesAccounts :+ account.id
-    case AccountClosed(accountId) => activesAccounts = activesAccounts diff List(accountId)
+    case AccountCreated(account) => accounts = accounts :+ account.id
+    case AccountClosed(account) => accounts = accounts diff List(account.id)
     case AccountOperationCreated(accountId, operation) => {
-      val account = accounts.get(accountId).get
-      accounts.put(account.id, account.copy(balance = (account.balance + operation.amount), operations = account.operations + (operation.id -> operation)))
+//      val account = accounts.get(accountId).get
+//      accounts.put(account.id, account.copy(balance = (account.balance + operation.amount), operations = account.operations + (operation.id -> operation)))
     }
   }
 }

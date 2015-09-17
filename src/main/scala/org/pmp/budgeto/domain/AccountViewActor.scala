@@ -1,7 +1,7 @@
 package org.pmp.budgeto.domain
 
 import akka.actor.ActorRef
-import com.rbmhtechnology.eventuate.EventsourcedActor
+import com.rbmhtechnology.eventuate.{EventsourcedView, EventsourcedActor}
 
 /**
  * Objects
@@ -24,16 +24,14 @@ case class PrintClosedAccountsSuccess(accounts: List[Account])
  * Events
  */
 
-class AccountViewActor(override val id: String, override val eventLog: ActorRef) extends EventsourcedActor {
+class AccountViewActor(override val id: String, override val eventLog: ActorRef) extends EventsourcedView {
 
   private val accounts: scala.collection.mutable.Map[String, Account] = scala.collection.mutable.Map.empty
   private val closedAccounts: scala.collection.mutable.Map[String, Account] = scala.collection.mutable.Map.empty
 
-  def gg() = "ss"
-
   override val onCommand: Receive = {
     case PrintAccounts() => sender() ! PrintAccountsSuccess(accounts.values.toList)
-    case PrintClosedAccounts() => sender() ! PrintAccountsSuccess(closedAccounts.values.toList)
+    case PrintClosedAccounts() => sender() ! PrintClosedAccountsSuccess(closedAccounts.values.toList)
   }
 
   override val onEvent: Receive = {
@@ -41,7 +39,7 @@ class AccountViewActor(override val id: String, override val eventLog: ActorRef)
       accounts.put(account.id, account)
     }
     case AccountClosed(account) => {
-      accounts.remove(id)
+      accounts.remove(account.id)
       closedAccounts.put(account.id, account)
     }
   }
