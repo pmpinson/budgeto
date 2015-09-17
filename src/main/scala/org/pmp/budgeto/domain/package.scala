@@ -10,11 +10,11 @@ package object domain {
 
   trait EventuateActor extends EventsourcedActor {
 
-    def persistEvent[T](obj: T, event: (T) => Any, onSuccess: (T) => Any, onFailure: (String, Option[Throwable]) => Any) = {
-      persist(event(obj)) {
+    def persistEvent[OBJ](event: Any, onSuccess: Any, onFailure: (String, Option[Throwable]) => Any) = {
+      persist(event) {
         case Success(e) =>
           onEvent(e)
-          sender() ! onSuccess(obj)
+          sender() ! onSuccess
         case Failure(err) =>
           sender() ! onFailure(err.getMessage, Some(err))
       }

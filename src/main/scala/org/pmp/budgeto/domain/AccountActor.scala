@@ -50,7 +50,7 @@ class AccountActor(override val id: String, override val eventLog: ActorRef) ext
           None
         } else Some(true)
         account = Account(UUID.randomUUID().toString, label, note, initialBalance, DateTime.now())
-      } yield persistEvent(account, AccountCreated, CreateAccountSuccess, CommandFailure)
+      } yield persistEvent(AccountCreated(account), CreateAccountSuccess(account), CommandFailure)
     }
 
     case CloseAccount(accountId) => {
@@ -64,7 +64,7 @@ class AccountActor(override val id: String, override val eventLog: ActorRef) ext
           None
         } else Some(true)
         account <- accounts.get(accountId)
-      } yield persistEvent(account, AccountClosed, CloseAccountSuccess, CommandFailure)
+      } yield persistEvent(AccountClosed(account), CloseAccountSuccess(account), CommandFailure)
     }
   }
 
