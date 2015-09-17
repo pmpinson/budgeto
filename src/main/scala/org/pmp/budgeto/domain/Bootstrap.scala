@@ -17,36 +17,9 @@ object Bootstrap extends App {
 
   val eventLog = system.actorOf(LeveldbEventLog.props(logId = "accounts", prefix = "log"))
 
-  val accountActor = system.actorOf(Props(new AccountActor("1", eventLog)))
-  val operationActor = system.actorOf(Props(new AccountOperationActor("2", eventLog)))
+  system.actorOf(Props(new AccountActor("1", eventLog)))
+  system.actorOf(Props(new AccountViewActor("2", eventLog)))
 
-  for {
-    CreateAccountSuccess(checkingAccount) <- accountActor ? CreateAccount("Checking account", "account for current operation")
-
-  } yield {
-    accountActor ! CreateAccount("Book A", "account for saving and taxes")
-
-    for {
-      CreateAccountSuccess(sharedAccount) <- accountActor ? CreateAccount("Shared", "Account shared")
-    } yield {
-        accountActor ! PrintAccounts
-
-        println(s"the deleted SharedAccount $sharedAccount")
-        for {
-          CloseAccountSuccess(id) <- accountActor ? CloseAccount(sharedAccount.id)
-        } yield {
-          accountActor ! PrintAccounts
-
-          operationActor ! CreateAccountOperation(checkingAccount.id, "deposit 1", 150d)
-          operationActor ! CreateAccountOperation(checkingAccount.id, "deposit 2", 200d)
-          operationActor ! CreateAccountOperation(checkingAccount.id, "shopping", -75.5d)
-
-          accountActor ! PrintAccounts
-          operationActor ! PrintAccountsOperations
-        }
-      }
-  }
-
-//    system.terminate()
+//    on register shutdown system.terminate()
 
 }

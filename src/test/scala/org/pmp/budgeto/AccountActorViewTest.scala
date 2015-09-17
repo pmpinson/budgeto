@@ -9,25 +9,23 @@ import org.scalatest.Matchers._
 class AccountActorViewTest extends EventuateContext {
 
   var accountActor: ActorRef = null
-  var accountOperationActor: ActorRef = null
   var accountViewActor: ActorRef = null
   var accountId1:String = null
   var accountId2:String = null
 
   override def setup = {
     accountActor = system.actorOf(Props(new AccountActor(actorId("AccountActor"), eventLog)))
-    accountOperationActor = system.actorOf(Props(new AccountOperationActor(actorId("AccountActor"), eventLog)))
     accountViewActor = system.actorOf(Props(new AccountViewActor(actorId("AccountActor"), eventLog)))
 
     val CreateAccountSuccess(Account(resAccountId1, _, _, _, _, _)) = waitFor(accountActor ? CreateAccount("testAccount", "a note", 125))
     accountId1 = resAccountId1
-    waitFor(accountOperationActor ? CreateAccountOperation(accountId1, "ope 1", 150))
-    waitFor(accountOperationActor ? CreateAccountOperation(accountId1, "ope 2", 150))
-    waitFor(accountOperationActor ? CreateAccountOperation(accountId1, "ope 3", -20))
+    waitFor(accountActor ? CreateAccountOperation(accountId1, "ope 1", 150))
+    waitFor(accountActor ? CreateAccountOperation(accountId1, "ope 2", 150))
+    waitFor(accountActor ? CreateAccountOperation(accountId1, "ope 3", -20))
 
     val CreateAccountSuccess(Account(resAccountId2, _, _, _, _, _)) = waitFor(accountActor ? CreateAccount("testAccount2", "a note2", 2125))
     accountId2 = resAccountId2
-    waitFor(accountOperationActor ? CreateAccountOperation(accountId2, "ope x", 10000))
+    waitFor(accountActor ? CreateAccountOperation(accountId2, "ope x", 10000))
     waitFor(accountActor ? CloseAccount(resAccountId2))
 
     waitFor(accountActor ? CreateAccount("testAccount3", "bzzzzzz"))
