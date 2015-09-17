@@ -12,7 +12,9 @@ import scala.util.{Failure, Success}
 /**
  * Objects
  */
-case class AccountOperation(id: String, label: String, amount: Double, date: DateTime)
+case class AccountOperation(id: String, label: String, amount: Double, date: DateTime) extends Ordered[AccountOperation] {
+  override def compare(that: AccountOperation): Int = date.compareTo(that.date)
+}
 
 case class AccountOperations(id: String, balance: Double, operations: Map[String, AccountOperation] = Map.empty)
 
@@ -26,7 +28,7 @@ case class CreateAccountOperation(accountId: String, label: String, n: Double)
 /**
  * replies on command
  */
-case class CreateAccountOperationSuccess(balance: Double)
+case class CreateAccountOperationSuccess(accountId: String, operation: AccountOperation)
 
 case class CreateAccountOperationFailure(cause: Throwable)
 
@@ -35,31 +37,25 @@ case class CreateAccountOperationFailure(cause: Throwable)
  */
 case class AccountOperationCreated(accountId: String, operation: AccountOperation)
 
-class AccountOperationActor(override val id: String, override val eventLog: ActorRef) extends EventsourcedActor {
+class AccountOperationActor(override val id: String, override val eventLog: ActorRef) extends EventuateActor {
 
   private var accounts: List[String] = List.empty
 
   override val onCommand: Receive = {
     case CreateAccountOperation(accountId, label, amount) => {
-//      val account = accounts.get(accountId)
-//      if (account.isDefined) {
-//        persist(AccountOperationCreated(accountId, AccountOperation(UUID.randomUUID().toString, label, amount, DateTime.now()))) {
-//          case Success(evt) =>
-//            onEvent(evt)
-//            sender() ! CreateAccountOperationSuccess(account.get.balance)
-//          case Failure(err) =>
-//            sender() ! CreateAccountOperationFailure(err)
-//        }
-//      } else sender() ! CreateAccountOperationFailure(new IllegalArgumentException("Account not found"))
+      for {
+        idNotExist <- if (!accounts.contains(accountId)) {
+          sender() ! CommandFailure( s"""account with id "${accountId}" not exist""")
+          None
+        } else Some(true)
+        accountOperation = AccountOperation(UUID.randomUUID().toString, label, amount, DateTime.now())
+      } yield persistAndSend(AccountOperationCreated(accountId, accountOperation), CreateAccountOperationSuccess(accountId, accountOperation))
     }
   }
 
   override val onEvent: Receive = {
     case AccountCreated(account) => accounts = accounts :+ account.id
     case AccountClosed(account) => accounts = accounts diff List(account.id)
-    case AccountOperationCreated(accountId, operation) => {
-//      val account = accounts.get(accountId).get
-//      accounts.put(account.id, account.copy(balance = (account.balance + operation.amount), operations = account.operations + (operation.id -> operation)))
-    }
+    case AccountOperationCreated(_, _) => {}
   }
 }

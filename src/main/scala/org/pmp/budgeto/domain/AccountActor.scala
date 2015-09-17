@@ -11,7 +11,7 @@ import scala.util.{Failure, Success}
 /**
  * Objects
  */
-case class Account(id: String, label: String, note: String, initialBalance: Double, creationDate: DateTime)
+case class Account(id: String, label: String, note: String, initialBalance: Double, balance: Double, creationDate: DateTime)
 
 /**
  * list of commands
@@ -49,8 +49,8 @@ class AccountActor(override val id: String, override val eventLog: ActorRef) ext
           sender() ! CommandFailure( s"""an account with label "${label}" already exist""")
           None
         } else Some(true)
-        account = Account(UUID.randomUUID().toString, label, note, initialBalance, DateTime.now())
-      } yield persistEvent(AccountCreated(account), CreateAccountSuccess(account), CommandFailure)
+        account = Account(UUID.randomUUID().toString, label, note, initialBalance, initialBalance, DateTime.now())
+      } yield persistAndSend(AccountCreated(account), CreateAccountSuccess(account))
     }
 
     case CloseAccount(accountId) => {
@@ -64,7 +64,7 @@ class AccountActor(override val id: String, override val eventLog: ActorRef) ext
           None
         } else Some(true)
         account <- accounts.get(accountId)
-      } yield persistEvent(AccountClosed(account), CloseAccountSuccess(account), CommandFailure)
+      } yield persistAndSend(AccountClosed(account), CloseAccountSuccess(account), CommandFailure)
     }
   }
 
