@@ -1,6 +1,6 @@
 'use strict';
 
-define(['budgeto', 'angular', 'angular-mocks'], function(test, angular) {
+define(['budgeto', '../../../target/dist/app/lib/angular/angular.min', 'angular-mocks'], function(test, angular) {
 
     describe('Budgeto module', function () {
 

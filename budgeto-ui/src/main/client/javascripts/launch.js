@@ -3,6 +3,6 @@
 /**
 * bootstrap angular app
 */
-require(['angular', 'budgeto'], function(angular) {
+require(['../../target/dist/app/lib/angular/angular.min', 'budgeto'], function(angular) {
     angular.bootstrap(window.document, ['budgeto']);
 });

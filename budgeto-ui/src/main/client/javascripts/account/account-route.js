@@ -1,6 +1,6 @@
 'use strict';
 
-define(['angular', 'angular-ui-router'], function(angular) {
+define(['../../../target/dist/app/lib/angular/angular.min', 'angular-ui-router'], function(angular) {
 
     /**
      * route definition for account

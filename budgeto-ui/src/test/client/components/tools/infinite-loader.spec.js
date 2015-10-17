@@ -1,6 +1,6 @@
 'use strict';
 
-define(['components/tools/infinite-loader', 'angular', 'angular-mocks'], function(test, angular) {
+define(['components/tools/infinite-loader', '../../../../../target/dist/app/lib/angular/angular.min', 'angular-mocks'], function(test, angular) {
 
     describe('Budgeto infiniteLoader module', function () {
 

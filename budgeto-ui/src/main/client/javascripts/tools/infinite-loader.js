@@ -1,6 +1,6 @@
 'use strict';
 
-define(['angular'], function(angular) {
+define(['../../../target/dist/app/lib/angular/angular.min'], function(angular) {
 
     /**
     * define provider for manage infinite loader globaly

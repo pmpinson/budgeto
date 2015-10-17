@@ -1,6 +1,6 @@
 'use strict';
 
-define(['angular'], function(angular) {
+define(['../../../target/dist/app/lib/angular/angular.min'], function(angular) {
 
     var moduleDefinition = {
         name: 'budgeto.loading',

@@ -1,7 +1,7 @@
 'use strict';
 
-define(['angular', 'components/apis/apis', 'components/tools/infinite-loader', 'components/tools/modal-error',
-    'components/home/loading', 'components/home/home', 'components/home/home-route', 'components/account/account', 'components/account/account-route'
+define(['../../target/dist/app/lib/angular/angular.min', 'apis/apis', '../public/javascripts/tools/infinite-loader', '../public/javascripts/tools/modal-error',
+    '../public/javascripts/home/loading', '../public/javascripts/home/home', '../public/javascripts/home/home-route', '../public/javascripts/account/account', '../public/javascripts/account/account-route'
     ], function(angular, apis, infiniteLoader, modalError, loading, home, homeRoute, account, accountRoute) {
 
     // module definition
