@@ -1,38 +1,38 @@
 #! /usr/bin/env node
 // -*- js -*-
 
-"use strict";
+'use strict';
 
-var tools = require("./tools");
-var fs = require("fs");
-var yArgs = require("yargs");
+var tools = require('./tools');
+var fs = require('fs');
+var yArgs = require('yargs');
 
 var ARGS = yArgs
-    .usage("$0 sourcePath1:destPath1 [sourcePath2:destPath2] [options], sourcePath cqn a file or a glob expression, destPath the base of output path where output hierarchy is reproduce after processing")
-    .describe("e", "exclude files, can use glob expression")
-    .describe("v", "Print version number and exit.")
-    .describe("h", "Print help message.")
+    .usage('$0 sourcePath1:destPath1 [sourcePath2:destPath2] [options], sourcePath cqn a file or a glob expression, destPath the base of output path where output hierarchy is reproduce after processing')
+    .describe('e', 'exclude files, can use glob expression')
+    .describe('v', 'Print version number and exit.')
+    .describe('h', 'Print help message.')
 
-    .alias("e", "exclude")
-    .alias("v", "version")
-    .alias("h", "help")
+    .alias('e', 'exclude')
+    .alias('v', 'version')
+    .alias('h', 'help')
 
-    .string("e")
-    .boolean("v")
-    .boolean("h")
+    .string('e')
+    .boolean('v')
+    .boolean('h')
 
     .wrap(80)
 
     .argv;
 
 if (ARGS.noerr) {
-    throw "args no valide";
+    throw 'args no valide';
 }
 
 if (ARGS.version || ARGS.V) {
-//    var json = require("../package.json");
+//    var json = require('../package.json');
 //    console.log(json.name + ' ' + json.version);
-    console.log("resources 0.0.1");
+    console.log('resources 0.0.1');
     process.exit(0);
 }
 
@@ -44,7 +44,7 @@ if (ARGS.h || ARGS.help) {
 var directories = ARGS._.slice();
 
 if (directories === undefined || directories.length === 0) {
-    console.log("no directories defined");
+    console.log('no directories defined');
     process.exit(6);
 }
 

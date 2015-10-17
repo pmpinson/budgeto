@@ -1,20 +1,25 @@
-"use strict";
+'use strict';
 
-// Declare module
-var budgetoHomeRoute = angular.module("budgeto.home.route", [
-    "ngRoute"
-]);
+define(['angular', 'angular-ui-router'], function(angular) {
 
-budgetoHomeRoute.config(["$routeProvider", function ($routeProvider) {
-    $routeProvider
-        .when("/home", {
-            templateUrl: "components/home/home.html",
-            controller: "HomeCtrl",
-            reloadOnSearch: false
-        })
-        .when("/loading", {
-            templateUrl: "components/loading/loading.html",
-            controller: "LoadingCtrl"
-        })
-        .otherwise({redirectTo: "/home"});
-}]);
+    var moduleDefinition = {
+        name: 'budgeto.home.route',
+        dependencies: [
+            'ui.router'
+        ],
+        module: undefined
+    };
+
+    // Register angular module
+    moduleDefinition.module = angular.module(moduleDefinition.name, moduleDefinition.dependencies);
+
+    moduleDefinition.module.config(['$stateProvider', function ($stateProvider) {
+        $stateProvider
+            .state('home', {
+                templateUrl: 'components/home/home.html',
+                controller: 'HomeCtrl as homeCtrl'
+            });
+    }]);
+
+    return moduleDefinition;
+});

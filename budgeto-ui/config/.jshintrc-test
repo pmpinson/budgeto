@@ -15,7 +15,7 @@
     "nonbsp": true,
     "nonew": false,
     "plusplus": true,
-    "quotmark": false,
+    "quotmark": "single",
     "undef": true,
     "unused": true,
     "strict": true,
@@ -55,7 +55,8 @@
     "browser": true,
 
     "globals": {
-        "angular": true,
+        "define": true,
+        "require": true,
         "module": true,
         "inject": true
     }

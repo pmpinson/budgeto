@@ -1,25 +1,23 @@
-"use strict";
+'use strict';
 
-describe("Budgeto home-route module", function () {
-    var $route;
+define(['components/home/home-route', 'angular-mocks'], function() {
 
-    beforeEach(function () {
-        module("budgeto.home.route");
+    describe('Budgeto home-route module', function () {
+        var $state;
 
-        inject(function (_$route_) {
-            $route = _$route_;
+        beforeEach(function () {
+            module('budgeto.home.route');
+
+            inject(function (_$state_) {
+                $state = _$state_;
+            });
         });
+
+        it('$stateProvider add route home', inject(function () {
+            expect($state.get('home')).not.toBeNull();
+            expect($state.get('home').url).toBeUndefined();
+            expect($state.get('home').templateUrl).toBe('components/home/home.html');
+            expect($state.get('home').controller).toBe('HomeCtrl as homeCtrl');
+        }));
     });
-
-    it("$routeProvider add route home", inject(function () {
-        expect($route.routes["/home"]).not.toBeNull();
-        expect($route.routes["/home"].templateUrl).toBe("components/home/home.html");
-        expect($route.routes["/home"].controller).toBe("HomeCtrl");
-        expect($route.routes["/home"].reloadOnSearch).toBe(false);
-    }));
-
-    it("$routeProvider add route default", inject(function () {
-        expect($route.routes[null]).not.toBeNull();
-        expect($route.routes[null].redirectTo).toBe("/home");
-    }));
 });

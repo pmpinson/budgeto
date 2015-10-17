@@ -51,9 +51,12 @@
     "supernew": false,
     "validthis": false,
 
+    "jasmine": true,
+    "browser": true,
+
     "globals": {
-        "define": true,
-        "require": true,
-        "window": true
+        "browser": true,
+        "element": true,
+        "by": true
     }
 }

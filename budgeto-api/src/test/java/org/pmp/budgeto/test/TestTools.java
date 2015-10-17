@@ -1,7 +1,10 @@
 package org.pmp.budgeto.test;
 
+import org.mockito.Mockito;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Constructor;
 
 /**
@@ -50,6 +53,18 @@ public class TestTools {
         constructor.setAccessible(true);
         constructor.newInstance();
         constructor.setAccessible(false);
+    }
+
+    public static ServletRequestAttributes mockServletRequestAttributes() {
+        HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+        Mockito.when(request.getServerPort()).thenReturn(80);
+        Mockito.when(request.getScheme()).thenReturn("http");
+        Mockito.when(request.getServerName()).thenReturn("local");
+        Mockito.when(request.getContextPath()).thenReturn("myapp");
+        Mockito.when(request.getServletPath()).thenReturn("serv1");
+        Mockito.when(request.getRequestURI()).thenReturn("http://local:80/myapp/serv1");
+
+        return new ServletRequestAttributes(request);
     }
 
 }
