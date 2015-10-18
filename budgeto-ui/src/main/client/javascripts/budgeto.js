@@ -1,7 +1,7 @@
 'use strict';
 
-define(['../../target/dist/app/lib/angular/angular.min', 'apis/apis', '../public/javascripts/tools/infinite-loader', '../public/javascripts/tools/modal-error',
-    '../public/javascripts/home/loading', '../public/javascripts/home/home', '../public/javascripts/home/home-route', '../public/javascripts/account/account', '../public/javascripts/account/account-route'
+define(['angular', './apis/apis', './tools/infinite-loader', './tools/modal-error',
+    './home/loading', './home/home', './home/home-route', './account/account', './account/account-route'
     ], function(angular, apis, infiniteLoader, modalError, loading, home, homeRoute, account, accountRoute) {
 
     // module definition
@@ -23,7 +23,7 @@ define(['../../target/dist/app/lib/angular/angular.min', 'apis/apis', '../public
     /**
      * rest api url
      */
-    var BudgetoRestApiURL = 'http://localhost:9001/budgeto-api';
+    var BudgetoRestApiURL = '/mock/';
 
     /**
      * configuration of moment timezone

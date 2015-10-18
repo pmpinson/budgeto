@@ -12,6 +12,7 @@
     "ejs": "~2.3.3",
     "express": "~4.13.1",
     "less-middleware": "1.0.x",
+    "lodash": "^3.10.1",
     "morgan": "~1.6.1",
     "serve-favicon": "~2.3.0"
   },
@@ -50,49 +51,40 @@
     "yargs": "latest"
   },
   "scripts": {
-    "addBuild:dep": "bower --config.directory=app/lib --save-dev install",
+    "addBuild:dep": "bower --config.directory=src/main/client/lib --save-dev install",
     "postaddBuild:dep": "npm run build:dep",
-    "addDist:dep": "bower --config.directory=app/lib --save install",
+    "addDist:dep": "bower --config.directory=src/main/client/lib --save install",
     "postaddDist:dep": "npm run build:dep",
-    "build:dep": "mkdirp target && bower --config.directory=app/lib install",
-    "dist:dep": "mkdirp target/dist/app/lib && bower --production --config.directory=target/dist/app/lib install",
-
+    "build:dep": "mkdirp target && bower --config.directory=src/main/client/lib install",
+    "dist:dep": "mkdirp target/dist/src/main/client/lib && bower --production --config.directory=target/dist/src/main/client/lib install",
     "validate:html": "echo nothing",
     "build:html": "echo nothing",
     "dist:html": "mkdirp target/dist/app && node config/build/htmlmin.js app/**/*.html:target/dist",
-
     "validate:style": "lessc -l app/styles/styles.less",
     "build:style": "lessc app/styles/styles.less > app/styles/styles.css",
     "watch:style": "watch \"npm run build:style\" app/styles",
     "dist:style": "mkdirp target/dist/app/styles && lessc app/styles/styles.less | cssmin > target/dist/app/styles/styles.css",
-
-    "validate:script": "jshint --config config/.jshintrc --exclude app/lib/ app",
+    "validate:script": "jshint --config config/.jshintrc --exclude src/main/client/lib/ app",
     "build:script": "echo nothing",
     "watch:script": "watch \"npm run build:script\" app",
-    "dist:script": "mkdirp target/dist/app && jshint --config config/.jshintrc --exclude app/lib/ app && node config/build/uglify.js app/*.js:target/dist app/components/**/*.js:target/dist -e app/lib/*",
-
+    "dist:script": "mkdirp target/dist/app && jshint --config config/.jshintrc --exclude src/main/client/lib/ app && node config/build/uglify.js app/*.js:target/dist app/components/**/*.js:target/dist -e src/main/client/lib/*",
     "validate:image": "echo nothing",
     "build:image": "echo nothing",
     "dist:image": "mkdirp target/dist/app/images && node config/build/images.js app/**/*.gif:target/dist",
-
     "build": "npm run build:dep && npm run build:html && npm run build:style && npm run build:script && npm run build:image",
     "watch": "parallelshell \"npm run watch:style\" \"npm run watch:script\"",
     "dist": "rimraf target && npm run build && npm run test:dist && mkdirp target && rimraf target/bower_components && npm run dist:dep && npm run dist:html && npm run dist:style && npm run dist:script && npm run dist:image",
-
     "test:validate": "jshint --config config/.jshintrc-test test",
     "test:single": "rimraf target/coverage && rimraf target/test-results && karma start config/karma.conf.js --single-run",
     "test:dist": "rimraf target/coverage && rimraf target/test-results && karma start config/karma.dist.conf.js --single-run",
     "test:watch": "rimraf target/coverage && rimraf target/test-results && karma start config/karma.conf.js",
     "test": "npm run test:watch",
-
     "e2etest:validate": "jshint --config config/.jshintrc-e2e-test e2e-tests",
     "pree2etest:single": "webdriver-manager update",
     "e2etest:single": "protractor config/protractor.conf.js",
-
     "dev": "parallelshell \"npm run build:serve\" \"npm run watch\"",
     "live-reload": "live-reload --port 8999 app/",
     "open-browser": "opener http://localhost:9000/app",
-
     "build:serve": "npm run build && npm run open-browser & http-server -a localhost -p 9000 -c-1",
     "dist:serve": "npm run dist && npm run open-browser & http-server target/dist/ -a localhost -p 9000 -c-1",
     "start": "npm run dist:serve",

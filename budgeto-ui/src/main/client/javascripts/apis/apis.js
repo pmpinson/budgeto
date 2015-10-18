@@ -1,6 +1,6 @@
 'use strict';
 
-define(['../../../target/dist/app/lib/angular/angular.min', 'angular-resource'], function(angular) {
+define(['angular', 'angular-resource'], function(angular) {
 
     var moduleDefinition = {
         name: 'budgeto.apis',

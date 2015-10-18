@@ -1,6 +1,6 @@
 'use strict';
 
-define(['../../../target/dist/app/lib/angular/angular.min', '../apis/apis', '../tools/infinite-loader', '/loading', 'angular-ui-router'], function(angular, apis, infiniteLoader, loading) {
+define(['angular', '../apis/apis', '../tools/infinite-loader', './loading', 'angular-ui-router'], function(angular, apis, infiniteLoader, loading) {
 
     var moduleDefinition = {
         name: 'budgeto.home',

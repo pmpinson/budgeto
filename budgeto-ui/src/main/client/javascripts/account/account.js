@@ -1,6 +1,6 @@
 'use strict';
 
-define(['../../../target/dist/app/lib/angular/angular.min', '../apis/apis', '../tools/modal-error', 'angular-ui-router', 'angular-resource', 'angular-moment'],
+define(['angular', '../apis/apis', '../tools/modal-error', 'angular-ui-router', 'angular-resource', 'angular-moment'],
     function(angular, apis, modalError) {
 
     /**

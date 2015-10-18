@@ -1,6 +1,6 @@
 'use strict';
 
-define(['../../../target/dist/app/lib/angular/angular.min', '/utils', '../../../../../target/dist/app/lib/underscore/underscore-min', 'angular-ui-router', 'angular-bootstrap'], function(angular, utils, _) {
+define(['angular', './utils', 'underscore', 'angular-ui-router', 'angular-bootstrap'], function(angular, utils, _) {
 
     /**
      * controller for modal of global error message

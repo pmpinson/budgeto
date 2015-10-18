@@ -1,6 +1,6 @@
 'use strict';
 
-define(['../../../target/dist/app/lib/angular/angular.min', 'angular-ui-router'], function(angular) {
+define(['angular', 'angular-ui-router'], function(angular) {
 
     var moduleDefinition = {
         name: 'budgeto.home.route',
@@ -16,7 +16,7 @@ define(['../../../target/dist/app/lib/angular/angular.min', 'angular-ui-router']
     moduleDefinition.module.config(['$stateProvider', function ($stateProvider) {
         $stateProvider
             .state('home', {
-                templateUrl: 'components/home/home.html',
+                templateUrl: 'javascripts/home/home.html',
                 controller: 'HomeCtrl as homeCtrl'
             });
     }]);

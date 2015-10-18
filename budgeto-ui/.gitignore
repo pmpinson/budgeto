@@ -3,5 +3,5 @@
 target/
 node_modules/
 npm-debug.log
-/app/lib/
-/app/styles/styles.css
+src/main/client/lib/
+src/main/client/stylesheets/styles.css

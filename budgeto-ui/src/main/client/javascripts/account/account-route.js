@@ -1,24 +1,24 @@
 'use strict';
 
-define(['../../../target/dist/app/lib/angular/angular.min', 'angular-ui-router'], function(angular) {
+define(['angular', 'angular-ui-router'], function(angular) {
 
     /**
      * route definition for account
      */
     function AccountRouteDefinition($stateProvider) {
         $stateProvider.state('account', {
-            templateUrl: 'components/account/account.html',
+            templateUrl: 'javascripts/account/account.html',
             controller: 'AccountCtrl as accountCtrl'
         });
         $stateProvider.state('account.list', {
-            templateUrl: 'components/account/account-list.html',
+            templateUrl: 'javascripts/account/account-list.html',
             controller: 'AccountListCtrl as accountListCtrl'
         });
         $stateProvider.state('account.list.detail', {
             params: {
-                name:undefined,
+                name:undefined
             },
-            templateUrl: 'components/account/account-detail.html',
+            templateUrl: 'javascripts/account/account-detail.html',
             controller: 'AccountDetailCtrl as accountDetailCtrl'
         });
     }
