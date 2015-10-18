@@ -16,9 +16,7 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
         {pattern: 'src/main/client/lib/**/*.js', included: false},
-        {pattern: 'src/main/client/javascripts/budgeto.js', included: false},
         {pattern: 'src/main/client/javascripts/**/*.js', included: false},
-        {pattern: 'src/test/client/budgeto.spec.js', included: false},
         {pattern: 'src/test/client/**/*.spec.js', included: false},
         'src/main/client/javascripts/main.js',
         'src/test/client/main.js'
@@ -27,14 +25,14 @@ module.exports = function(config) {
 
     // list of files to exclude
     exclude: [
+        'src/main/client/javascripts/launch.js'
     ],
 
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-          //'src/main/client/budgeto.js': ['coverage'],
-          //'src/main/client/components/**/*.js': ['coverage']
+          'src/main/client/javascripts/**/*.js': ['coverage']
     },
 
 
@@ -42,11 +40,11 @@ module.exports = function(config) {
     reporters: ['progress', 'html', 'junit', 'coverage'],
 
     junitReporter: {
-      outputFile: 'target/test-results.xml'
+      outputDir: 'target/test-results'
     },
 
     htmlReporter: {
-      outputDir: 'target/test-results',
+      outputDir: 'target/test-results/html',
       focusOnFailures: true
     },
 
