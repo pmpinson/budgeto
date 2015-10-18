@@ -1,6 +1,6 @@
 'use strict';
 
-define(['components/home/home', 'angular-mocks'], function() {
+define(['javascripts/home/home', 'angular-mocks'], function() {
 
     describe('Budgeto home module', function () {
         var $rootScope;

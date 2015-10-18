@@ -1,13 +1,13 @@
 'use strict';
 
-define(['components/apis/apis', 'angular-mocks'], function() {
+define(['javascripts/apis/apis', 'angular-mocks'], function() {
 
     describe('Budgeto apis module', function () {
         var apis = {
             'links': [
                 {
                     'rel': 'self',
-                    'href': 'test/components/apis/apis.json'
+                    'href': 'test/template/apis/apis.json'
                 },
                 {
                     'rel': 'api1',
@@ -127,7 +127,7 @@ define(['components/apis/apis', 'angular-mocks'], function() {
                 var deferred = $q.defer();
                 deferred.resolve(apis);
                 spyOn(ApisResource, 'all').and.returnValue(deferred.promise);
-                ApiServiceProviderMock.setUrl('test/components/apis/apis.json');
+                ApiServiceProviderMock.setUrl('test/template/apis/apis.json');
                 var ApiService = ApiServiceProviderMock.$get[2]($log, ApisResource);
                 spyOn(ApiService, 'loadApis').and.callThrough();
 
@@ -138,7 +138,7 @@ define(['components/apis/apis', 'angular-mocks'], function() {
                  });
                 $rootScope.$apply();
 
-                expect(ApisResource.all).toHaveBeenCalledWith('test/components/apis/apis.json');
+                expect(ApisResource.all).toHaveBeenCalledWith('test/template/apis/apis.json');
                 expect(ApiService.loadApis).toHaveBeenCalledWith(apis);
             }));
         });

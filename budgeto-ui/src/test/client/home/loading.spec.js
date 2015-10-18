@@ -1,6 +1,6 @@
 'use strict';
 
-define(['components/home/loading', 'angular-mocks'], function() {
+define(['javascripts/home/loading', 'angular-mocks'], function() {
 
     describe('Budgeto loading module', function () {
 

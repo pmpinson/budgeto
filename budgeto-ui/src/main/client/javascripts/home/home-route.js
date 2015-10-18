@@ -16,7 +16,7 @@ define(['angular', 'angular-ui-router'], function(angular) {
     moduleDefinition.module.config(['$stateProvider', function ($stateProvider) {
         $stateProvider
             .state('home', {
-                templateUrl: 'javascripts/home/home.html',
+                templateUrl: 'template/home/home.html',
                 controller: 'HomeCtrl as homeCtrl'
             });
     }]);

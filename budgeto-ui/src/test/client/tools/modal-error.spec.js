@@ -1,6 +1,6 @@
 'use strict';
 
-define(['components/tools/modal-error', 'angular-mocks'], function() {
+define(['javascripts/tools/modal-error', 'angular-mocks'], function() {
 
     describe('Budgeto modalError module', function () {
 
@@ -94,7 +94,7 @@ define(['components/tools/modal-error', 'angular-mocks'], function() {
             }));
 
             it('open method open a modal', inject(function ($modalError) {
-                $httpBackend.whenGET('components/tools/modal-error.html').respond('<div></div>');
+                $httpBackend.whenGET('template/tools/modal-error.html').respond('<div></div>');
 
                 var options = {val:'myval'};
                 spyOn($modalError, 'prepareOptions').and.callThrough();
@@ -103,7 +103,7 @@ define(['components/tools/modal-error', 'angular-mocks'], function() {
                 expect(modalInstance).not.toBeNull();
                 expect($modal.open).toHaveBeenCalledWith({
                     controller: 'ModalErrorInstanceCtrl as modalErrorInstanceCtrl',
-                    templateUrl: 'components/tools/modal-error.html',
+                    templateUrl: 'template/tools/modal-error.html',
                     resolve: {
                         modalOptions: jasmine.any(Function)
                     }
@@ -139,7 +139,7 @@ define(['components/tools/modal-error', 'angular-mocks'], function() {
             }));
 
             it('closed method redirect to home', inject(function ($modalError) {
-                $httpBackend.whenGET('components/tools/modal-error.html').respond('<div></div>');
+                $httpBackend.whenGET('template/tools/modal-error.html').respond('<div></div>');
                 var modalInstance = $modalError.open();
                 $httpBackend.flush();
                 spyOn(modalInstance, 'dismiss').and.callThrough();
@@ -152,7 +152,7 @@ define(['components/tools/modal-error', 'angular-mocks'], function() {
             }));
 
             it('closed by escape or backdrop redirect to home', inject(function ($modalError) {
-                $httpBackend.whenGET('components/tools/modal-error.html').respond('<div></div>');
+                $httpBackend.whenGET('template/tools/modal-error.html').respond('<div></div>');
                 var modalInstance = $modalError.open();
                 $httpBackend.flush();
                 spyOn(modalInstance, 'close').and.callThrough();
@@ -172,7 +172,7 @@ define(['components/tools/modal-error', 'angular-mocks'], function() {
             }));
 
             it('manageError function help to get good information on modal', inject(function ($modalError) {
-                $httpBackend.whenGET('components/tools/modal-error.html').respond('<div></div>');
+                $httpBackend.whenGET('template/tools/modal-error.html').respond('<div></div>');
                 spyOn($log, 'error').and.callThrough();
                 spyOn($modalError, 'open').and.callThrough();
 
@@ -184,7 +184,7 @@ define(['components/tools/modal-error', 'angular-mocks'], function() {
             }));
 
             it('manageError function with params help to get good information on modal', inject(function ($modalError) {
-                $httpBackend.whenGET('components/tools/modal-error.html').respond('<div></div>');
+                $httpBackend.whenGET('template/tools/modal-error.html').respond('<div></div>');
                 spyOn($log, 'error').and.callThrough();
                 spyOn($modalError, 'open').and.callThrough();
 

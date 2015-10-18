@@ -1,17 +1,19 @@
 'use strict';
 
-define(['budgeto', '../../../target/dist/app/lib/angular/angular.min', 'angular-mocks'], function(test, angular) {
+define(['javascripts/budgeto', 'angular', 'angular-mocks'], function(test, angular) {
 
     describe('Budgeto module', function () {
 
         describe('constants configuration', function () {
 
             beforeEach(function () {
-                module('budgeto');
+                module('budgeto', function($provide) {
+                    $provide.constant('BudgetoRestApiURL', '/mock-test');
+                });
             });
 
             it('BudgetoRestApiURL to be correct', inject(function (BudgetoRestApiURL) {
-                expect(BudgetoRestApiURL).toEqual('http://localhost:9001/budgeto-api');
+                expect(BudgetoRestApiURL).toEqual('/mock-test');
             }));
 
             it('moment tz to be correct', inject(function (angularMomentConfig) {
@@ -72,8 +74,8 @@ define(['budgeto', '../../../target/dist/app/lib/angular/angular.min', 'angular-
                 expect($infiniteLoader.config().getMessage()).toBe('Work in progress. Pleas wait...');
             }));
 
-            it('ApiServiceProvider take url', inject(function (ApiService) {
-                expect(ApiService.config().getUrl()).toBe('http://localhost:9001/budgeto-api');
+            it('ApiServiceProvider take url', inject(function (BudgetoRestApiURL, ApiService) {
+                expect(ApiService.config().getUrl()).toBe(BudgetoRestApiURL);
             }));
 
             it('LoadingService take services', inject(function (LoadingService) {

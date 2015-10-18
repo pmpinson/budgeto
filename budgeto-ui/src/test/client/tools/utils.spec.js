@@ -1,6 +1,6 @@
 'use strict';
 
-define(['components/tools/utils'], function(utils) {
+define(['javascripts/tools/utils'], function(utils) {
 
     describe('Budgeto utils module', function () {
 

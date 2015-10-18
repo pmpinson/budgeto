@@ -74,7 +74,7 @@ define(['angular', './utils', 'underscore', 'angular-ui-router', 'angular-bootst
                 $modalError.open = function (options) {
                     modalInstance = $modal.open({
                         controller: 'ModalErrorInstanceCtrl as modalErrorInstanceCtrl',
-                        templateUrl: 'components/tools/modal-error.html',
+                        templateUrl: 'template/tools/modal-error.html',
                         resolve: {
                             modalOptions: function () {
                                 return $modalError.prepareOptions(options);

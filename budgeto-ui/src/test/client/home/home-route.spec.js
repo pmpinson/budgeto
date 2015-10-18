@@ -1,6 +1,6 @@
 'use strict';
 
-define(['components/home/home-route', 'angular-mocks'], function() {
+define(['javascripts/home/home-route', 'angular-mocks'], function() {
 
     describe('Budgeto home-route module', function () {
         var $state;
@@ -16,7 +16,7 @@ define(['components/home/home-route', 'angular-mocks'], function() {
         it('$stateProvider add route home', inject(function () {
             expect($state.get('home')).not.toBeNull();
             expect($state.get('home').url).toBeUndefined();
-            expect($state.get('home').templateUrl).toBe('components/home/home.html');
+            expect($state.get('home').templateUrl).toBe('template/home/home.html');
             expect($state.get('home').controller).toBe('HomeCtrl as homeCtrl');
         }));
     });

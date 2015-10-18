@@ -15,13 +15,13 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      {pattern: 'app/lib/**/*.js', included: false},
-      {pattern: 'app/budgeto.js', included: false},
-      {pattern: 'app/components/**/*.js', included: false},
-      {pattern: 'test/budgeto.spec.js', included: false},
-      {pattern: 'test/components/**/*.spec.js', included: false},
-      'app/main.js',
-      'test/main.js'
+        {pattern: 'src/main/client/lib/**/*.js', included: false},
+        {pattern: 'src/main/client/javascripts/budgeto.js', included: false},
+        {pattern: 'src/main/client/javascripts/**/*.js', included: false},
+        {pattern: 'src/test/client/budgeto.spec.js', included: false},
+        {pattern: 'src/test/client/**/*.spec.js', included: false},
+        'src/main/client/javascripts/main.js',
+        'src/test/client/main.js'
     ],
 
 
@@ -33,8 +33,8 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-          'app/budgeto.js': ['coverage'],
-          'app/components/**/*.js': ['coverage']
+          //'src/main/client/budgeto.js': ['coverage'],
+          //'src/main/client/components/**/*.js': ['coverage']
     },
 
 

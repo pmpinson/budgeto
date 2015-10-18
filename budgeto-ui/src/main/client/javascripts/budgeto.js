@@ -23,7 +23,8 @@ define(['angular', './apis/apis', './tools/infinite-loader', './tools/modal-erro
     /**
      * rest api url
      */
-    var BudgetoRestApiURL = '/mock/';
+    var BudgetoRestApiURL = '/mock';
+    //var BudgetoRestApiURL = 'http://localhost:9001/budgeto-api';
 
     /**
      * configuration of moment timezone

@@ -15,13 +15,12 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      {pattern: 'app/lib/**/*.js', included: false},
-      {pattern: 'app/budgeto.js', included: false},
-      {pattern: 'app/components/**/*.js', included: false},
-      {pattern: 'test/budgeto.spec.js', included: false},
-      {pattern: 'test/components/**/*.spec.js', included: false},
-      'app/main.js',
-      'test/main.js'
+        {pattern: 'src/main/client/lib/**/*.js', included: false},
+        {pattern: 'src/main/client/javascripts/**/*.js', included: false},
+        {pattern: 'src/test/client/budgeto.spec.js', included: false},
+        {pattern: 'src/test/client/**/*.spec.js', included: false},
+        'src/main/client/javascripts/main.js',
+        'src/test/client/main.js'
     ],
 
 
@@ -75,7 +74,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome', 'Firefox', 'PhantomJS'],
+    browsers: ['PhantomJS'],
 
 
     // Continuous Integration mode

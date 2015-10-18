@@ -1,6 +1,6 @@
 'use strict';
 
-define(['components/account/account', 'angular-mocks'], function() {
+define(['javascripts/account/account', 'angular-mocks'], function() {
 
     describe('Budgeto account module', function () {
 

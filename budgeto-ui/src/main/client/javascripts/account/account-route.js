@@ -7,18 +7,18 @@ define(['angular', 'angular-ui-router'], function(angular) {
      */
     function AccountRouteDefinition($stateProvider) {
         $stateProvider.state('account', {
-            templateUrl: 'javascripts/account/account.html',
+            templateUrl: 'template/account/account.html',
             controller: 'AccountCtrl as accountCtrl'
         });
         $stateProvider.state('account.list', {
-            templateUrl: 'javascripts/account/account-list.html',
+            templateUrl: 'template/account/account-list.html',
             controller: 'AccountListCtrl as accountListCtrl'
         });
         $stateProvider.state('account.list.detail', {
             params: {
                 name:undefined
             },
-            templateUrl: 'javascripts/account/account-detail.html',
+            templateUrl: 'template/account/account-detail.html',
             controller: 'AccountDetailCtrl as accountDetailCtrl'
         });
     }
