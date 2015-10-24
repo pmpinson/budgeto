@@ -3,21 +3,23 @@ import '../../../node_modules/bootstrap/dist/css/bootstrap.css';
 import angular from 'angular';
 
 import messageService from './message-service';
+import loading from './loading/loading';
 import apis from './apis/apis';
 import home from './home/home';
 
 /**
  * BudgetoRun : call to the init app page
  */
-function RunBudgeto($state, $rootScope, $log) {
+function RunBudgeto($state, $rootScope, $log, loadingService) {
     $log.debug('budgeto', 'init application');
     $rootScope.MessageService = messageService;
+    loadingService.add('apisService');
     $state.transitionTo('home');
 }
-RunBudgeto.$inject = ['$state', '$rootScope', '$log', 'MessageService'];
+RunBudgeto.$inject = ['$state', '$rootScope', '$log', 'loadingService'];
 
-angular.module('budgeto', [apis, home])
-    .constant('budgetoRestApiURL', '/mock')
+angular.module('budgeto', [loading, apis, home])
+    .constant('budgetoRestApiURL', require('./mock/apis.json'))
     //.constant('budgetoRestApiURL', 'http://localhost:9001/budgeto-api')
     .constant('MessageService', messageService)
     .run(RunBudgeto);

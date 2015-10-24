@@ -7,8 +7,7 @@ function HomeRoute($stateProvider) {
     $stateProvider
         .state('home', {
             templateUrl: require('./home.html'),
-            controller: 'homeController',
-            controllerAs: 'homeCtrl'
+            controller: 'homeController as homeCtrl'
         });
 }
 

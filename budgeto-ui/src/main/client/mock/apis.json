@@ -1,0 +1,5 @@
+{"links": [
+  {"rel": "self", "href": "http://localhost:8080/mock/apis.json"},
+  {"rel": "account", "href": "http://localhost:8080/mock/account.json"},
+  {"rel": "budget", "href": "http://localhost:8080/mock/budget.json"}
+]}

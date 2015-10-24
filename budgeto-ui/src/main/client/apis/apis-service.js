@@ -28,15 +28,15 @@ class ApisService {
                 this.apis.push(data.links[key]);
             }
         }
-        this.$log.debug('ApisService', 'available apis', apis);
+        this.$log.debug('ApisService', 'available apis', this.apis);
     }
 
     all() {
-        return apis;
+        return this.apis;
     }
 
     get(rel) {
-        return this.getLink(rel, apis);
+        return this.getLink(rel, this.apis);
     }
 
     getLink(rel, links) {

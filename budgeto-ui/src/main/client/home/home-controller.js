@@ -3,20 +3,22 @@
  */
 class HomeController {
 
-    constructor($log, $state, loadingService) {//, ApiService, $infiniteLoader) {
+    constructor($log, $state, loadingService, apisService) {//, $infiniteLoader) {
         this.$state = $state;
         this.$log = $log;
-        //this.ApiService = ApiService;
+        this.apisService = apisService;
         //this.$infiniteLoader = $infiniteLoader;
-        this.LoadingService = loadingService;
+        this.loadingService = loadingService;
+
         this.loadFail = false;
+        this.apis = [];
 
         var self = this;
         this.$log.debug('HomeController', 'start loading service');
-        this.LoadingService.load().then(function (data) {
+        this.loadingService.load().then(function (data) {
             self.$log.debug('HomeController', 'loading done');
             //$infiniteLoader.hide();
-            //that.apis = ApiService.findAll();
+            self.apis = self.apisService.all();
             return data;
         }).catch(function (reason) {
             self.$log.error('HomeController', 'error getting apis /', reason);
