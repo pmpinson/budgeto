@@ -1,3 +1,8 @@
+/**
+ * Define routes for home module
+ * @param $stateProvider
+ * @constructor
+ */
 function HomeRoute($stateProvider) {
     $stateProvider
         .state('home', {
@@ -6,7 +11,5 @@ function HomeRoute($stateProvider) {
             controllerAs: 'homeCtrl'
         });
 }
-
-HomeRoute.$inject = ['$stateProvider'];
 
 export default HomeRoute;

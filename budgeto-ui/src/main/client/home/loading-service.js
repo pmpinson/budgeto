@@ -1,7 +1,5 @@
-import angular from 'angular';
-
 /**
- * provider to manage loading of application
+ * Service to manage loading of all necessary services before start
  */
 class LoadingService {
 
@@ -13,26 +11,33 @@ class LoadingService {
         this.promise = undefined;
     }
 
+    /**
+     * Add a new service
+     * @param value
+     */
     add(value) {
         this.servicesNames.push(value);
     }
 
-    config() {
-        return {
-            getServicesNames: function () {
-                return this.servicesNames;
-            }
-        };
+    /**
+     * get actuals configured services
+     * @returns {Array}
+     */
+    getServicesNames() {
+        return this.servicesNames;
     }
 
+    /**
+     * load all registered service
+     * @returns {promise|IPromise<any>}
+     */
     load() {
-        console.log(4)
         if (this.promise === undefined) {
             this.$log.debug('LoadingService', 'load delayed services');
 
             if (this.servicesNames.length !== 0) {
-
                 var servicesPromises = [];
+
                 for (var key in this.servicesNames) {
                     servicesPromises.push(this.$injector.get(this.servicesNames[key]).load());
                 }
@@ -43,10 +48,9 @@ class LoadingService {
                 deferred.resolve(true);
             }
         }
+
         return this.promise;
     }
 }
-
-LoadingService.$inject = ['$log', '$q', '$injector'];
 
 export default LoadingService;

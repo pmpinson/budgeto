@@ -2,56 +2,24 @@ import '../../../node_modules/bootstrap/dist/css/bootstrap.css';
 
 import angular from 'angular';
 
-import apiService from './apis/apis';
-
-import home from './home/index';
-
-/**
-  * config of apis provider
-  */
-function ApisServiceConfig(ApisServiceProvider, budgetoRestApiURL) {
-    ApisServiceProvider.setUrl(budgetoRestApiURL);
-}
-ApisServiceConfig.$inject = ['apisServiceProvider', 'budgetoRestApiURL'];
-
-/**
- * messages
- */
-var messages = {
-    applicationInitFail: 'Erreur during initialisation. Come back later. So Sorry...',
-    infiniteLoaderMsg: 'Work in progress. Pleas wait...',
-    apisLinks: {
-        account: 'Go manage your accounts',
-        budget: 'Go to prepare your budget'
-    },
-    apisTitles: {
-        account: 'Manage your accounts',
-        budget: 'Prepare your budget'
-    },
-    homeTitle: 'Welcome to budgeto',
-    homeLink: 'Go back to home',
-    modalError: {
-       title: 'An error occured, please advice us.',
-       detail: 'Error detail',
-       close: 'Close'
-   }
-};
+import messageService from './message-service';
+import apis from './apis/apis';
+import home from './home/home';
 
 /**
  * BudgetoRun : call to the init app page
  */
-function RunBudgeto($state, $rootScope, $log, MessageService) {
+function RunBudgeto($state, $rootScope, $log) {
     $log.debug('budgeto', 'init application');
-    $rootScope.MessageService = MessageService;
+    $rootScope.MessageService = messageService;
     $state.transitionTo('home');
 }
 RunBudgeto.$inject = ['$state', '$rootScope', '$log', 'MessageService'];
 
-angular.module('budgeto', [apiService, home])
+angular.module('budgeto', [apis, home])
     .constant('budgetoRestApiURL', '/mock')
     //.constant('budgetoRestApiURL', 'http://localhost:9001/budgeto-api')
-    .constant('MessageService', messages)
-    .config(ApisServiceConfig)
+    .constant('MessageService', messageService)
     .run(RunBudgeto);
 //
 //    /**
