@@ -46,6 +46,7 @@
     "htmlmin": "latest",
     "http-server": "latest",
     "jasmine-reporters": "latest",
+    "jscs": "^2.3.5",
     "jshint": "latest",
     "karma": "latest",
     "karma-chrome-launcher": "latest",
