@@ -6,6 +6,7 @@ import messageService from './message-service';
 import loading from './loading/loading';
 import apis from './apis/apis';
 import home from './home/home';
+import account from './account/account';
 
 /**
  * BudgetoRun : call to the init app page
@@ -18,7 +19,7 @@ function RunBudgeto($state, $rootScope, $log, loadingService) {
 }
 RunBudgeto.$inject = ['$state', '$rootScope', '$log', 'loadingService'];
 
-angular.module('budgeto', [loading, apis, home])
+angular.module('budgeto', [loading, apis, home, account])
     .constant('budgetoRestApiURL', require('./mock/apis.json'))
     //.constant('budgetoRestApiURL', 'http://localhost:9001/budgeto-api')
     .constant('MessageService', messageService)
