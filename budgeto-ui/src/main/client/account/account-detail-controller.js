@@ -1,5 +1,5 @@
 /**
- * Account defailt controller
+ * Account detail controller
  */
 class AccountDetailController {
 
@@ -10,7 +10,7 @@ class AccountDetailController {
 
         this.$log.debug('AccountDetailController load');
 
-        this.account = this.$scope.accountListCtrl.account;
+        this.account = this.$scope.accountCtrl.account;
         this.operations = [];
 
         var self = this;

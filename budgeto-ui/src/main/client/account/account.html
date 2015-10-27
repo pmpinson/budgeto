@@ -1,5 +1,7 @@
 <div class="page-header">
     <h1>{{MessageService.apisTitles['account']}}</h1>
 </div>
-<div data-ui-view></div>
+<select data-ng-model="accountCtrl.account" data-ng-options="account as account.name for account in accountCtrl.accounts">
+</select>
+<ui-view></ui-view>
 <a data-ng-click="accountCtrl.home()">{{MessageService.homeLink}}</a>
