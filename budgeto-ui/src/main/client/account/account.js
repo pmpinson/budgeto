@@ -27,16 +27,3 @@ export default angular.module('budgeto.account', [uirouter, angularResource, api
     .controller('accountDetailController', accountDetailController)
     .config(accountRoute)
     .name;
-
-//// module definition
-//var moduleDefinition = {
-//    name: 'budgeto.account',
-//    dependencies: [
-//        'ui.router',
-//        'ngResource',
-//        'angularMoment',
-//        apis.name,
-//        modalError.name
-//    ],
-//    module: undefined
-//};
