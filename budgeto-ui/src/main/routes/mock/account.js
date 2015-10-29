@@ -35,11 +35,9 @@ module.exports = function (router) {
         res.json(accounts(req));
     });
     router.get('/account/:acount_name', function (req, res, next) {
-        console.log(req.params.acount_name, _.find(accounts(req), {name: req.params.acount_name}));
         res.json(_.find(accounts(req), {name: req.params.acount_name}));
     });
     router.get('/account/:acount_name/operations', function (req, res, next) {
-        console.log(req.params.acount_name, _.find(accounts(req), {name: req.params.acount_name}));
         res.json(_.find(accounts(req), {name: req.params.acount_name}).operations);
     });
 };
