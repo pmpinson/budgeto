@@ -1,4 +1,3 @@
-/* eslint no-console: 0 */
 import path from 'path';
 import express from 'express';
 import favicon from 'serve-favicon';
@@ -49,7 +48,7 @@ app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 
 app.use(express.static(publicFiles));
@@ -91,4 +90,4 @@ if (isDeveloping) {
     });
 }
 
-module.exports = app;
+export default app;

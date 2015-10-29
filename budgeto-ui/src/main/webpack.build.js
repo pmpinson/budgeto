@@ -1,7 +1,6 @@
-/**
- * Webpack config for builds
- */
-module.exports = require('./webpack.make.js')({
+import make from './webpack.make';
+
+export default make({
   BUILD: true,
   TEST: false
 });

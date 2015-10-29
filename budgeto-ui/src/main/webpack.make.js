@@ -1,13 +1,10 @@
-'use strict';
-
-// Modules
-var webpack = require('webpack');
-var path = require('path');
+import webpack from 'webpack';
+import path from 'path';
 //var autoprefixer = require('autoprefixer-core');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
 
-module.exports = function makeWebpackConfig (options) {
+function makeWebpackConfig(options) {
   /**
    * Environment type
    * BUILD is for generating minified builds
@@ -229,3 +226,5 @@ module.exports = function makeWebpackConfig (options) {
 
   return config;
 };
+
+export default makeWebpackConfig;
