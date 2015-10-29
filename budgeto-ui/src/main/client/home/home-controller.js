@@ -1,42 +1,48 @@
+/**
+ * Home controller
+ */
 class HomeController {
 
-    constructor($log, $state, loadingService) {//, ApiService, $infiniteLoader) {
-        this.state = $state;
-        this.log = $log;
-        //this.ApiService = ApiService;
+    constructor($log, $state, loadingService, apisService) {//, $infiniteLoader) {
+        this.$state = $state;
+        this.$log = $log;
+        this.apisService = apisService;
         //this.$infiniteLoader = $infiniteLoader;
-        this.LoadingService = loadingService;
+        this.loadingService = loadingService;
 
         this.loadFail = false;
-        this.log.debug('HomeController', 'start loading service');
+        this.apis = [];
 
         var self = this;
-        this.LoadingService.load().then(function (data) {
-            self.log.debug('HomeController', 'loading done');
+        this.$log.debug('HomeController', 'start loading service');
+        this.loadingService.load().then(function (data) {
+            self.$log.debug('HomeController', 'loading done');
             //$infiniteLoader.hide();
-            //that.apis = ApiService.findAll();
+            self.apis = self.apisService.all();
             return data;
         }).catch(function (reason) {
-            self.log.error('HomeController', 'error getting apis /', reason);
+            self.$log.error('HomeController', 'error getting apis /', reason);
             self.loadFail = true;
             //$infiniteLoader.hide();
         });
     }
 
+    /**
+     * change current path
+     * @param path
+     * @returns {promise|IPromise<any>|void}
+     */
     changePath(path) {
-        var destination = path;
-        if (destination === undefined) {
-            destination = 'home';
-        }
-        try {
-            return this.state.go(destination);
-        } catch (exception) {
-            this.log.error('HomeController', 'unknown path', path, ':', exception);
-            return this.state.go('home');
-        }
-    };
-}
+        var destination = (path === undefined) ? 'home' : path;
 
-HomeController.$inject = ['$log', '$state', 'loadingService'];
+        try {
+            return this.$state.go(destination);
+        } catch (exception) {
+            this.$log.error('HomeController', 'unknown path', path, ':', exception);
+
+            return this.$state.go('home');
+        }
+    }
+}
 
 export default HomeController;
