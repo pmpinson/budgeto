@@ -1,12 +1,14 @@
 /**
- * Account defailt controller
+ * Account detail controller
  */
 class AccountDetailController {
 
-    constructor($log, $scope, accountService) {
+    constructor($log, $scope, accountService, myAccount) {
         this.$log = $log;
         this.$scope = $scope;
         this.accountService = accountService;
+
+        console.log(myAccount);
 
         this.$log.debug('AccountDetailController load');
 

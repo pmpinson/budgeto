@@ -2,6 +2,7 @@
 
 // Modules
 var webpack = require('webpack');
+var path = require('path');
 //var autoprefixer = require('autoprefixer-core');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -32,7 +33,7 @@ module.exports = function makeWebpackConfig (options) {
     config.entry = {}
   } else {
     config.entry = {
-      app: './src/main/client/budgeto.js'
+      app: path.join(__dirname, './client/budgeto.js')
     }
   }
 
@@ -101,7 +102,7 @@ module.exports = function makeWebpackConfig (options) {
       // Rename the file using the asset hash
       // Pass along the updated reference to your code
       // You can add here any file extension you want to get copied to your output
-      test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot|html|json)$/,
+      test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot|html)$/,
       loader: 'file'
     }
     //  , {
@@ -186,7 +187,7 @@ module.exports = function makeWebpackConfig (options) {
     // Render index.html
     config.plugins.push(
       new HtmlWebpackPlugin({
-        template: './src/main/client/index.html',
+        template: path.join(__dirname, './client/index.html'),
         inject: 'body'
         //,
         //minify: BUILD

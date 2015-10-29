@@ -7,15 +7,15 @@ import angularResource from 'angular-resource';
 import apis from '../apis/apis';
 
 import accountRoute from './account-route';
-accountRoute.$inject = ['$stateProvider'];
+accountRoute.$inject = ['$stateProvider', '$stateParamsProvider'];
 import accountService from './account-service';
 accountService.$inject = ['$log', '$resource', 'apisService'];
 import accountController from './account-controller';
 accountController.$inject = ['$log', '$state'];
 import accountListController from './account-list-controller';
 accountListController.$inject = ['$log', '$scope', '$state', 'accountService'];
-import accountDetailController from './account-detail-controller';
-accountDetailController.inject = ['$log', '$scope', 'accountService'];
+import accountDetailController from './account-detail-controller.js';
+accountDetailController.$inject = ['$log', '$scope', 'accountService', 'myAccount'];
 
 /**
  * definition of angular account module

@@ -104,6 +104,7 @@
     "expressjsstart": "node ./bin/www",
     "new:install:dev": "npm install",
     "new:install:prod": "npm install --production",
-    "new:start:dev": "webpack-dev-server --config webpack.build.js --history-api-fallback --hot --inline --progress"
+    "new:start:dev": "webpack-dev-server --config src/main/webpack.build.js --history-api-fallback --hot --inline --progress",
+    "new:start:dev2": "babel-node src/main/server.js"
   }
 }

@@ -1,6 +1,8 @@
 import '../../../node_modules/bootstrap/dist/css/bootstrap.css';
+import '../../../node_modules/moment/moment.js';
 
 import angular from 'angular';
+import angularMoment from '../../../node_modules/angular-moment/angular-moment.js';
 
 import messageService from './message-service';
 import loading from './loading/loading';
@@ -19,10 +21,11 @@ function RunBudgeto($state, $rootScope, $log, loadingService) {
 }
 RunBudgeto.$inject = ['$state', '$rootScope', '$log', 'loadingService'];
 
-angular.module('budgeto', [loading, apis, home, account])
-    .constant('budgetoRestApiURL', require('./mock/apis.json'))
+angular.module('budgeto', [loading, apis, angularMoment.name, home, account])
+    .constant('budgetoRestApiURL', '/mock')
     //.constant('budgetoRestApiURL', 'http://localhost:9001/budgeto-api')
     .constant('MessageService', messageService)
+    //.constant('angularMomentConfig', {timezone: 'UTC'})
     .run(RunBudgeto);
 //
 //    /**
@@ -47,11 +50,6 @@ angular.module('budgeto', [loading, apis, home, account])
 //    };
 //
 //    /**
-//     * configuration of moment timezone
-//     */
-//    var angularMomentConfig = {timezone: 'UTC'};
-//
-//    /**
 //     * config message for infinite loader
 //     */
 //    function InfiniteLoaderConfig($infiniteLoaderProvider, MessageService) {
@@ -67,7 +65,6 @@ angular.module('budgeto', [loading, apis, home, account])
 //
 //    moduleDefinition.module = angular.module(moduleDefinition.name, moduleDefinition.dependencies);
 //
-//    moduleDefinition.module.constant('angularMomentConfig', angularMomentConfig);
 //    InfiniteLoaderConfig.$inject = ['$infiniteLoaderProvider', 'MessageService'];
 //    moduleDefinition.module.config(InfiniteLoaderConfig);
 //    ModalErrorConfig.$inject = ['$modalErrorProvider', 'MessageService'];
