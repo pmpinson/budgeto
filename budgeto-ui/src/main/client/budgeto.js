@@ -20,14 +20,13 @@ function RunBudgeto($state, $rootScope, $log, loadingService) {
     loadingService.add('apisService');
     $state.transitionTo('home');
 }
-RunBudgeto.$inject = ['$state', '$rootScope', '$log', 'loadingService'];
 
 angular.module('budgeto', [loading, apis, angularMoment.name, home, account])
     .constant('budgetoRestApiURL', '/mock')
     //.constant('budgetoRestApiURL', 'http://localhost:9001/budgeto-api')
     .constant('MessageService', messageService)
     //.constant('angularMomentConfig', {timezone: 'UTC'})
-    .run(RunBudgeto);
+    .run(['$state', '$rootScope', '$log', 'loadingService', RunBudgeto]);
 //
 //    /**
 //     * config service to have been loaded
