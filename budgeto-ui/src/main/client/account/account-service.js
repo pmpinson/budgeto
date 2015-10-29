@@ -9,7 +9,7 @@ class AccountService {
         this.apisService = apisService;
 
         this.api = this.apisService.get('account');
-        $log.debug('AccountService', 'use api', this.api);
+        this.$log.debug('AccountService', 'use api', this.api);
     }
 
     /**
@@ -17,7 +17,9 @@ class AccountService {
      * @returns {*}
      */
     all() {
-        return this.$resource(this.api.href, {}, {}).query({}).$promise;//.catch($modalError.manageError('error getting accounts'));
+        var promise = this.$resource(this.api.href, {}, {}).query({}).$promise;//.catch($modalError.manageError('error getting accounts'));
+        this.$log.debug('AccountService', 'load all accounts', promise);
+        return promise;
     }
 
     /**
@@ -27,7 +29,9 @@ class AccountService {
      */
     operations(account) {
         var url = this.apisService.getLink('operations', account.links).href;
-        return this.$resource(url, {}, {}).query({}).$promise;//.catch($modalError.manageError('error getting operations for', account));
+        var promise = this.$resource(url, {}, {}).query({}).$promise;//.catch($modalError.manageError('error getting operations for', account));
+        this.$log.debug('AccountService', 'get all operations for', account, promise);
+        return promise;
     }
 }
 

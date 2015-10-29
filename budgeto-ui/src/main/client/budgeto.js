@@ -15,6 +15,7 @@ import account from './account/account';
  */
 function RunBudgeto($state, $rootScope, $log, loadingService) {
     $log.debug('budgeto', 'init application');
+
     $rootScope.MessageService = messageService;
     loadingService.add('apisService');
     $state.transitionTo('home');

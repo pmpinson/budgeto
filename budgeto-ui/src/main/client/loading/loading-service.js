@@ -33,7 +33,7 @@ class LoadingService {
      */
     load() {
         if (this.promise === undefined) {
-            this.$log.debug('LoadingService', 'load delayed services');
+            this.$log.debug('LoadingService', 'load delayed services', this.servicesNames);
 
             if (this.servicesNames.length !== 0) {
                 var servicesPromises = [];

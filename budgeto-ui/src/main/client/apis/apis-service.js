@@ -15,7 +15,7 @@ class ApisService {
      * @returns {*}
      */
     load() {
-        this.$log.debug('ApisService', 'call api to get all available apis', this.budgetoRestApiURL);
+        this.$log.debug('ApisService', 'call api to get all available apis on', this.budgetoRestApiURL);
 
         var self = this;
 

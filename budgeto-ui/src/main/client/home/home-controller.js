@@ -10,11 +10,12 @@ class HomeController {
         //this.$infiniteLoader = $infiniteLoader;
         this.loadingService = loadingService;
 
+        this.$log.debug('HomeController', 'load');
+
         this.loadFail = false;
         this.apis = [];
-
         var self = this;
-        this.$log.debug('HomeController', 'start loading service');
+
         this.loadingService.load().then(function (data) {
             self.$log.debug('HomeController', 'loading done');
             //$infiniteLoader.hide();

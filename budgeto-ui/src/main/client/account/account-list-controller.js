@@ -9,7 +9,7 @@ class AccountListController {
         this.$state = $state;
         this.accountService = accountService;
 
-        this.$log.debug('AccountListController load');
+        this.$log.debug('AccountListController', 'load');
 
         this.accounts = [];
         this.account = undefined;
@@ -17,7 +17,6 @@ class AccountListController {
         var self = this;
         // load all accounts from service
         this.accountService.all().then(function (data) {
-            self.$log.debug('AccountListController get all accounts', data);
             self.accounts = data;
             self.account = undefined;
 
@@ -33,9 +32,9 @@ class AccountListController {
             },
             function () {
                 if (self.account !== undefined) {
-                    self.$log.debug('AccountListController select account', self.account);
+                    self.$log.debug('AccountListController', 'select account', self.account);
 
-                    self.$state.go('account.list.detail', {name:self.account.name});
+                    self.$state.go('account.list.detail', {name: self.account.name});
                 }
             }
         );

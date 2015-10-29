@@ -10,15 +10,13 @@ class AccountDetailController {
 
         console.log(myAccount);
 
-        this.$log.debug('AccountDetailController load');
+        this.$log.debug('AccountDetailController', 'load');
 
         this.account = this.$scope.accountListCtrl.account;
         this.operations = [];
-
         var self = this;
-        this.accountService.operations(this.account).then(function (data) {
-            self.$log.debug('AccountDetailController get all operations for', self.account, data);
 
+        this.accountService.operations(this.account).then(function (data) {
             self.operations = data;
         });
     }

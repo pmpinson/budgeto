@@ -13,12 +13,12 @@ function AccountRoute($stateProvider, $stateParams, $scopeProvider) {
     });
     $stateProvider.state('account.list.detail', {
         params: {
-            name:undefined
+            name: undefined
         },
         templateUrl: require('./account-detail.html'),
         controller: 'accountDetailController as accountDetailCtrl',
         resolve: {
-            myAccount: function(){
+            myAccount: function() {
                 return 12;
             }
         }
