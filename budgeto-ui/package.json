@@ -97,14 +97,12 @@
     "e2etest:single": "protractor config/protractor.conf.js",
     "dev": "parallelshell \"npm run build:serve\" \"npm run watch\"",
     "live-reload": "live-reload --port 8999 app/",
-    "open-browser": "opener http://localhost:9000/app",
     "build:serve": "npm run build && npm run open-browser & http-server -a localhost -p 9000 -c-1",
     "dist:serve": "npm run dist && npm run open-browser & http-server target/dist/ -a localhost -p 9000 -c-1",
     "start": "npm run dist:serve",
     "expressjsstart": "node ./bin/www",
     "new:install:dev": "npm install",
     "new:install:prod": "npm install --production",
-    "new:start:dev": "webpack-dev-server --config src/main/webpack.build.js --history-api-fallback --hot --inline --progress",
-    "new:start:dev2": "babel-node src/main/server.js"
+    "new:start:dev": "parallelshell \"babel-node src/main/server.js\" \"opener http://localhost:3000\""
   }
 }
