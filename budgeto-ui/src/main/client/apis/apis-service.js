@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 /**
  * provider to manage definition of apis
  */
@@ -31,11 +33,9 @@ class ApisService {
      * @param data
      */
     loadApis(data) {
-        for (var key in data.links) {
-            if (data.links[key].rel !== 'self') {
-                this.apis.push(data.links[key]);
-            }
-        }
+        this.apis = _.filter(data.links, function(link) {
+                return link.rel !== 'self';
+            });
         this.$log.debug('ApisService', 'available apis', this.apis);
     }
 
@@ -63,13 +63,7 @@ class ApisService {
      * @returns {*}
      */
     getLink(rel, links) {
-        for (var key in links) {
-            if (links[key].rel === rel) {
-                return links[key];
-            }
-        }
-
-        return null;
+        return _.find(links, {rel: rel});
     }
 }
 

@@ -3,16 +3,13 @@
  */
 class AccountDetailController {
 
-    constructor($log, $scope, accountService, myAccount) {
+    constructor($log, accountService, selectedAccount) {
         this.$log = $log;
-        this.$scope = $scope;
         this.accountService = accountService;
+        this.account = selectedAccount;
 
-        console.log(myAccount);
+        this.$log.debug('AccountDetailController', 'load with', this.account);
 
-        this.$log.debug('AccountDetailController', 'load');
-
-        this.account = this.$scope.accountListCtrl.account;
         this.operations = [];
         var self = this;
 

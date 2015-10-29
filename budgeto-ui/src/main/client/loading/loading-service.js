@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 /**
  * Service to manage loading of all necessary services before start
  */
@@ -32,15 +34,14 @@ class LoadingService {
      * @returns {promise|IPromise<any>}
      */
     load() {
-        if (this.promise === undefined) {
+        if (_.isUndefined(this.promise)) {
             this.$log.debug('LoadingService', 'load delayed services', this.servicesNames);
 
-            if (this.servicesNames.length !== 0) {
-                var servicesPromises = [];
-
-                for (var key in this.servicesNames) {
-                    servicesPromises.push(this.$injector.get(this.servicesNames[key]).load());
-                }
+            if (!_.isEmpty(this.servicesNames)) {
+                var self = this;
+                var servicesPromises = _.map(this.servicesNames, function(serviceName) {
+                    return self.$injector.get(serviceName).load();
+                });
                 this.promise = this.$q.all(servicesPromises);
             } else {
                 var deferred = this.$q.defer();

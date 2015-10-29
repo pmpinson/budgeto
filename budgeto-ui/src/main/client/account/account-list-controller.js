@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 /**
  * Account list controller
  */
@@ -20,7 +22,7 @@ class AccountListController {
             self.accounts = data;
             self.account = undefined;
 
-            if (self.accounts.length !== 0) {
+            if (!_.isEmpty(self.accounts)) {
                 self.account = self.accounts[0];
             }
         });
@@ -31,10 +33,10 @@ class AccountListController {
                 return self.account;
             },
             function () {
-                if (self.account !== undefined) {
+                if (!_.isUndefined(self.account)) {
                     self.$log.debug('AccountListController', 'select account', self.account);
 
-                    self.$state.go('account.list.detail', {name: self.account.name});
+                    self.$state.go('account.list.detail', {account: self.account});
                 }
             }
         );

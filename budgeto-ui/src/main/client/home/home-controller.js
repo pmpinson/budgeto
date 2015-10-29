@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 /**
  * Home controller
  */
@@ -34,7 +36,7 @@ class HomeController {
      * @returns {promise|IPromise<any>|void}
      */
     changePath(path) {
-        var destination = (path === undefined) ? 'home' : path;
+        var destination = _.isUndefined(path) ? 'home' : path;
 
         try {
             return this.$state.go(destination);

@@ -19,6 +19,6 @@ export default angular.module('budgeto.account', [uirouter, angularResource, api
     .service('accountService', ['$log', '$resource', 'apisService', accountService])
     .controller('accountController', ['$log', '$state', accountController])
     .controller('accountListController', ['$log', '$scope', '$state', 'accountService', accountListController])
-    .controller('accountDetailController', ['$log', '$scope', 'accountService', 'myAccount', accountDetailController])
+    .controller('accountDetailController', ['$log', 'accountService', 'selectedAccount', accountDetailController])
     .config(['$stateProvider', accountRoute])
     .name;

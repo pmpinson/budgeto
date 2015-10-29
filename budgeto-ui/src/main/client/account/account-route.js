@@ -2,7 +2,7 @@
  * Define routes for account module
  * @param $stateProvider
  */
-function AccountRoute($stateProvider, $stateParams, $scopeProvider) {
+function AccountRoute($stateProvider) {
     $stateProvider.state('account', {
         templateUrl: require('./account.html'),
         controller: 'accountController as accountCtrl'
@@ -13,14 +13,14 @@ function AccountRoute($stateProvider, $stateParams, $scopeProvider) {
     });
     $stateProvider.state('account.list.detail', {
         params: {
-            name: undefined
+            account: undefined
         },
         templateUrl: require('./account-detail.html'),
         controller: 'accountDetailController as accountDetailCtrl',
         resolve: {
-            myAccount: function() {
-                return 12;
-            }
+            selectedAccount: ['$stateParams', function($stateParams) {
+                return $stateParams.account;
+            }]
         }
     });
 }
