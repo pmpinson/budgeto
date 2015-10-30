@@ -1,5 +1,6 @@
-import '../../../node_modules/bootstrap/dist/css/bootstrap.css';
 import '../../../node_modules/moment/moment.js';
+
+import './budgeto.less';
 
 import angular from 'angular';
 import angularMoment from '../../../node_modules/angular-moment/angular-moment.js';

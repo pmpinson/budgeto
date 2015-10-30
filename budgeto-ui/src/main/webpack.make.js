@@ -127,31 +127,22 @@ function makeWebpackConfig(options) {
         })
     }
 
-    // CSS LOADER
-    // Reference: https://github.com/webpack/css-loader
-    // Allow loading css through js
-    //
-    // Reference: https://github.com/postcss/postcss-loader
-    // Postprocess your css with PostCSS plugins
-    var cssLoader = {
-        test: /\.css$/,
-        // Reference: https://github.com/webpack/extract-text-webpack-plugin
-        // Extract css files in production builds
-        //
-        // Reference: https://github.com/webpack/style-loader
-        // Use style-loader in development for hot-loading
-        loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss')
-    };
-
-    // Skip loading css in test mode
-    if (TEST) {
-        // Reference: https://github.com/webpack/null-loader
-        // Return an empty module
-        cssLoader.loader = 'null'
-    }
-
     // Add cssLoader to the loader list
-    config.module.loaders.push(cssLoader);
+    config.module.loaders.push({
+        test: /\.less$/,
+        loader: ExtractTextPlugin.extract(
+            // activate source maps via loader query
+            'css?sourceMap!' +
+            'less?sourceMap'
+        )
+    });
+
+    //// Skip loading css in test mode
+    //if (TEST) {
+    //    // Reference: https://github.com/webpack/null-loader
+    //    // Return an empty module
+    //    cssLoader.loader = 'null'
+    //}
 
     ///**
     // * PostCSS
@@ -175,7 +166,8 @@ function makeWebpackConfig(options) {
         // Disabled when in test mode or not in build mode
         new ExtractTextPlugin('[name].[hash].css', {
             disable: !BUILD || TEST
-        })
+        }),
+        new ExtractTextPlugin('styles.css')
     ];
 
     // Skip rendering index.html in test mode
