@@ -53,7 +53,7 @@ class ApisService {
      * @returns {*}
      */
     get(rel) {
-        return ApisService.getLink(rel, this.apis);
+        return this.getLink(rel, this.apis);
     }
 
     /**
@@ -62,7 +62,7 @@ class ApisService {
      * @param links
      * @returns {*}
      */
-    static getLink(rel, links) {
+     getLink(rel, links) {
         return _.find(links, {rel: rel});
     }
 }
