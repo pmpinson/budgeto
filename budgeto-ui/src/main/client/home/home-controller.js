@@ -5,11 +5,11 @@ import _ from 'lodash';
  */
 class HomeController {
 
-    constructor($log, $state, loadingService, apisService) {//, $infiniteLoader) {
+    constructor($log, $state, loadingService, apisService, infiniteLoaderService) {
         this.$state = $state;
         this.$log = $log;
         this.apisService = apisService;
-        //this.$infiniteLoader = $infiniteLoader;
+        this.infiniteLoaderService = infiniteLoaderService;
         this.loadingService = loadingService;
 
         this.$log.debug('HomeController', 'load');
@@ -18,16 +18,17 @@ class HomeController {
         this.apis = [];
         var self = this;
 
+        this.infiniteLoaderService.show();
         this.loadingService.load().then(function (data) {
             self.$log.debug('HomeController', 'loading done');
-            //$infiniteLoader.hide();
+            self.infiniteLoaderService.hide();
             self.apis = self.apisService.all();
 
             return data;
         }).catch(function (reason) {
             self.$log.error('HomeController', 'error getting apis /', reason);
             self.loadFail = true;
-            //$infiniteLoader.hide();
+            self.infiniteLoaderService.hide();
         });
     }
 
