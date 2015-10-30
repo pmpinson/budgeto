@@ -1,7 +1,7 @@
 import angular from 'angular';
 import uirouter from 'angular-ui-router';
 
-import loading from '../loading/loading.js';
+import loading from '../common/loading/loading.js';
 import apis from '../apis/apis.js';
 import loader from '../common/loader/loader.js';
 
