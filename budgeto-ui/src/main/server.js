@@ -1,4 +1,4 @@
-import app from './app';
+import app from './app.js';
 import debug from 'debug';
 var appDebug = debug('budgeto-ui:server');
 import http from 'http';

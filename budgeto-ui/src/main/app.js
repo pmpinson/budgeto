@@ -8,7 +8,7 @@ import bodyParser from 'body-parser';
 import webpack from 'webpack';
 import webpackMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
-import config from './webpack.build';
+import config from './webpack.build.js';
 
 const isDeveloping = (process.env.NODE_ENV ? process.env.NODE_ENV : 'development') === 'development';
 const app = express();

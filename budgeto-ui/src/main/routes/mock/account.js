@@ -1,4 +1,4 @@
-import helper from './helper';
+import helper from './helper.js';
 import _ from 'lodash';
 
 var accounts = function (req) {

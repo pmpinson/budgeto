@@ -2,11 +2,11 @@
 import angular from 'angular';
 import uirouter from 'angular-ui-router';
 
-import loading from '../loading/loading';
-import apis from '../apis/apis';
+import loading from '../loading/loading.js';
+import apis from '../apis/apis.js';
 
-import homeRoute from './home-route';
-import homeController from './home-controller';
+import homeRoute from './home-route.js';
+import homeController from './home-controller.js';
 
 /**
  * definition of angular home module

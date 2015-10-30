@@ -6,10 +6,10 @@ import angularResource from 'angular-resource';
 
 import apis from '../apis/apis';
 
-import accountRoute from './account-route';
-import accountService from './account-service';
-import accountController from './account-controller';
-import accountListController from './account-list-controller';
+import accountRoute from './account-route.js';
+import accountService from './account-service.js';
+import accountController from './account-controller.js';
+import accountListController from './account-list-controller.js';
 import accountDetailController from './account-detail-controller.js';
 
 /**
