@@ -18,7 +18,7 @@ function AccountRoute($stateProvider) {
         templateUrl: require('./account-detail.html'),
         controller: 'accountDetailController as accountDetailCtrl',
         resolve: {
-            selectedAccount: ['$stateParams', function($stateParams) {
+            selectedAccount: ['$stateParams', function ($stateParams) {
                 return $stateParams.account;
             }]
         }

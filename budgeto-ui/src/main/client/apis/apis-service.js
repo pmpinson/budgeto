@@ -21,7 +21,7 @@ class ApisService {
 
         var self = this;
 
-        return this.$resource(this.budgetoRestApiURL, {}, {}).get({}).$promise.then(function(data) {
+        return this.$resource(this.budgetoRestApiURL, {}, {}).get({}).$promise.then(function (data) {
             self.loadApis(data);
 
             return data;
@@ -33,9 +33,9 @@ class ApisService {
      * @param data
      */
     loadApis(data) {
-        this.apis = _.filter(data.links, function(link) {
-                return link.rel !== 'self';
-            });
+        this.apis = _.filter(data.links, function (link) {
+            return link.rel !== 'self';
+        });
         this.$log.debug('ApisService', 'available apis', this.apis);
     }
 
@@ -53,7 +53,7 @@ class ApisService {
      * @returns {*}
      */
     get(rel) {
-        return this.getLink(rel, this.apis);
+        return ApisService.getLink(rel, this.apis);
     }
 
     /**
@@ -62,7 +62,7 @@ class ApisService {
      * @param links
      * @returns {*}
      */
-    getLink(rel, links) {
+    static getLink(rel, links) {
         return _.find(links, {rel: rel});
     }
 }

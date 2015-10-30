@@ -19,6 +19,7 @@ class AccountService {
     all() {
         var promise = this.$resource(this.api.href, {}, {}).query({}).$promise;//.catch($modalError.manageError('error getting accounts'));
         this.$log.debug('AccountService', 'load all accounts', promise);
+
         return promise;
     }
 
@@ -31,6 +32,7 @@ class AccountService {
         var url = this.apisService.getLink('operations', account.links).href;
         var promise = this.$resource(url, {}, {}).query({}).$promise;//.catch($modalError.manageError('error getting operations for', account));
         this.$log.debug('AccountService', 'get all operations for', account, promise);
+
         return promise;
     }
 }

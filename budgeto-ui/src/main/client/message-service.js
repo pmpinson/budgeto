@@ -15,10 +15,10 @@ var messages = {
     homeTitle: 'Welcome to budgeto',
     homeLink: 'Go back to home',
     modalError: {
-       title: 'An error occured, please advice us.',
-       detail: 'Error detail',
-       close: 'Close'
-   }
+        title: 'An error occured, please advice us.',
+        detail: 'Error detail',
+        close: 'Close'
+    }
 };
 
 export default messages;

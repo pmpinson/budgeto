@@ -1,11 +1,9 @@
-'use strict';
+import path from 'path';
+import webpack from 'webpack';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import angularApp from './client/main-webpack';
 
-var path = require('path');
-var webpack = require('webpack');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var angularApp = require('./client/main-webpack');
-
-module.exports = {
+export default {
     devtool: 'eval-source-map',
     entry: [
         'client/main-webpack.js'
@@ -34,13 +32,13 @@ module.exports = {
             exclude: /node_modules/,
             loader: 'babel'
         }
-        //    , {
-        //    test: /\.json?$/,
-        //    loader: 'json'
-        //}, {
-        //    test: /\.css$/,
-        //    loader: 'style!css?modules&localIdentName=[name]---[local]---[hash:base64:5]'
-        //}
+            //    , {
+            //    test: /\.json?$/,
+            //    loader: 'json'
+            //}, {
+            //    test: /\.css$/,
+            //    loader: 'style!css?modules&localIdentName=[name]---[local]---[hash:base64:5]'
+            //}
         ]
     }
 };

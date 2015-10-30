@@ -22,6 +22,7 @@ class HomeController {
             self.$log.debug('HomeController', 'loading done');
             //$infiniteLoader.hide();
             self.apis = self.apisService.all();
+
             return data;
         }).catch(function (reason) {
             self.$log.error('HomeController', 'error getting apis /', reason);
@@ -33,7 +34,7 @@ class HomeController {
     /**
      * change current path
      * @param path
-     * @returns {promise|IPromise<any>|void}
+     * @returns {promise}
      */
     changePath(path) {
         var destination = _.isUndefined(path) ? 'home' : path;

@@ -1,8 +1,13 @@
-var _ = require('lodash');
+import _ from 'lodash';
 
 function baseUrl(req) {
     var url = req.protocol + '://' + req.get('host') + req.baseUrl;
-    if (!_.endsWith(url, '/')) return url + '/'; else url;
+
+    if (!_.endsWith(url, '/')) {
+        return url + '/';
+    } else {
+        return url;
+    }
 }
 
-module.exports = {baseUrl: baseUrl};
+export default {baseUrl: baseUrl};

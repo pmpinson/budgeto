@@ -31,7 +31,7 @@ class LoadingService {
 
     /**
      * load all registered service
-     * @returns {promise|IPromise<any>}
+     * @returns {promise}
      */
     load() {
         if (_.isUndefined(this.promise)) {
@@ -39,7 +39,7 @@ class LoadingService {
 
             if (!_.isEmpty(this.servicesNames)) {
                 var self = this;
-                var servicesPromises = _.map(this.servicesNames, function(serviceName) {
+                var servicesPromises = _.map(this.servicesNames, function (serviceName) {
                     return self.$injector.get(serviceName).load();
                 });
                 this.promise = this.$q.all(servicesPromises);
