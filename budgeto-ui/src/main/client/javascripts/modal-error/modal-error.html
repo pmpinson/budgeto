@@ -1,20 +1,24 @@
 <div>
     <div class="modal-header">
-        <h3 class="modal-title">{{modalErrorInstanceCtrl.modalOptions.title}}</h3>
+        <h4>{{ modalErrorCtrl.modalOptions.title }}</h4>
     </div>
     <div class="modal-body">
-        <div data-ng-repeat="logMessage in modalErrorInstanceCtrl.modalOptions.logMessages">
-            <p data-ng-hide="modalErrorInstanceCtrl.utils.isObject(logMessage)">{{logMessage}}</p>
-            <pre data-ng-show="modalErrorInstanceCtrl.utils.isObject(logMessage)">{{modalErrorInstanceCtrl.utils.formatObject(logMessage)}}</pre>
+        <div data-ng-repeat="logMessage in modalErrorCtrl.modalOptions.logMessages">
+            <p>{{logMessage}}</p>
         </div>
-        <accordion>
-            <accordion-group heading="{{modalErrorInstanceCtrl.modalOptions.detail}}" is-open="false">
-                <p data-ng-hide="modalErrorInstanceCtrl.utils.isObject(modalErrorInstanceCtrl.modalOptions.reason)">{{modalErrorInstanceCtrl.utils.modalOptions.reason}}</p>
-                <pre data-ng-show="modalErrorInstanceCtrl.utils.isObject(modalErrorInstanceCtrl.modalOptions.reason)">{{modalErrorInstanceCtrl.utils.formatObject(modalErrorInstanceCtrl.modalOptions.reason)}}</pre>
-            </accordion-group>
-        </accordion>
+        <div ng-hide="modalErrorCtrl.modalOptions.reason === undefined">
+            <div>
+                <a class="btn btn-primary" ng-click="modalErrorCtrl.detailsCollapsed = !modalErrorCtrl.detailsCollapsed">{{modalErrorCtrl.modalOptions.detail}}</a>
+            </div>
+            <div uib-collapse="modalErrorCtrl.detailsCollapsed" style="margin-top: 5px;">
+                <pre data-ng-hide="modalErrorCtrl.isObject(modalErrorCtrl.modalOptions.reason)">{{modalErrorCtrl.modalOptions.reason}}</pre>
+                <pre data-ng-show="modalErrorCtrl.isObject(modalErrorCtrl.modalOptions.reason)">{{modalErrorCtrl.formatObject(modalErrorCtrl.modalOptions.reason)}}</pre>
+            </div>
+        </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="modalErrorInstanceCtrl.close()">{{modalErrorInstanceCtrl.modalOptions.close}}</button>
+        <button class="btn btn-primary" ng-click="modalErrorCtrl.close()">
+            {{modalErrorCtrl.modalOptions.close}}
+        </button>
     </div>
 </div>
