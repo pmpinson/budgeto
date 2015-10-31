@@ -23,8 +23,6 @@ class HomeController {
             self.$log.debug('HomeController', 'loading done');
             self.infiniteLoaderService.hide();
             self.apis = self.apisService.all();
-
-            return data;
         }).catch(function (reason) {
             self.$log.error('HomeController', 'error getting apis /', reason);
             self.loadFail = true;
