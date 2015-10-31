@@ -6,7 +6,7 @@ import angular from 'angular';
 import angularMoment from '../../../node_modules/angular-moment/angular-moment.js';
 
 import messageService from './message-service.js';
-import loading from './loading/loading.js';
+import loading from './common/loading/loading.js';
 import apis from './apis/apis.js';
 import home from './home/home.js';
 import account from './account/account.js';

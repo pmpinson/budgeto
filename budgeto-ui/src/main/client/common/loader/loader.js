@@ -1,5 +1,5 @@
 import "./loader.less";
-import "./loading.gif";
+import "./loader.gif";
 
 import angular from 'angular';
 
