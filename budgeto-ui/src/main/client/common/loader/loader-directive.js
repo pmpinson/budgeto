@@ -9,7 +9,7 @@ function LoaderDirective() {
         transclude: true,
         template: function(element, attrs) {
             return '<div ng-show="getLoader(\'' + attrs.loader + '\').visible()">' +
-                '<img src="/images/loader.gif" class="center-block" width="40px" height="40px" />' +
+                '<img src="' + require('./loader.gif') + '" class="loader" />' +
                 '</div>' +
                 '<div ng-hide="getLoader(\'' + attrs.loader + '\').visible()" ng-transclude></div>';
         }

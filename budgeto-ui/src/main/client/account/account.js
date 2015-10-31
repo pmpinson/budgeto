@@ -1,10 +1,9 @@
-//import './home.css';
-
 import angular from 'angular';
 import uirouter from 'angular-ui-router';
 import angularResource from 'angular-resource';
 
 import apis from '../apis/apis';
+import loader from '../common/loader/loader.js'
 
 import accountRoute from './account-route.js';
 import accountService from './account-service.js';
@@ -18,7 +17,7 @@ import accountDetailController from './account-detail-controller.js';
 export default angular.module('budgeto.account', [uirouter, angularResource, apis])
     .service('accountService', ['$log', '$resource', 'apisService', accountService])
     .controller('accountController', ['$log', '$state', accountController])
-    .controller('accountListController', ['$log', '$scope', '$state', 'accountService', accountListController])
-    .controller('accountDetailController', ['$log', 'accountService', 'selectedAccount', accountDetailController])
+    .controller('accountListController', ['$log', '$scope', '$state', 'accountService', 'loaderService', accountListController])
+    .controller('accountDetailController', ['$log', 'accountService', 'selectedAccount', 'loaderService', accountDetailController])
     .config(['$stateProvider', accountRoute])
     .name;

@@ -1,8 +1,10 @@
 <h2>{{accountDetailCtrl.account.name}}</h2>
 <p>{{accountDetailCtrl.account.note}}</p>
-<table border="1">
-    <tr data-ng-repeat="operation in accountDetailCtrl.operations">
-        <td>{{operation.date | amDateFormat:'dddd Do MMMM'}}</td>
-        <td>{{operation.label}}</td>
-    </tr>
-</table>
+<div loader="accountDetail">
+    <table border="1">
+        <tr data-ng-repeat="operation in accountDetailCtrl.operations">
+            <td>{{operation.date | amDateFormat:'dddd Do MMMM'}}</td>
+            <td>{{operation.label}}</td>
+        </tr>
+    </table>
+</div>

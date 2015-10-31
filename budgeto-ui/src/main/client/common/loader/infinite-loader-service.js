@@ -15,7 +15,7 @@ class InfiniteLoaderService {
         this.message = 'Wait';
         this.cpt = 0;
         var body = this.$document.find('body').eq(0);
-        this.element = angular.element('<div class="infinite-loader infinite-loader-default hidden"></div>');
+        this.element = angular.element('<div class="infinite-loader hidden"></div>');
         body.append(this.element);
     }
 
@@ -32,7 +32,7 @@ class InfiniteLoaderService {
         this.element.removeClass('hidden');
         var msg = _.isUndefined(newMessage) ? this.message : newMessage;
         this.element.empty();
-        this.element.append('<p><strong>' + msg + '</strong></p>');
+        this.element.append('<p>' + msg + '</p>');
     }
 
     hide() {

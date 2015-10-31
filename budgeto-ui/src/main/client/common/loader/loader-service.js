@@ -1,38 +1,47 @@
-function Loader() {
-    var isVisible = true;
+import _ from "lodash";
 
-    this.visible = function () {
-        return isVisible;
-    };
+class Loader {
 
-    this.show = function () {
-        isVisible = true;
-    };
+    constructor() {
+        this.isVisible = true;
+    }
 
-    this.hide = function () {
-        isVisible = false;
-    };
+    visible() {
+        return this.isVisible;
+    }
+
+    show() {
+        this.isVisible = true;
+    }
+
+    hide() {
+        this.isVisible = false;
+    }
 }
 
-var loaders = {};
+/**
+ * Loader to show during content loading
+ */
+class LoaderService {
 
-var loaderProvider = {
+    constructor($rootScope) {
+        this.$rootScope = $rootScope;
+        this.loaders = [];
 
-    $get: ['$rootScope', function ($rootScope) {
-
-        var loader = {};
-
-        loader.getLoader = function (name) {
-            if (!_.has(loaders, name)) {
-                loaders[name] = new Loader();
-            }
-            return loaders[name];
+        var self = this;
+        this.$rootScope.getLoader = function (name) {
+            return self.get(name);
         };
+    }
 
-        $rootScope.getLoader = function (name) {
-            return loader.getLoader(name);
-        };
+    get(name) {
+        if (!_.has(this.loaders, name)) {
+            this.loaders[name] = new Loader();
+        }
 
-        return loader;
-    }]
-};
+        return this.loaders[name];
+    }
+
+}
+
+export default LoaderService;
