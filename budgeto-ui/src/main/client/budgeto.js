@@ -1,4 +1,5 @@
 import '../../../node_modules/moment/moment.js';
+import '../../../node_modules/moment-timezone/builds/moment-timezone-with-data-2010-2020.js';
 
 import './budgeto.less';
 
@@ -26,7 +27,7 @@ angular.module('budgeto', [loading, apis, angularMoment.name, home, account])
     .constant('budgetoRestApiURL', '/mock')
     //.constant('budgetoRestApiURL', 'http://localhost:9001/budgeto-api')
     .constant('MessageService', messageService)
-    //.constant('angularMomentConfig', {timezone: 'UTC'})
+    .constant('angularMomentConfig', {timezone: 'UTC'})
     .run(['$state', '$rootScope', '$log', 'loadingService', RunBudgeto]);
 //
 //    /**
