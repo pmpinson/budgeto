@@ -2,7 +2,8 @@
     <h2>{{accountDetailCtrl.account.name}}</h2>
     <p>{{accountDetailCtrl.account.note}}</p>
     <div loader="accountDetailOperations">
-        <table border="1">
+        <p ng-hide="accountDetailCtrl.operations.length !== 0">No operations</p>
+        <table border="1" ng-show="accountDetailCtrl.operations.length !== 0">
             <tr data-ng-repeat="operation in accountDetailCtrl.operations">
                 <td>{{operation.date | amDateFormat:'dddd Do MMMM'}}</td>
                 <td>{{operation.label}}</td>

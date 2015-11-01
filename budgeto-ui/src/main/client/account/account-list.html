@@ -1,5 +1,6 @@
 <div loader="accountList">
-    <select data-ng-model="accountListCtrl.account" data-ng-options="account as account.name for account in accountListCtrl.accounts">
+    <p ng-hide="accountListCtrl.accounts.length !== 0">No accounts</p>
+    <select ng-show="accountListCtrl.accounts.length !== 0" data-ng-model="accountListCtrl.account" data-ng-options="account as account.name for account in accountListCtrl.accounts">
     </select>
     <ui-view></ui-view>
 </div>
