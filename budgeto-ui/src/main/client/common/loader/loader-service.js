@@ -24,14 +24,8 @@ class Loader {
  */
 class LoaderService {
 
-    constructor($rootScope) {
-        this.$rootScope = $rootScope;
+    constructor() {
         this.loaders = [];
-
-        var self = this;
-        this.$rootScope.getLoader = function (name) {
-            return self.get(name);
-        };
     }
 
     get(name) {

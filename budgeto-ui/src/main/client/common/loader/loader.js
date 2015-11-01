@@ -8,7 +8,7 @@ import loaderDirective from './loader-directive.js';
 import infiniteLoaderService from './infinite-loader-service.js';
 
 export default angular.module('tools.loader', [])
-    .service('loaderService', ['$rootScope', loaderService])
-    .directive('loader', [loaderDirective])
+    .service('loaderService', [loaderService])
+    .directive('loader', ['loaderService', loaderDirective])
     .service('infiniteLoaderService', ['$document', infiniteLoaderService])
     .name;

@@ -1,7 +1,7 @@
-<div loader="accountDetail">
+<loader name="accountDetail">
     <h2>{{accountDetailCtrl.account.name}}</h2>
     <p>{{accountDetailCtrl.account.note}}</p>
-    <div loader="accountDetailOperations">
+    <loader name="accountDetailOperations">
         <p ng-hide="accountDetailCtrl.operations.length !== 0">No operations</p>
         <table class="table" ng-show="accountDetailCtrl.operations.length !== 0">
             <tr data-ng-repeat="operation in accountDetailCtrl.operations">
@@ -9,5 +9,5 @@
                 <td>{{operation.label}}</td>
             </tr>
         </table>
-    </div>
-</div>
+    </loader>
+</loader>

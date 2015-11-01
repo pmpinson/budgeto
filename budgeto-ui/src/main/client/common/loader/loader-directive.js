@@ -3,15 +3,23 @@
  * @returns {{restrict: string, transclude: boolean, template: Function}}
  * @constructor
  */
-function LoaderDirective() {
+function LoaderDirective(loaderService) {
     return {
-        restrict: 'A',
+        restrict: 'E',
         transclude: true,
+        scope: {
+            name: '@'
+        },
+        controller: ['$scope', function($scope) {
+            $scope.isVisible = function() {
+                return loaderService.get($scope.name).visible();
+            }
+        }],
         template: function(element, attrs) {
-            return '<div ng-show="getLoader(\'' + attrs.loader + '\').visible()">' +
+            return '<div ng-show="isVisible()">' +
                 '<img src="' + require('./loader.gif') + '" class="loader" />' +
                 '</div>' +
-                '<div ng-hide="getLoader(\'' + attrs.loader + '\').visible()" ng-transclude></div>';
+                '<div ng-hide="isVisible()" ng-transclude></div>';
         }
     };
 }
