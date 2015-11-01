@@ -15,9 +15,15 @@ class AccountDetailController {
         var self = this;
 
         this.loaderService.get('accountDetail').show();
-        this.accountService.operations(this.account).then(function (data) {
-            self.operations = data;
+        this.accountService.find(this.account).then(function (data) {
+            self.account = data;
             self.loaderService.get('accountDetail').hide();
+
+            self.loaderService.get('accountDetailOperations').show();
+            self.accountService.operations(self.account).then(function (data) {
+                self.operations = data;
+                self.loaderService.get('accountDetailOperations').hide();
+            });
         });
     }
 }

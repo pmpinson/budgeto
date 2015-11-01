@@ -4,6 +4,7 @@ import angularResource from 'angular-resource';
 
 import apis from '../apis/apis';
 import loader from '../common/loader/loader.js'
+import modalError from '../common/modal-error/modal-error.js'
 
 import accountRoute from './account-route.js';
 import accountService from './account-service.js';
@@ -14,8 +15,8 @@ import accountDetailController from './account-detail-controller.js';
 /**
  * definition of angular account module
  */
-export default angular.module('budgeto.account', [uirouter, angularResource, apis])
-    .service('accountService', ['$log', '$resource', 'apisService', accountService])
+export default angular.module('budgeto.account', [uirouter, angularResource, apis, loader, modalError])
+    .service('accountService', ['$log', '$resource', 'apisService', 'modalErrorService', accountService])
     .controller('accountController', ['$log', '$state', accountController])
     .controller('accountListController', ['$log', '$scope', '$state', 'accountService', 'loaderService', accountListController])
     .controller('accountDetailController', ['$log', 'accountService', 'selectedAccount', 'loaderService', accountDetailController])
