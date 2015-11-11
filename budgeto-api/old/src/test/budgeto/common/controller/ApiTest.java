@@ -4,8 +4,6 @@ import org.assertj.core.api.Assertions;
 import org.assertj.core.groups.Tuple;
 import org.joda.time.DateTime;
 import org.junit.Test;
-import org.pmp.budgeto.domain.account.Account;
-import org.pmp.budgeto.domain.account.Operation;
 import org.pmp.budgeto.test.TestTools;
 import org.pmp.budgeto.test.config.TestConfig;
 import org.pmp.budgeto.test.extractor.ConstraintViolationExtractor;
@@ -15,7 +13,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import java.util.Set;
 
 
 public class ApiTest {

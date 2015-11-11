@@ -5,8 +5,6 @@ import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.pmp.budgeto.domain.account.Account;
-import org.pmp.budgeto.domain.account.AccountConfig;
 import org.pmp.budgeto.domain.account.AccountHelper;
 import org.pmp.budgeto.test.config.WebITConfig;
 import org.springframework.beans.factory.annotation.Autowired;

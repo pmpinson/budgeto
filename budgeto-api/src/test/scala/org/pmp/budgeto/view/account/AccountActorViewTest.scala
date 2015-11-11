@@ -1,8 +1,8 @@
 package org.pmp.budgeto.view.account
 
 import akka.actor.{ActorRef, Props}
-import akka.pattern.ask
 import org.pmp.budgeto.EventuateContext
+import akka.pattern.ask
 import org.pmp.budgeto.domain._
 import org.pmp.budgeto.domain.account._
 import org.scalatest.Inspectors._
@@ -64,13 +64,50 @@ class AccountActorViewTest extends EventuateContext {
     }
   }
 
+  test("ask to get account information on account that not exist") {
+    Given("an account actor, and an account view actor, and 3 accounts created but 1 closed")
+
+    When("send a print acount for if not exist")
+    val future = accountViewActor.actorRef ? PrintAccount("125")
+
+    Then("I expected to have a failure")
+    val CommandFailure(message, _) = waitFor(future)
+    message should be( """account with id "125" not exist""")
+  }
+
+  test("ask to list an account 1 that is active") {
+    Given("an account actor, and an account view actor, and 3 accounts created but 1 closed")
+
+    When("send a print account command")
+    val future = accountViewActor.actorRef ? PrintAccount(accountId1)
+
+    Then("I expected to get account 1")
+    val PrintAccountSuccess(account) = waitFor(future)
+    account should matchPattern {
+      case Account(_, "testAccount", "a note", 125, _, _) =>
+    }
+  }
+
+  test("ask to get an account that is not active") {
+    Given("an account actor, and an account view actor, and 3 accounts created but 1 closed")
+
+    When("send a print account command")
+    val future = accountViewActor.actorRef ? PrintAccount(accountId2)
+
+    Then("I expected to have the account")
+    val PrintAccountSuccess(account) = waitFor(future)
+    account should matchPattern {
+      case Account(_, "testAccount2", "a note2", 2125, _, _) =>
+    }
+  }
+
   test("ask to list operations on account that not exist") {
     Given("an account actor, and an account view actor, and 3 accounts created but 1 closed")
 
     When("send a print closed command")
     val future = accountViewActor.actorRef ? PrintAccountOperations("125")
 
-    Then("I expected to have a list of 3 operations in the account")
+    Then("I expected a failure")
     val CommandFailure(message, _) = waitFor(future)
     message should be( """account with id "125" not exist""")
   }

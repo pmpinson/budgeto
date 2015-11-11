@@ -16,11 +16,6 @@ import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
-import org.pmp.budgeto.common.domain.DomainNotFoundException;
-import org.pmp.budgeto.domain.account.Account;
-import org.pmp.budgeto.domain.account.AccountController;
-import org.pmp.budgeto.domain.account.AccountDomain;
-import org.pmp.budgeto.domain.account.Operation;
 import org.pmp.budgeto.test.config.TestConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +26,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.reflect.Method;
-import java.util.Set;
 
 
 @RunWith(MockitoJUnitRunner.class)
