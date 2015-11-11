@@ -42,7 +42,7 @@ class AccountActorTest extends EventuateContext {
     forExactly(1, expectedEvents) { case AccountCreated(a) => a should be(account) }
   }
 
-  test("When I create an account but account with same label alread exist") {
+  test("When I create an account but account with same label already exist") {
     Given("an account actor and an account created")
     waitFor(accountActor ? CreateAccount("testAccount", "a note", 125))
 
@@ -52,6 +52,17 @@ class AccountActorTest extends EventuateContext {
     Then("I expected to have an failure")
     val CommandFailure(message, _) = waitFor(future)
     message should be( """an account with label "testAccount" already exist""")
+  }
+
+  test("When I create an account but label is empty") {
+    Given("an account actor")
+
+    When("send a create account command")
+    val future = accountActor ? CreateAccount("", "a dif note")
+
+    Then("I expected to have an failure")
+    val CommandFailure(message, _) = waitFor(future)
+    message should be( """label must not be empty""")
   }
 
   test("When I close an account") {
@@ -123,7 +134,7 @@ class AccountActorTest extends EventuateContext {
     Given("an account actor, and 3 accounts created but 1 closed")
     createAccounts
 
-    When("send a new operation on closed account")
+    When("send a new operation on non closed account")
     val future = accountActor ? CreateAccountOperation(accountId1, "an operation", 12500)
 
     Then("I expected to have a faillure")
@@ -138,6 +149,18 @@ class AccountActorTest extends EventuateContext {
       ope should be(accountOperation)
     }
     }
+  }
+
+  test("When I made a operation on a existing non closed account but label is empty") {
+    Given("an account actor, and 3 accounts created but 1 closed")
+    createAccounts
+
+    When("send a new operation on non closed account")
+    val future = accountActor ? CreateAccountOperation(accountId1, "", 12500)
+
+    Then("I expected to have an failure")
+    val CommandFailure(message, _) = waitFor(future)
+    message should be( """label must not be empty""")
   }
 
 }

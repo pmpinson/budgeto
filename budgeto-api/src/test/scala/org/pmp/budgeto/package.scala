@@ -5,7 +5,7 @@ import akka.pattern.ask
 import akka.util.Timeout
 import com.rbmhtechnology.eventuate.log.leveldb.LeveldbEventLog
 import org.joda.time.DateTime
-import org.pmp.budgeto.domain.EventuateActor
+import org.pmp.budgeto.domain.PersistedActor
 import org.scalatest.{BeforeAndAfter, FunSuite, GivenWhenThen}
 
 import scala.concurrent.duration._
@@ -61,7 +61,7 @@ package object budgeto {
    * @param id
    * @param eventLog
    */
-  class ExpectedEventActor(override val id: String, override val eventLog: ActorRef) extends EventuateActor {
+  class ExpectedEventActor(override val id: String, override val eventLog: ActorRef) extends PersistedActor {
 
     var events: List[Any] = List.empty
 

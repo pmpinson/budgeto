@@ -3,10 +3,11 @@ package org.pmp.budgeto.domain.account
 import java.util.UUID
 
 import akka.actor.ActorRef
+import com.rbmhtechnology.eventuate.EventsourcedActor
 import org.joda.time.DateTime
-import org.pmp.budgeto.domain.{CommandFailure, EventuateActor}
+import org.pmp.budgeto.domain.{ValidatorActor, CommandFailure, PersistedActor}
 
-class AccountActor(override val id: String, override val eventLog: ActorRef) extends EventuateActor {
+class AccountActor(override val id: String, override val eventLog: ActorRef) extends EventsourcedActor with ValidatorActor with PersistedActor {
 
   private val accounts: scala.collection.mutable.Map[String, Account] = scala.collection.mutable.Map.empty
   private var labels: List[String] = List.empty
@@ -16,6 +17,7 @@ class AccountActor(override val id: String, override val eventLog: ActorRef) ext
 
     case CreateAccount(label, note, initialBalance) => {
       for {
+        labelNotEmpty <- validator(label.trim.isEmpty, s"label must not be empty")
         labelNotExists <- labelNotExists(label)
         account = Account(UUID.randomUUID().toString, label, note, initialBalance, initialBalance, DateTime.now())
       } yield persistAndSend(AccountCreated(account), CreateAccountSuccess(account))
@@ -31,6 +33,7 @@ class AccountActor(override val id: String, override val eventLog: ActorRef) ext
 
     case CreateAccountOperation(accountId, label, amount) => {
       for {
+        labelNotEmpty <- validator(label.trim.isEmpty, s"label must not be empty")
         exists <- accountExists(accountId)
         notClosed <- accountNotClosed(accountId)
         accountOperation = AccountOperation(UUID.randomUUID().toString, label, amount, DateTime.now())
@@ -38,20 +41,11 @@ class AccountActor(override val id: String, override val eventLog: ActorRef) ext
     }
   }
 
-  def labelNotExists(label: String): Option[Boolean] = if (labels.contains(label)) {
-    sender() ! CommandFailure( s"""an account with label "${label}" already exist""")
-    None
-  } else Some(true)
+  def labelNotExists(label: String): Option[Boolean] = validator(labels.contains(label), s"""an account with label "${label}" already exist""")
 
-  def accountExists(accountId: String): Option[Boolean] = if (!accounts.contains(accountId)) {
-    sender() ! CommandFailure( s"""account with id "${accountId}" not exist""")
-    None
-  } else Some(true)
+  def accountExists(accountId: String): Option[Boolean] = validator(!accounts.contains(accountId), s"""account with id "${accountId}" not exist""")
 
-  def accountNotClosed(accountId:String): Option[Boolean] = if (closedAccountIds.contains(accountId)) {
-    sender() ! CommandFailure( s"""account with id "${accountId}" is closed""")
-    None
-  } else Some(true)
+  def accountNotClosed(accountId:String): Option[Boolean] = validator(closedAccountIds.contains(accountId), s"""account with id "${accountId}" is closed""")
 
   override val onEvent: Receive = {
     case AccountCreated(account) => {

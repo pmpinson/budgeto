@@ -2,12 +2,12 @@ package org.pmp.budgeto.view.account
 
 import akka.actor.ActorRef
 import com.rbmhtechnology.eventuate.EventsourcedView
-import org.pmp.budgeto.domain.CommandFailure
+import org.pmp.budgeto.domain.{ValidatorActor, CommandFailure}
 import org.pmp.budgeto.domain.account._
 
 import scala.collection.SortedSet
 
-class AccountViewActor(override val id: String, override val eventLog: ActorRef) extends EventsourcedView {
+class AccountViewActor(override val id: String, override val eventLog: ActorRef) extends EventsourcedView with ValidatorActor {
 
   private val accounts: scala.collection.mutable.Map[String, (Account, SortedSet[AccountOperation])] = scala.collection.mutable.Map.empty
   private val closedAccounts: scala.collection.mutable.Map[String, (Account, SortedSet[AccountOperation])] = scala.collection.mutable.Map.empty
@@ -28,10 +28,7 @@ class AccountViewActor(override val id: String, override val eventLog: ActorRef)
     } yield sender() ! PrintAccountOperationsSuccess(allAccounts.get(accountId).get._2)
   }
 
-  def idExists(accountId: String): Option[Boolean] = if (allAccounts.get(accountId).isEmpty) {
-    sender() ! CommandFailure( s"""account with id "${accountId}" not exist""")
-    None
-  } else Some(true)
+  def idExists(accountId: String): Option[Boolean] = validator(allAccounts.get(accountId).isEmpty, s"""account with id "${accountId}" not exist""")
 
   override val onEvent: Receive = {
     case AccountCreated(account) => accounts.put(account.id, (account, SortedSet[AccountOperation]()))
