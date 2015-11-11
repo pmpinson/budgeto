@@ -5,7 +5,7 @@ import akka.pattern.ask
 import akka.util.Timeout
 import com.rbmhtechnology.eventuate.log.leveldb.LeveldbEventLog
 import org.joda.time.DateTime
-import org.pmp.budgeto.domain.PersistedActor
+import org.pmp.budgeto.common.PersistedActor
 import org.scalatest.{BeforeAndAfter, FunSuite, GivenWhenThen}
 
 import scala.concurrent.duration._

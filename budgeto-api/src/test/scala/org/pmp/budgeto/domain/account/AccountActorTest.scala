@@ -3,6 +3,7 @@ package org.pmp.budgeto.domain.account
 import akka.actor.{ActorRef, Props}
 import akka.pattern.ask
 import org.pmp.budgeto.EventuateContext
+import org.pmp.budgeto.common.CommandFailure
 import org.pmp.budgeto.domain._
 import org.scalatest.Inspectors._
 import org.scalatest.Matchers._

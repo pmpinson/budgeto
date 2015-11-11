@@ -5,7 +5,7 @@ import java.util.UUID
 import akka.actor.ActorRef
 import com.rbmhtechnology.eventuate.EventsourcedActor
 import org.joda.time.DateTime
-import org.pmp.budgeto.domain.{ValidatorActor, CommandFailure, PersistedActor}
+import org.pmp.budgeto.common.{ValidatorActor, PersistedActor, CommandFailure}
 
 class AccountActor(override val id: String, override val eventLog: ActorRef) extends EventsourcedActor with ValidatorActor with PersistedActor {
 

@@ -1,4 +1,4 @@
-package org.pmp.budgeto.domain
+package org.pmp.budgeto.common
 
 import com.rbmhtechnology.eventuate.EventsourcedActor
 

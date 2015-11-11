@@ -1,8 +1,6 @@
-package org.pmp.budgeto.domain
+package org.pmp.budgeto.common
 
-import com.rbmhtechnology.eventuate.{EventsourcedView, EventsourcedActor}
-
-import scala.util.{Failure, Success}
+import com.rbmhtechnology.eventuate.EventsourcedView
 
 trait ValidatorActor extends EventsourcedView {
 

@@ -2,7 +2,7 @@ package org.pmp.budgeto.view.account
 
 import akka.actor.ActorRef
 import com.rbmhtechnology.eventuate.EventsourcedView
-import org.pmp.budgeto.domain.{ValidatorActor, CommandFailure}
+import org.pmp.budgeto.common.ValidatorActor
 import org.pmp.budgeto.domain.account._
 
 import scala.collection.SortedSet
