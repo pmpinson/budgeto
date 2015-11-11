@@ -82,7 +82,7 @@ class AccountActorTest extends EventuateContext {
     message should be( """account with id "102" not exist""")
   }
 
-  test("When I close an account that is already closed") {
+  test("When I close an account that is closed") {
     Given("an account actor and an account closed with id 101")
     val CreateAccountSuccess(Account(accountId, _, _, _, _, _)) = waitFor(accountActor ? CreateAccount("testAccount", "a note", 125))
     waitFor(accountActor ? CloseAccount(accountId))
@@ -92,7 +92,7 @@ class AccountActorTest extends EventuateContext {
 
     Then("I expected to have a create account success and the account have te good value")
     val CommandFailure(message, _) = waitFor(future)
-    message should be( s"""account with id "$accountId" is already closed""")
+    message should be( s"""account with id "$accountId" is closed""")
   }
 
   test("When I made a operation on an unexisting account") {

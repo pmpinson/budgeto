@@ -20,19 +20,18 @@ class AccountViewActor(override val id: String, override val eventLog: ActorRef)
     case PrintClosedAccounts() => sender() ! PrintClosedAccountsSuccess(closedAccounts.values.map(a => a._1).toList)
 
     case PrintAccount(accountId) => for {
-      idNotExist <- if (allAccounts.get(accountId).isEmpty) {
-        sender() ! CommandFailure( s"""account with id "${accountId}" not exist""")
-        None
-      } else Some(true)
+      idExists <- idExists(accountId)
     } yield sender() ! PrintAccountSuccess(allAccounts.get(accountId).get._1)
 
     case PrintAccountOperations(accountId) => for {
-      idNotExist <- if (allAccounts.get(accountId).isEmpty) {
-        sender() ! CommandFailure( s"""account with id "${accountId}" not exist""")
-        None
-      } else Some(true)
+      idExists <- idExists(accountId)
     } yield sender() ! PrintAccountOperationsSuccess(allAccounts.get(accountId).get._2)
   }
+
+  def idExists(accountId: String): Option[Boolean] = if (allAccounts.get(accountId).isEmpty) {
+    sender() ! CommandFailure( s"""account with id "${accountId}" not exist""")
+    None
+  } else Some(true)
 
   override val onEvent: Receive = {
     case AccountCreated(account) => accounts.put(account.id, (account, SortedSet[AccountOperation]()))
