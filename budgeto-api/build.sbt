@@ -13,18 +13,21 @@ lazy val projectTestDependencies = Seq(
   "org.scalatest" %% "scalatest" % "2.2.2" % Test
 )
 
-lazy val root = (project in file("."))
+lazy val budgetoAapi = Project("budgeto-api", file("."))
   .settings(
     name := "budgeto",
     organization := "org.pmp",
     version := "1.0.0",
-    scalaVersion := "2.11.4",
-    libraryDependencies ++= projectDependencies ++ projectTestDependencies,
+    scalaVersion := "2.11.7",
+    crossPaths := false,
     publishMavenStyle := true,
+
+    libraryDependencies ++= projectDependencies ++ projectTestDependencies,
+    mainClass := Some("org.pmp.budgeto.Bootstrap"),
 
     coverageMinimum := 95,
     coverageFailOnMinimum := true,
 
-    fork := true, // fix problem with sbt class loading on leveldbjni
-    parallelExecution := false
+    fork := true // fix problem with sbt class loading on leveldbjni
+//    parallelExecution := false
   )
