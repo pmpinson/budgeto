@@ -1,4 +1,4 @@
-package org.pmp.budgeto.common
+package org.pmp.budgeto.domain
 
 import com.rbmhtechnology.eventuate.EventsourcedActor
 
@@ -6,11 +6,11 @@ import scala.util.{Failure, Success}
 
 trait PersistedActor extends EventsourcedActor {
 
-  def persistAndSend[OBJ](eventToPersist: Any, eventToSendOnSuccess: Any, onFailure: (String, Option[Throwable]) => Any = CommandFailure) = {
+  def persistAndSend(eventToPersist: Any, onSuccess: (Any) => Any = CommandSuccess, onFailure: (String, Option[Throwable]) => Any = CommandFailure): Unit = {
     persist(eventToPersist) {
       case Success(e) =>
         onEvent(e)
-        sender() ! eventToSendOnSuccess
+        sender() ! onSuccess(eventToPersist)
       case Failure(err) =>
         sender() ! onFailure(err.getMessage, Some(err))
     }
