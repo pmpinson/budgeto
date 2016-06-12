@@ -13,6 +13,7 @@ lazy val projectTestDependencies = Seq(
   "org.scalatest" %% "scalatest" % "2.2.2" % Test
 )
 
+
 lazy val root = (project in file("."))
   .settings(
     name := "budgeto",

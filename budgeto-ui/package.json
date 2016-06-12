@@ -105,6 +105,7 @@
     "expressjsstart": "node ./bin/www",
     "new:install:dev": "npm install",
     "new:install:prod": "npm install --production",
+    "new:test:single": "karma start config/karma.conf.js --single-run",
     "new:start:dev": "parallelshell \"babel-node src/main/server.js\" \"opener http://localhost:3000\""
   }
 }

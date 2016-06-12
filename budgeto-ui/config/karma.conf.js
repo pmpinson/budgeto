@@ -1,3 +1,5 @@
+var webpackConfig = require('../src/test/webpack.test.js');
+
 // Karma configuration
 // Generated on Sat Feb 21 2015 12:39:02 GMT-0500 (Est)
 
@@ -10,29 +12,20 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine', 'requirejs'],
+    frameworks: ['jasmine'],
 
+    webpack: webpackConfig,
 
     // list of files / patterns to load in the browser
     files: [
-        {pattern: 'src/main/client/lib/**/*.js', included: false},
-        {pattern: 'src/main/client/javascripts/**/*.js', included: false},
-        {pattern: 'src/test/client/**/*.spec.js', included: false},
-        'src/main/client/javascripts/main.js',
-        'src/test/client/main.js'
-    ],
-
-
-    // list of files to exclude
-    exclude: [
-        'src/main/client/javascripts/launch.js'
+        'src/test/bootstrap.test.js'
     ],
 
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-          'src/main/client/javascripts/**/*.js': ['coverage']
+        'src/test/bootstrap.test.js': ['coverage', 'webpack', 'sourcemap']
     },
 
 
@@ -73,7 +66,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Firefox'],
+    browsers: ['PhantomJS'],
 
 
     // Continuous Integration mode
